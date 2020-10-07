@@ -1,4 +1,4 @@
-package com.google.android.youtube.player;
+package com.google.android.youtube.player.internal;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -6,16 +6,22 @@ import android.os.RemoteException;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.internal.ab;
+import com.google.android.youtube.player.internal.b;
+import com.google.android.youtube.player.internal.d;
 import com.google.android.youtube.player.internal.e.a;
+import com.google.android.youtube.player.internal.q;
+import com.google.android.youtube.player.internal.v;
 
 import java.util.List;
 
 public final class YouTubePlayerImpl implements YouTubePlayer {
-    private b a;
+    private com.google.android.youtube.player.internal.b a;
     private d b;
 
     public YouTubePlayerImpl(b var1, d var2) {
-        this.a = (b)ab.a(var1, "connectionClient cannot be null");
+        this.a = (b) ab.a(var1, "connectionClient cannot be null");
         this.b = (d)ab.a(var2, "embeddedPlayer cannot be null");
     }
 
@@ -56,7 +62,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final View a() {
         try {
-            return (View)v.a(this.b.s());
+            return (View) v.a(this.b.s());
         } catch (RemoteException var2) {
             throw new q(var2);
         }

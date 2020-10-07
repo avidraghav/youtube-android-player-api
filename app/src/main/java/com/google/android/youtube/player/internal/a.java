@@ -1,6 +1,9 @@
-package com.google.android.youtube.player;
+package com.google.android.youtube.player.internal;
 
 import android.graphics.Bitmap;
+
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 
 import java.lang.ref.WeakReference;
 import java.util.NoSuchElementException;

@@ -1,9 +1,11 @@
-package com.google.android.youtube.player;
+package com.google.android.youtube.player.internal;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
+
+import com.google.android.youtube.player.YouTubeThumbnailView;
 
 public final class p extends com.google.android.youtube.player.internal.a {
     private final Handler a;

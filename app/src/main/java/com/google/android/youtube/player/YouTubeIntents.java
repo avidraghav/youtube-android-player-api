@@ -7,6 +7,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
+import com.google.android.youtube.player.internal.z;
+
 import java.util.List;
 
 /**

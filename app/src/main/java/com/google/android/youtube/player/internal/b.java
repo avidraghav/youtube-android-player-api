@@ -1,4 +1,4 @@
-package com.google.android.youtube.player;
+package com.google.android.youtube.player.internal;
 
 import android.os.IBinder;
 

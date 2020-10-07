@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView.b;
+import com.google.android.youtube.player.internal.ab;
 
 public class YouTubePlayerSupportFragment extends Fragment implements Provider {
     private final YouTubePlayerSupportFragment.a a = new YouTubePlayerSupportFragment.a((byte)0);

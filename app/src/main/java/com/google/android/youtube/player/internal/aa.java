@@ -1,8 +1,9 @@
-package com.google.android.youtube.player;
+package com.google.android.youtube.player.internal;
 
 import android.app.Activity;
 import android.content.Context;
 
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.google.android.youtube.player.internal.t.a;
 
 public abstract class aa {

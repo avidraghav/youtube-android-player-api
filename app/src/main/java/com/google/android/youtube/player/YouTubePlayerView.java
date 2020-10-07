@@ -14,6 +14,11 @@ import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
 
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.internal.YouTubePlayerImpl;
+import com.google.android.youtube.player.internal.aa;
+import com.google.android.youtube.player.internal.ab;
+import com.google.android.youtube.player.internal.n;
+import com.google.android.youtube.player.internal.y;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,7 +55,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     }
 
     YouTubePlayerView(Context var1, AttributeSet var2, int var3, YouTubePlayerView.b var4) {
-        super((Context)ab.a(var1, "context cannot be null"), var2, var3);
+        super((Context) ab.a(var1, "context cannot be null"), var2, var3);
         this.c = (YouTubePlayerView.b)ab.a(var4, "listener cannot be null");
         if (this.getBackground() == null) {
             this.setBackgroundColor(-16777216);

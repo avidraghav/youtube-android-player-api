@@ -1,4 +1,6 @@
-package com.google.android.youtube.player;
+package com.google.android.youtube.player.internal;
+
+import com.google.android.youtube.player.YouTubeInitializationResult;
 
 public interface t {
     void e();

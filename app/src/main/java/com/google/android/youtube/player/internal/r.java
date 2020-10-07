@@ -1,4 +1,4 @@
-package com.google.android.youtube.player;
+package com.google.android.youtube.player.internal;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
+
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 
 import java.util.ArrayList;
 

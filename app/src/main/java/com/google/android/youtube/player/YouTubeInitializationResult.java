@@ -14,6 +14,11 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 
+import com.google.android.youtube.player.internal.ab;
+import com.google.android.youtube.player.internal.m;
+import com.google.android.youtube.player.internal.y;
+import com.google.android.youtube.player.internal.z;
+
 public enum YouTubeInitializationResult {
     SUCCESS,
     INTERNAL_ERROR,
@@ -98,7 +103,7 @@ public enum YouTubeInitializationResult {
         private final int c;
 
         public a(Activity var1, Intent var2, int var3) {
-            this.a = (Activity)ab.a(var1);
+            this.a = (Activity) ab.a(var1);
             this.b = (Intent)ab.a(var2);
             this.c = (Integer)ab.a(var3);
         }

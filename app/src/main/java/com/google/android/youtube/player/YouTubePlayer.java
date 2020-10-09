@@ -691,6 +691,7 @@ public interface YouTubePlayer {
          *                     <a href="https://console.developers.google.com/">Google Developers Console</a>.
          * @param listener     The callbacks that will be invoked when the initialization succeeds
          *                     or fails.
+         * @throws IllegalArgumentException if the {@param developerKey} is {@code null} or empty
          */
         void initialize(String developerKey, YouTubePlayer.OnInitializedListener listener);
     }

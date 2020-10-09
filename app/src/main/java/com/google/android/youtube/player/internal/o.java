@@ -13,9 +13,9 @@ public final class o extends r<l> implements b {
 
     public o(Context var1, String var2, String var3, String var4, a var5, com.google.android.youtube.player.internal.t.b var6) {
         super(var1, var5, var6);
-        this.b = (String)ab.a(var2);
-        this.c = ab.a(var3, "callingPackage cannot be null or empty");
-        this.d = ab.a(var4, "callingAppVersion cannot be null or empty");
+        this.b = (String) Validators.notNull(var2);
+        this.c = Validators.notEmpty(var3, "callingPackage cannot be null or empty");
+        this.d = Validators.notEmpty(var4, "callingAppVersion cannot be null or empty");
     }
 
     protected final String b() {

@@ -7,11 +7,11 @@ public interface t {
 
     void d();
 
-    public interface b {
+    interface b {
         void a(YouTubeInitializationResult var1);
     }
 
-    public interface a {
+    interface a {
         void a();
 
         void b();

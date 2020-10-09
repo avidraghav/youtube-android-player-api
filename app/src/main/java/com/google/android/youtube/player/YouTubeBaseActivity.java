@@ -11,7 +11,7 @@ import com.google.android.youtube.player.YouTubePlayerView.b;
  * extend this activity.
  */
 public class YouTubeBaseActivity extends Activity {
-    private YouTubeBaseActivity.a a;
+    private b a;
     private YouTubePlayerView playerView;
     private int lifecycleState;
     private Bundle bundle;
@@ -19,16 +19,41 @@ public class YouTubeBaseActivity extends Activity {
     public YouTubeBaseActivity() {
     }
 
-    final b a() {
+    final b getA() {
         return this.a;
     }
 
-    protected void onCreate(Bundle var1) {
-        super.onCreate(var1);
-        this.a = new YouTubeBaseActivity.a((byte)0);
-        this.bundle = var1 != null ? var1.getBundle("YouTubeBaseActivity.KEY_PLAYER_VIEW_STATE") : null;
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.a = new b() {
+            @Override
+            public void a(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
+                view.a(YouTubeBaseActivity.this, view, developerKey, listener, YouTubeBaseActivity.this.bundle);
+                YouTubeBaseActivity.b(YouTubeBaseActivity.this);
+            }
+
+            @Override
+            public void a(YouTubePlayerView view) {
+                if (YouTubeBaseActivity.this.playerView != null && YouTubeBaseActivity.this.playerView != view) {
+                    YouTubeBaseActivity.this.playerView.c(true);
+                }
+
+                YouTubeBaseActivity.this.playerView = view;
+                if (YouTubeBaseActivity.this.lifecycleState > 0) {
+                    view.a();
+                }
+
+                if (YouTubeBaseActivity.this.lifecycleState >= 2) {
+                    view.b();
+                }
+            }
+        };
+
+        this.bundle = bundle != null ? bundle.getBundle("YouTubeBaseActivity.KEY_PLAYER_VIEW_STATE") : null;
     }
 
+    @Override
     protected void onStart() {
         super.onStart();
         this.lifecycleState = 1;
@@ -38,6 +63,7 @@ public class YouTubeBaseActivity extends Activity {
 
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
         this.lifecycleState = 2;
@@ -47,6 +73,7 @@ public class YouTubeBaseActivity extends Activity {
 
     }
 
+    @Override
     protected void onPause() {
         this.lifecycleState = 1;
         if (this.playerView != null) {
@@ -56,12 +83,14 @@ public class YouTubeBaseActivity extends Activity {
         super.onPause();
     }
 
+    @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         Bundle actualBundle = this.playerView != null ? this.playerView.getBundle() : this.bundle;
         bundle.putBundle("YouTubeBaseActivity.KEY_PLAYER_VIEW_STATE", actualBundle);
     }
 
+    @Override
     protected void onStop() {
         this.lifecycleState = 0;
         if (this.playerView != null) {
@@ -71,37 +100,12 @@ public class YouTubeBaseActivity extends Activity {
         super.onStop();
     }
 
+    @Override
     protected void onDestroy() {
         if (this.playerView != null) {
             this.playerView.b(this.isFinishing());
         }
 
         super.onDestroy();
-    }
-
-    private final class a implements b {
-        private a() {
-        }
-
-        public final void a(YouTubePlayerView view, String var2, OnInitializedListener listener) {
-            view.a(YouTubeBaseActivity.this, view, var2, listener, YouTubeBaseActivity.this.bundle);
-            YouTubeBaseActivity.b(YouTubeBaseActivity.this);
-        }
-
-        public final void a(YouTubePlayerView playerView) {
-            if (YouTubeBaseActivity.this.playerView != null && YouTubeBaseActivity.this.playerView != playerView) {
-                YouTubeBaseActivity.this.playerView.c(true);
-            }
-
-            YouTubeBaseActivity.this.playerView = playerView;
-            if (YouTubeBaseActivity.this.lifecycleState > 0) {
-                playerView.a();
-            }
-
-            if (YouTubeBaseActivity.this.lifecycleState >= 2) {
-                playerView.b();
-            }
-
-        }
     }
 }

@@ -15,7 +15,7 @@ public abstract class a implements YouTubeThumbnailLoader {
     private boolean d;
 
     public a(YouTubeThumbnailView thumbnailView) {
-        this.thumbnailViewWeakReference = new WeakReference(ab.a(thumbnailView));
+        this.thumbnailViewWeakReference = new WeakReference(Validators.notNull(thumbnailView));
     }
 
     protected boolean a() {

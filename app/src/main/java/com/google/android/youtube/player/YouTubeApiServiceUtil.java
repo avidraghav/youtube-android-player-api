@@ -38,7 +38,7 @@ public final class YouTubeApiServiceUtil {
         try {
             PackageManager packageManager = context.getPackageManager();
             String var2 = z.a(context);
-            if (!a(packageManager.getPackageInfo(var2, 64))) {
+            if (!a(packageManager.getPackageInfo(var2, PackageManager.GET_SIGNATURES))) {
                 return YouTubeInitializationResult.SERVICE_INVALID;
             } else if (z.a(context, var2)) {
                 return YouTubeInitializationResult.SERVICE_VERSION_UPDATE_REQUIRED;

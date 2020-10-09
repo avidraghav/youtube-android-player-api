@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView.b;
-import com.google.android.youtube.player.internal.ab;
+import com.google.android.youtube.player.internal.Validators;
 
 public class YouTubePlayerFragment extends Fragment implements Provider {
-    private final YouTubePlayerFragment.a a = new YouTubePlayerFragment.a((byte)0);
+    private final YouTubePlayerFragment.a a = new YouTubePlayerFragment.a();
     private Bundle bundle;
     private YouTubePlayerView youTubePlayerView;
     private String d;
@@ -29,7 +29,7 @@ public class YouTubePlayerFragment extends Fragment implements Provider {
     }
 
     public void initialize(String developerKey, OnInitializedListener listener) {
-        this.d = ab.a(developerKey, "Developer key cannot be null or empty");
+        this.d = Validators.notEmpty(developerKey, "Developer key cannot be null or empty");
         this.onInitializedListener = listener;
         this.a();
     }
@@ -100,11 +100,11 @@ public class YouTubePlayerFragment extends Fragment implements Provider {
         private a() {
         }
 
-        public final void a(YouTubePlayerView var1, String var2, OnInitializedListener var3) {
-            YouTubePlayerFragment.this.initialize(var2, YouTubePlayerFragment.this.onInitializedListener);
+        public final void a(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
+            YouTubePlayerFragment.this.initialize(developerKey, YouTubePlayerFragment.this.onInitializedListener);
         }
 
-        public final void a(YouTubePlayerView var1) {
+        public final void a(YouTubePlayerView view) {
         }
     }
 }

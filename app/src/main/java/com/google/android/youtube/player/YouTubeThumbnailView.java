@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.google.android.youtube.player.internal.aa;
-import com.google.android.youtube.player.internal.ab;
+import com.google.android.youtube.player.internal.Validators;
 import com.google.android.youtube.player.internal.b;
 
 public final class YouTubeThumbnailView extends AppCompatImageView {
@@ -45,8 +45,8 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
         private YouTubeThumbnailView.OnInitializedListener b;
 
         public a(YouTubeThumbnailView var1, YouTubeThumbnailView.OnInitializedListener var2) {
-            this.a = (YouTubeThumbnailView) ab.a(var1, "thumbnailView cannot be null");
-            this.b = (YouTubeThumbnailView.OnInitializedListener)ab.a(var2, "onInitializedlistener cannot be null");
+            this.a = (YouTubeThumbnailView) Validators.notNull(var1, "thumbnailView cannot be null");
+            this.b = (YouTubeThumbnailView.OnInitializedListener) Validators.notNull(var2, "onInitializedlistener cannot be null");
         }
 
         public final void a() {

@@ -7,12 +7,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.internal.ab;
-import com.google.android.youtube.player.internal.b;
-import com.google.android.youtube.player.internal.d;
 import com.google.android.youtube.player.internal.e.a;
-import com.google.android.youtube.player.internal.q;
-import com.google.android.youtube.player.internal.v;
 
 import java.util.List;
 
@@ -21,8 +16,8 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     private d b;
 
     public YouTubePlayerImpl(b var1, d var2) {
-        this.a = (b) ab.a(var1, "connectionClient cannot be null");
-        this.b = (d)ab.a(var2, "embeddedPlayer cannot be null");
+        this.a = (b) Validators.notNull(var1, "connectionClient cannot be null");
+        this.b = (d) Validators.notNull(var2, "embeddedPlayer cannot be null");
     }
 
     public final void a(boolean var1) {

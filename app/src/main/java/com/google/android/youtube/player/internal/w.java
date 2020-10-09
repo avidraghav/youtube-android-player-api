@@ -8,8 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class w {
     public static d a(Activity var0, IBinder var1, boolean var2) throws w.a {
-        ab.a(var0);
-        ab.a(var1);
+        Validators.notNull(var0);
+        Validators.notNull(var1);
         Context var3;
         if ((var3 = z.b(var0)) == null) {
             throw new w.a("Could not create remote context");

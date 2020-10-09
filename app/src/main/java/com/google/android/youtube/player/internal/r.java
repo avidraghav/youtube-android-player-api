@@ -34,11 +34,11 @@ public abstract class r<T extends IInterface> implements t {
         if (Looper.getMainLooper().getThread() != Thread.currentThread()) {
             throw new IllegalStateException("Clients must be created on the UI thread.");
         } else {
-            this.b = (Context)ab.a(var1);
+            this.b = (Context) Validators.notNull(var1);
             this.d = new ArrayList();
-            this.d.add(ab.a(var2));
+            this.d.add(Validators.notNull(var2));
             this.g = new ArrayList();
-            this.g.add(ab.a(var3));
+            this.g.add(Validators.notNull(var3));
             this.a = new r.a();
         }
     }
@@ -130,10 +130,10 @@ public abstract class r<T extends IInterface> implements t {
 
     protected final void g() {
         synchronized(this.d) {
-            ab.a(!this.f);
+            Validators.validateState(!this.f);
             this.a.removeMessages(4);
             this.f = true;
-            ab.a(this.e.size() == 0);
+            Validators.validateState(this.e.size() == 0);
             ArrayList var2 = this.d;
             int var3 = 0;
 

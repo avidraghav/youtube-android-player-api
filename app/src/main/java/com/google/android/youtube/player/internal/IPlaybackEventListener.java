@@ -17,8 +17,8 @@ public interface IPlaybackEventListener extends IInterface {
 
     void a(int var1) throws RemoteException;
 
-    abstract class PlaybackEventListener extends Binder implements IPlaybackEventListener {
-        public PlaybackEventListener() {
+    abstract class Stub extends Binder implements IPlaybackEventListener {
+        public Stub() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IPlaybackEventListener");
         }
 
@@ -64,10 +64,10 @@ public interface IPlaybackEventListener extends IInterface {
         }
 
         // was private before
-        public static class PlaybackEventListenerImpl implements IPlaybackEventListener {
+        public static class PlaybackEventListener implements IPlaybackEventListener {
             private IBinder a;
 
-            PlaybackEventListenerImpl(IBinder var1) {
+            PlaybackEventListener(IBinder var1) {
                 this.a = var1;
             }
 

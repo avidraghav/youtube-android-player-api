@@ -21,7 +21,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void a(boolean var1) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_1, var1);
+            this.embeddedPlayer.a(var1);
             this.connectionClient.a(var1);
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
@@ -70,7 +70,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void b() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_33);
+            this.embeddedPlayer.m();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -78,7 +78,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void c() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_34);
+            this.embeddedPlayer.n();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -86,7 +86,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void d() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_35);
+            this.embeddedPlayer.o();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -94,7 +94,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void e() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_36);
+            this.embeddedPlayer.p();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -102,7 +102,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void b(boolean var1) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_37, var1);
+            this.embeddedPlayer.e(var1);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -118,7 +118,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void f() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_38);
+            this.embeddedPlayer.q();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -126,7 +126,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void g() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_31);
+            this.embeddedPlayer.l();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -172,7 +172,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final void cueVideo(String videoId, int timeMillis) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_2, videoId, timeMillis);
+            this.embeddedPlayer.a(videoId, timeMillis);
         } catch (RemoteException var3) {
             throw new YouTubePlayerException(var3);
         }
@@ -181,7 +181,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final void loadVideo(String videoId, int timeMillis) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_3, videoId, timeMillis);
+            this.embeddedPlayer.b(videoId, timeMillis);
         } catch (RemoteException var3) {
             throw new YouTubePlayerException(var3);
         }
@@ -190,7 +190,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final void cuePlaylist(String playlistId, int startIndex, int timeMillis) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_4, playlistId, startIndex, timeMillis);
+            this.embeddedPlayer.a(playlistId, startIndex, timeMillis);
         } catch (RemoteException var4) {
             throw new YouTubePlayerException(var4);
         }
@@ -199,7 +199,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final void loadPlaylist(String playlistId, int startIndex, int timeMillis) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_5, playlistId, startIndex, timeMillis);
+            this.embeddedPlayer.b(playlistId, startIndex, timeMillis);
         } catch (RemoteException var4) {
             throw new YouTubePlayerException(var4);
         }
@@ -207,7 +207,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void cueVideos(List<String> videoIds, int startIndex, int timeMillis) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_6, videoIds, startIndex, timeMillis);
+            this.embeddedPlayer.a(videoIds, startIndex, timeMillis);
         } catch (RemoteException var4) {
             throw new YouTubePlayerException(var4);
         }
@@ -215,7 +215,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void loadVideos(List<String> videoIds, int startIndex, int timeMillis) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_7, videoIds, startIndex, timeMillis);
+            this.embeddedPlayer.b(videoIds, startIndex, timeMillis);
         } catch (RemoteException var4) {
             throw new YouTubePlayerException(var4);
         }
@@ -223,7 +223,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void play() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.PLAY);
+            this.embeddedPlayer.a();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -232,7 +232,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final void pause() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.PAUSE);
+            this.embeddedPlayer.b();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -241,7 +241,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final boolean isPlaying() {
         try {
-            return this.embeddedPlayer.performActionWithResponse(IEmbeddedPlayer.IS_PLAYING);
+            return this.embeddedPlayer.c();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -249,7 +249,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean hasNext() {
         try {
-            return this.embeddedPlayer.performActionWithResponse(IEmbeddedPlayer.HAS_NEXT);
+            return this.embeddedPlayer.d();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -257,7 +257,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean hasPrevious() {
         try {
-            return this.embeddedPlayer.performActionWithResponse(IEmbeddedPlayer.HAS_PREVIOUS);
+            return this.embeddedPlayer.e();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -265,7 +265,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void next() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.NEXT);
+            this.embeddedPlayer.f();
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -273,7 +273,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void previous() {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.PREVIOUS);
+            this.embeddedPlayer.g();
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -281,7 +281,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final int getCurrentTimeMillis() {
         try {
-            return this.embeddedPlayer.performActionWithNumberResponse(IEmbeddedPlayer.Action.CODE_15);
+            return this.embeddedPlayer.h();
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -289,7 +289,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final int getDurationMillis() {
         try {
-            return this.embeddedPlayer.performActionWithNumberResponse(IEmbeddedPlayer.Action.CODE_16);
+            return this.embeddedPlayer.i();
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -297,7 +297,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void seekToMillis(int milliSeconds) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_17, milliSeconds);
+            this.embeddedPlayer.a(milliSeconds);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -305,7 +305,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void seekRelativeMillis(int milliSeconds) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_18, milliSeconds);
+            this.embeddedPlayer.b(milliSeconds);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -313,7 +313,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setFullscreen(boolean fullscreen) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_19, fullscreen);
+            this.embeddedPlayer.b(fullscreen);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -322,7 +322,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final void setFullscreenControlFlags(int flags) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_20, flags);
+            this.embeddedPlayer.c(flags);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -331,7 +331,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final int getFullscreenControlFlags() {
         try {
-            return this.embeddedPlayer.performActionWithNumberResponse(IEmbeddedPlayer.Action.CODE_21);
+            return this.embeddedPlayer.j();
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -340,7 +340,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     @Override
     public final void addFullscreenControlFlag(int controlFlag) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_22, controlFlag);
+            this.embeddedPlayer.d(controlFlag);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -356,7 +356,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setShowFullscreenButton(boolean show) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_24, show);
+            this.embeddedPlayer.c(show);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -364,7 +364,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setManageAudioFocus(boolean manageAudioFocus) {
         try {
-            this.embeddedPlayer.performAction(IEmbeddedPlayer.Action.CODE_25, manageAudioFocus);
+            this.embeddedPlayer.d(manageAudioFocus);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -372,7 +372,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setOnFullscreenListener(final OnFullscreenListener onFullscreenListener) {
         try {
-            this.embeddedPlayer.a(new IOnFullscreenListener.OnFullscreenListener() {
+            this.embeddedPlayer.a(new IOnFullscreenListener.Stub() {
                 public final void a(boolean var1x) {
                     onFullscreenListener.onFullscreen(var1x);
                 }
@@ -384,7 +384,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setPlaylistEventListener(final PlaylistEventListener playlistEventListener) {
         try {
-            this.embeddedPlayer.setPlaylistEventListener(new IPlaylistEventListener.PlaylistEventListener() {
+            this.embeddedPlayer.a(new IPlaylistEventListener.Stub() {
                 public final void onPrevious() {
                     playlistEventListener.onPrevious();
                 }
@@ -404,7 +404,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setPlayerStateChangeListener(final PlayerStateChangeListener playerStateChangeListener) {
         try {
-            this.embeddedPlayer.a(new IPlayerStateChangeListener.PlayerStateChangeListener() {
+            this.embeddedPlayer.a(new IPlayerStateChangeListener.Stub() {
                 public final void c() {
                     playerStateChangeListener.onVideoStarted();
                 }
@@ -445,7 +445,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setPlaybackEventListener(final PlaybackEventListener playbackEventListener) {
         try {
-            this.embeddedPlayer.a(new IPlaybackEventListener.PlaybackEventListener() {
+            this.embeddedPlayer.a(new IPlaybackEventListener.Stub() {
                 public final void c() {
                     playbackEventListener.onStopped();
                 }

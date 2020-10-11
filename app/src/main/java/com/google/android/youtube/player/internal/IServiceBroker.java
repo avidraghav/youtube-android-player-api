@@ -10,13 +10,13 @@ import android.os.RemoteException;
 public interface IServiceBroker extends IInterface {
     void a(IConnectionCallbacks var1, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException;
 
-    abstract class ServiceBroker extends Binder implements IServiceBroker {
+    abstract class Stub extends Binder implements IServiceBroker {
         public static IServiceBroker a(IBinder var0) {
             if (var0 == null) {
                 return null;
             } else {
                 IInterface var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IServiceBroker");
-                return var1 instanceof IServiceBroker ? (IServiceBroker)var1 : new ServiceBrokerImpl(var0);
+                return var1 instanceof IServiceBroker ? (IServiceBroker)var1 : new ServiceBroker(var0);
             }
         }
 
@@ -26,7 +26,7 @@ public interface IServiceBroker extends IInterface {
                     var2.enforceInterface("com.google.android.youtube.player.internal.IServiceBroker");
                     IBinder var8;
                     IInterface var11;
-                    Object var9 = (var8 = var2.readStrongBinder()) == null ? null : ((var11 = var8.queryLocalInterface("com.google.android.youtube.player.internal.IConnectionCallbacks")) != null && var11 instanceof IConnectionCallbacks ? (IConnectionCallbacks)var11 : new IConnectionCallbacks.ConnectionCallbacks.ConnectionCallbacksImpl(var8));
+                    Object var9 = (var8 = var2.readStrongBinder()) == null ? null : ((var11 = var8.queryLocalInterface("com.google.android.youtube.player.internal.IConnectionCallbacks")) != null && var11 instanceof IConnectionCallbacks ? (IConnectionCallbacks)var11 : new IConnectionCallbacks.Stub.ConnectionCallbacks(var8));
                     var4 = var2.readInt();
                     String var5 = var2.readString();
                     String var6 = var2.readString();
@@ -50,10 +50,10 @@ public interface IServiceBroker extends IInterface {
         }
 
         // was private before
-        public static class ServiceBrokerImpl implements IServiceBroker {
+        public static class ServiceBroker implements IServiceBroker {
             private IBinder a;
 
-            ServiceBrokerImpl(IBinder var1) {
+            ServiceBroker(IBinder var1) {
                 this.a = var1;
             }
 

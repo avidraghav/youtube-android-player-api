@@ -21,8 +21,8 @@ public interface IPlaylistEventListener extends IInterface {
 
     void onPlaylistEnded() throws RemoteException;
 
-    abstract class PlaylistEventListener extends Binder implements IPlaylistEventListener {
-        public PlaylistEventListener() {
+    abstract class Stub extends Binder implements IPlaylistEventListener {
+        public Stub() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IPlaylistEventListener");
         }
 
@@ -58,10 +58,10 @@ public interface IPlaylistEventListener extends IInterface {
         }
 
         // was private before
-        public static class PlaylistEventListenerImpl implements IPlaylistEventListener {
+        public static class PlaylistEventListener implements IPlaylistEventListener {
             private IBinder a;
 
-            PlaylistEventListenerImpl(IBinder var1) {
+            PlaylistEventListener(IBinder var1) {
                 this.a = var1;
             }
 

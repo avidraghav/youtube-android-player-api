@@ -6,7 +6,7 @@ import com.google.android.youtube.player.internal.dynamic.IObjectWrapper;
 
 import java.lang.reflect.Field;
 
-public final class ObjectWrapper<T> extends IObjectWrapper.ObjectWrapperImpl {
+public final class ObjectWrapper<T> extends IObjectWrapper.Stub {
     private final T a;
 
     private ObjectWrapper(T var1) {

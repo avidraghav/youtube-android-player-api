@@ -16,7 +16,7 @@ public final class RemoteEmbeddedPlayer {
         if ((remoteContext = z.createContext(activity)) == null) {
             throw new RemotePlayerException("Could not create remote context");
         } else {
-            return IEmbeddedPlayer.EmbeddedPlayer.getInstance(a(remoteContext.getClassLoader(), "com.google.android.youtube.api.jar.client.RemoteEmbeddedPlayer", ObjectWrapper.a(remoteContext).asBinder(), ObjectWrapper.a(activity).asBinder(), binder, var2));
+            return IEmbeddedPlayer.Stub.getInstance(a(remoteContext.getClassLoader(), "com.google.android.youtube.api.jar.client.RemoteEmbeddedPlayer", ObjectWrapper.a(remoteContext).asBinder(), ObjectWrapper.a(activity).asBinder(), binder, var2));
         }
     }
 

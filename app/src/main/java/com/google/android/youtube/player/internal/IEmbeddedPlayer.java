@@ -141,14 +141,14 @@ public interface IEmbeddedPlayer extends IInterface {
 
     IObjectWrapper s() throws RemoteException;
 
-    abstract class EmbeddedPlayer extends Binder implements IEmbeddedPlayer {
+    abstract class Stub extends Binder implements IEmbeddedPlayer {
 
         public static IEmbeddedPlayer getInstance(IBinder binder) {
             if (binder == null) {
                 return null;
             } else {
                 IInterface instance = binder.queryLocalInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                return instance instanceof IEmbeddedPlayer ? (IEmbeddedPlayer) instance : new EmbeddedPlayerImpl(binder);
+                return instance instanceof IEmbeddedPlayer ? (IEmbeddedPlayer) instance : new EmbeddedPlayer(binder);
             }
         }
 
@@ -322,25 +322,25 @@ public interface IEmbeddedPlayer extends IInterface {
                     return true;
                 case 26:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IOnFullscreenListener")) != null && var8 instanceof IOnFullscreenListener ? (IOnFullscreenListener) var8 : new IOnFullscreenListener.OnFullscreenListener.OnFullscreenListenerImpl(var13));
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IOnFullscreenListener")) != null && var8 instanceof IOnFullscreenListener ? (IOnFullscreenListener) var8 : new IOnFullscreenListener.Stub.OnFullscreenListener(var13));
                     this.a((IOnFullscreenListener) var14);
                     reply.writeNoException();
                     return true;
                 case 27:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaylistEventListener")) != null && var8 instanceof IPlaylistEventListener ? (IPlaylistEventListener) var8 : new IPlaylistEventListener.PlaylistEventListener.PlaylistEventListenerImpl(var13));
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaylistEventListener")) != null && var8 instanceof IPlaylistEventListener ? (IPlaylistEventListener) var8 : new IPlaylistEventListener.Stub.PlaylistEventListener(var13));
                     this.a((IPlaylistEventListener) var14);
                     reply.writeNoException();
                     return true;
                 case 28:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener")) != null && var8 instanceof IPlayerStateChangeListener ? (IPlayerStateChangeListener) var8 : new IPlayerStateChangeListener.PlayerStateChangeListener.PlayerStateChangeListenerImpl(var13));
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener")) != null && var8 instanceof IPlayerStateChangeListener ? (IPlayerStateChangeListener) var8 : new IPlayerStateChangeListener.Stub.PlayerStateChangeListener(var13));
                     this.a((IPlayerStateChangeListener) var14);
                     reply.writeNoException();
                     return true;
                 case 29:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaybackEventListener")) != null && var8 instanceof IPlaybackEventListener ? (IPlaybackEventListener) var8 : new IPlaybackEventListener.PlaybackEventListener.PlaybackEventListenerImpl(var13));
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaybackEventListener")) != null && var8 instanceof IPlaybackEventListener ? (IPlaybackEventListener) var8 : new IPlaybackEventListener.Stub.PlaybackEventListener(var13));
                     this.a((IPlaybackEventListener) var14);
                     reply.writeNoException();
                     return true;
@@ -462,10 +462,10 @@ public interface IEmbeddedPlayer extends IInterface {
         }
 
         // was private before
-        public static class EmbeddedPlayerImpl implements IEmbeddedPlayer {
+        public static class EmbeddedPlayer implements IEmbeddedPlayer {
             private IBinder binder;
 
-            EmbeddedPlayerImpl(IBinder binder) {
+            EmbeddedPlayer(IBinder binder) {
                 this.binder = binder;
             }
 
@@ -1206,7 +1206,7 @@ public interface IEmbeddedPlayer extends IInterface {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.binder.transact(43, var1, var2, 0);
                     var2.readException();
-                    var3 = IObjectWrapper.ObjectWrapperImpl.a(var2.readStrongBinder());
+                    var3 = IObjectWrapper.Stub.a(var2.readStrongBinder());
                 } finally {
                     var2.recycle();
                     var1.recycle();

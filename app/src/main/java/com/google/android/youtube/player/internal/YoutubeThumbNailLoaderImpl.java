@@ -17,7 +17,7 @@ public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLo
     public YoutubeThumbNailLoaderImpl(ConnectionClient connectionClient, YouTubeThumbnailView thumbnail) {
         super(thumbnail);
         this.connectionClient = Validators.notNull(connectionClient, "connectionClient cannot be null");
-        this.thumbnailLoaderService = connectionClient.a(new IThumbnailLoaderClient.ThumbnailLoaderClient() {
+        this.thumbnailLoaderService = connectionClient.a(new IThumbnailLoaderClient.Stub() {
             @Override
             public void a(final Bitmap var1, final String var2, final boolean var3, final boolean var4) throws RemoteException {
                 handler.post(new Runnable() {

@@ -19,8 +19,8 @@ public interface IPlayerStateChangeListener extends IInterface {
 
     void b(String var1) throws RemoteException;
 
-    abstract class PlayerStateChangeListener extends Binder implements IPlayerStateChangeListener {
-        public PlayerStateChangeListener() {
+    abstract class Stub extends Binder implements IPlayerStateChangeListener {
+        public Stub() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IPlayerStateChangeListener");
         }
 
@@ -72,10 +72,10 @@ public interface IPlayerStateChangeListener extends IInterface {
         }
 
         // was private before
-        public static class PlayerStateChangeListenerImpl implements IPlayerStateChangeListener {
+        public static class PlayerStateChangeListener implements IPlayerStateChangeListener {
             private IBinder a;
 
-            PlayerStateChangeListenerImpl(IBinder var1) {
+            PlayerStateChangeListener(IBinder var1) {
                 this.a = var1;
             }
 

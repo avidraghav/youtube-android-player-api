@@ -7,8 +7,8 @@ import android.os.Parcel;
 import android.os.RemoteException;
 
 public interface IObjectWrapper extends IInterface {
-    abstract class ObjectWrapperImpl extends Binder implements IObjectWrapper {
-        public ObjectWrapperImpl() {
+    abstract class Stub extends Binder implements IObjectWrapper {
+        public Stub() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.dynamic.IObjectWrapper");
         }
 
@@ -17,7 +17,7 @@ public interface IObjectWrapper extends IInterface {
                 return null;
             } else {
                 IInterface var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.dynamic.IObjectWrapper");
-                return var1 instanceof IObjectWrapper ? (IObjectWrapper)var1 : new ObjectWrapperInstance(var0);
+                return var1 instanceof IObjectWrapper ? (IObjectWrapper)var1 : new ObjectWrapper(var0);
             }
         }
 
@@ -35,10 +35,10 @@ public interface IObjectWrapper extends IInterface {
             }
         }
 
-        private static class ObjectWrapperInstance implements IObjectWrapper {
+        private static class ObjectWrapper implements IObjectWrapper {
             private IBinder a;
 
-            ObjectWrapperInstance(IBinder var1) {
+            ObjectWrapper(IBinder var1) {
                 this.a = var1;
             }
 

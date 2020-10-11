@@ -9,8 +9,8 @@ import android.os.RemoteException;
 public interface IConnectionCallbacks extends IInterface {
     void a(String var1, IBinder var2) throws RemoteException;
 
-    abstract class ConnectionCallbacks extends Binder implements IConnectionCallbacks {
-        public ConnectionCallbacks() {
+    abstract class Stub extends Binder implements IConnectionCallbacks {
+        public Stub() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IConnectionCallbacks");
         }
 
@@ -36,10 +36,10 @@ public interface IConnectionCallbacks extends IInterface {
         }
 
         // was private before
-        public static class ConnectionCallbacksImpl implements IConnectionCallbacks {
+        public static class ConnectionCallbacks implements IConnectionCallbacks {
             private IBinder a;
 
-            ConnectionCallbacksImpl(IBinder var1) {
+            ConnectionCallbacks(IBinder var1) {
                 this.a = var1;
             }
 

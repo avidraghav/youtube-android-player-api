@@ -12,8 +12,8 @@ public interface IThumbnailLoaderClient extends IInterface {
 
     void a(String var1, boolean var2, boolean var3) throws RemoteException;
 
-    abstract class ThumbnailLoaderClient extends Binder implements IThumbnailLoaderClient {
-        public ThumbnailLoaderClient() {
+    abstract class Stub extends Binder implements IThumbnailLoaderClient {
+        public Stub() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IThumbnailLoaderClient");
         }
 
@@ -56,10 +56,10 @@ public interface IThumbnailLoaderClient extends IInterface {
         }
 
         // was private before
-        public static class ThumbnailLoaderClientImpl implements IThumbnailLoaderClient {
+        public static class ThumbnailLoaderClient implements IThumbnailLoaderClient {
             private IBinder a;
 
-            ThumbnailLoaderClientImpl(IBinder var1) {
+            ThumbnailLoaderClient(IBinder var1) {
                 this.a = var1;
             }
 

@@ -119,7 +119,7 @@ public abstract class r<T extends IInterface> implements t {
 
     protected final void b(IBinder var1) {
         try {
-            IServiceBroker var3 = IServiceBroker.ServiceBroker.a(var1);
+            IServiceBroker var3 = IServiceBroker.Stub.a(var1);
             this.a(var3, new d());
         } catch (RemoteException var2) {
             Log.w("YouTubeClient", "service died");
@@ -197,7 +197,7 @@ public abstract class r<T extends IInterface> implements t {
         return this.c;
     }
 
-    protected final class d extends IConnectionCallbacks.ConnectionCallbacks {
+    protected final class d extends IConnectionCallbacks.Stub {
         protected d() {
         }
 

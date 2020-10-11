@@ -13,13 +13,13 @@ public interface IYouTubeService extends IInterface {
 
     void a(boolean var1) throws RemoteException;
 
-    abstract class YouTubeService extends Binder implements IYouTubeService {
+    abstract class Stub extends Binder implements IYouTubeService {
         public static IYouTubeService a(IBinder var0) {
             if (var0 == null) {
                 return null;
             } else {
                 IInterface var1  = var0.queryLocalInterface("com.google.android.youtube.player.internal.IYouTubeService");
-                return var1 instanceof IYouTubeService ? (IYouTubeService)var1 : new YouTubeServiceImpl(var0);
+                return var1 instanceof IYouTubeService ? (IYouTubeService)var1 : new YouTubeService(var0);
             }
         }
 
@@ -35,7 +35,7 @@ public interface IYouTubeService extends IInterface {
                 case 2:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IYouTubeService");
                     IInterface var8;
-                    Object var7 = (var6 = var2.readStrongBinder()) == null ? null : ((var8 = var6.queryLocalInterface("com.google.android.youtube.player.internal.IThumbnailLoaderClient")) != null && var8 instanceof IThumbnailLoaderClient ? (IThumbnailLoaderClient)var8 : new IThumbnailLoaderClient.ThumbnailLoaderClient.ThumbnailLoaderClientImpl(var6));
+                    Object var7 = (var6 = var2.readStrongBinder()) == null ? null : ((var8 = var6.queryLocalInterface("com.google.android.youtube.player.internal.IThumbnailLoaderClient")) != null && var8 instanceof IThumbnailLoaderClient ? (IThumbnailLoaderClient)var8 : new IThumbnailLoaderClient.Stub.ThumbnailLoaderClient(var6));
                     IThumbnailLoaderService var9 = this.a((IThumbnailLoaderClient)var7);
                     var3.writeNoException();
                     var3.writeStrongBinder(var9 != null ? var9.asBinder() : null);
@@ -55,10 +55,10 @@ public interface IYouTubeService extends IInterface {
         }
 
         // was private before
-        public static class YouTubeServiceImpl implements IYouTubeService {
+        public static class YouTubeService implements IYouTubeService {
             private IBinder a;
 
-            YouTubeServiceImpl(IBinder var1) {
+            YouTubeService(IBinder var1) {
                 this.a = var1;
             }
 
@@ -94,7 +94,7 @@ public interface IYouTubeService extends IInterface {
                     var2.writeStrongBinder(var1 != null ? var1.asBinder() : null);
                     this.a.transact(2, var2, var3, 0);
                     var3.readException();
-                    var6 = IThumbnailLoaderService.ThumbnailLoaderService.a(var3.readStrongBinder());
+                    var6 = IThumbnailLoaderService.Stub.a(var3.readStrongBinder());
                 } finally {
                     var3.recycle();
                     var2.recycle();

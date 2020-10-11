@@ -178,10 +178,10 @@ public enum YouTubeInitializationResult {
         switch (this) {
             case SERVICE_MISSING:
             case SERVICE_VERSION_UPDATE_REQUIRED:
-                var10000 = z.b(z.a(activity));
+                var10000 = z.getPlayStoreIntent(z.getPackageName(activity));
                 break;
             case SERVICE_DISABLED:
-                var10000 = z.a(z.a(activity));
+                var10000 = z.getAppDetailsSettingsIntent(z.getPackageName(activity));
                 break;
             default:
                 var10000 = null;

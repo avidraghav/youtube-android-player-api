@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -15,7 +16,7 @@ import com.google.android.youtube.player.YouTubePlayerView.b;
 import com.google.android.youtube.player.internal.Validators;
 
 public class YouTubePlayerSupportFragment extends Fragment implements Provider {
-    private final YouTubePlayerSupportFragment.a a = new YouTubePlayerSupportFragment.a((byte)0);
+    private final YouTubePlayerSupportFragment.a a = new YouTubePlayerSupportFragment.a();
     private Bundle bundle;
     private YouTubePlayerView youTubePl;
     private String d;
@@ -45,49 +46,58 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
 
     }
 
+    @Override
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
         this.bundle = var1 != null ? var1.getBundle("YouTubePlayerSupportFragment.KEY_PLAYER_VIEW_STATE") : null;
     }
 
+    @Override
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
         this.youTubePl = new YouTubePlayerView(this.getActivity(), (AttributeSet)null, 0, this.a);
         this.a();
         return this.youTubePl;
     }
 
+    @Override
     public void onStart() {
         super.onStart();
         this.youTubePl.a();
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         this.youTubePl.b();
     }
 
+    @Override
     public void onPause() {
         this.youTubePl.c();
         super.onPause();
     }
 
-    public void onSaveInstanceState(Bundle var1) {
-        super.onSaveInstanceState(var1);
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle b) {
+        super.onSaveInstanceState(b);
         Bundle var2 = this.youTubePl != null ? this.youTubePl.getBundle() : this.bundle;
-        var1.putBundle("YouTubePlayerSupportFragment.KEY_PLAYER_VIEW_STATE", var2);
+        b.putBundle("YouTubePlayerSupportFragment.KEY_PLAYER_VIEW_STATE", var2);
     }
 
+    @Override
     public void onStop() {
         this.youTubePl.d();
         super.onStop();
     }
 
+    @Override
     public void onDestroyView() {
         this.youTubePl.c(this.getActivity().isFinishing());
         this.youTubePl = null;
         super.onDestroyView();
     }
 
+    @Override
     public void onDestroy() {
         if (this.youTubePl != null) {
             FragmentActivity var1 = this.getActivity();

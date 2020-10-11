@@ -65,7 +65,7 @@ public abstract class r<T extends IInterface> implements t {
         if ((var1 = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this.b)) != YouTubeInitializationResult.SUCCESS) {
             this.a.sendMessage(this.a.obtainMessage(3, var1));
         } else {
-            Intent var2 = (new Intent(this.c())).setPackage(z.a(this.b));
+            Intent var2 = (new Intent(this.c())).setPackage(z.getPackageName(this.b));
             if (this.j != null) {
                 Log.e("YouTubeClient", "Calling connect() while still connected, missing disconnect().");
                 this.a();

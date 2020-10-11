@@ -37,7 +37,7 @@ public final class YouTubeApiServiceUtil {
     public static YouTubeInitializationResult isYouTubeApiServiceAvailable(Context context) {
         try {
             PackageManager packageManager = context.getPackageManager();
-            String var2 = z.a(context);
+            String var2 = z.getPackageName(context);
             if (!a(packageManager.getPackageInfo(var2, PackageManager.GET_SIGNATURES))) {
                 return YouTubeInitializationResult.SERVICE_INVALID;
             } else if (z.a(context, var2)) {

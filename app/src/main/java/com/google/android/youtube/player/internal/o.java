@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-public final class o extends r<l> implements b {
+public final class o extends r<l> implements ConnectionClient {
     private final String b;
     private final String c;
     private final String d;

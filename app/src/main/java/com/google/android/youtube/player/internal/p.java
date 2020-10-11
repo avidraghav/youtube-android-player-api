@@ -9,14 +9,14 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 
 public final class p extends com.google.android.youtube.player.internal.a {
     private final Handler a;
-    private b b;
+    private ConnectionClient b;
     private k c;
     private boolean d;
     private boolean e;
 
-    public p(b var1, YouTubeThumbnailView var2) {
+    public p(ConnectionClient var1, YouTubeThumbnailView var2) {
         super(var2);
-        this.b = (b) Validators.notNull(var1, "connectionClient cannot be null");
+        this.b = (ConnectionClient) Validators.notNull(var1, "connectionClient cannot be null");
         this.c = var1.a(new p.a((byte)0));
         this.a = new Handler(Looper.getMainLooper());
     }

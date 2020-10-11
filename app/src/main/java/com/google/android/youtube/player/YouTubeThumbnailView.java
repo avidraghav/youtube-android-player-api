@@ -7,10 +7,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.google.android.youtube.player.internal.aa;
 import com.google.android.youtube.player.internal.Validators;
-import com.google.android.youtube.player.internal.b;
+import com.google.android.youtube.player.internal.ConnectionClient;
 
 public final class YouTubeThumbnailView extends AppCompatImageView {
-    private b a;
+    private ConnectionClient a;
     private com.google.android.youtube.player.internal.a b;
 
     public YouTubeThumbnailView(Context var1) {

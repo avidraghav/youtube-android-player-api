@@ -12,23 +12,23 @@ import com.google.android.youtube.player.internal.e.a;
 import java.util.List;
 
 public final class YouTubePlayerImpl implements YouTubePlayer {
-    private com.google.android.youtube.player.internal.b a;
-    private d b;
+    private ConnectionClient connectionClient;
+    private EmbeddedPlayer embeddedPlayer;
 
-    public YouTubePlayerImpl(b var1, d var2) {
-        this.a = (b) Validators.notNull(var1, "connectionClient cannot be null");
-        this.b = (d) Validators.notNull(var2, "embeddedPlayer cannot be null");
+    public YouTubePlayerImpl(ConnectionClient connectionClient, EmbeddedPlayer embeddedPlayer) {
+        this.connectionClient = Validators.notNull(connectionClient, "connectionClient cannot be null");
+        this.embeddedPlayer = Validators.notNull(embeddedPlayer, "embeddedPlayer cannot be null");
     }
 
     public final void a(boolean var1) {
         try {
-            this.b.a(var1);
-            this.a.a(var1);
-        } catch (RemoteException var2) {
-            throw new q(var2);
+            this.embeddedPlayer.a(var1);
+            this.connectionClient.a(var1);
+        } catch (RemoteException e) {
+            throw new q(e);
         }
 
-        this.a.d();
+        this.connectionClient.d();
     }
 
     public final void cueVideo(String videoId) {
@@ -57,23 +57,23 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final View a() {
         try {
-            return (View) v.a(this.b.s());
-        } catch (RemoteException var2) {
-            throw new q(var2);
+            return (View) v.a(this.embeddedPlayer.s());
+        } catch (RemoteException e) {
+            throw new q(e);
         }
     }
 
     public final void b() {
         try {
-            this.b.m();
-        } catch (RemoteException var2) {
-            throw new q(var2);
+            this.embeddedPlayer.m();
+        } catch (RemoteException e) {
+            throw new q(e);
         }
     }
 
     public final void c() {
         try {
-            this.b.n();
+            this.embeddedPlayer.n();
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -81,7 +81,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void d() {
         try {
-            this.b.o();
+            this.embeddedPlayer.o();
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -89,7 +89,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void e() {
         try {
-            this.b.p();
+            this.embeddedPlayer.p();
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -97,15 +97,15 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void b(boolean var1) {
         try {
-            this.b.e(var1);
+            this.embeddedPlayer.e(var1);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
     }
 
-    public final void a(Configuration var1) {
+    public final void a(Configuration conf) {
         try {
-            this.b.a(var1);
+            this.embeddedPlayer.a(conf);
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -113,7 +113,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void f() {
         try {
-            this.b.q();
+            this.embeddedPlayer.q();
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -121,7 +121,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void g() {
         try {
-            this.b.l();
+            this.embeddedPlayer.l();
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -129,7 +129,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean a(int var1, KeyEvent event) {
         try {
-            return this.b.a(var1, event);
+            return this.embeddedPlayer.a(var1, event);
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -137,7 +137,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean b(int var1, KeyEvent event) {
         try {
-            return this.b.b(var1, event);
+            return this.embeddedPlayer.b(var1, event);
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -145,7 +145,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final Bundle h() {
         try {
-            return this.b.r();
+            return this.embeddedPlayer.r();
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -153,7 +153,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean a(Bundle var1) {
         try {
-            return this.b.a(var1);
+            return this.embeddedPlayer.a(var1);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -165,7 +165,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void cueVideo(String videoId, int timeMillis) {
         try {
-            this.b.a(videoId, timeMillis);
+            this.embeddedPlayer.a(videoId, timeMillis);
         } catch (RemoteException var3) {
             throw new q(var3);
         }
@@ -173,7 +173,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void loadVideo(String videoId, int timeMillis) {
         try {
-            this.b.b(videoId, timeMillis);
+            this.embeddedPlayer.b(videoId, timeMillis);
         } catch (RemoteException var3) {
             throw new q(var3);
         }
@@ -181,7 +181,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void cuePlaylist(String playlistId, int startIndex, int timeMillis) {
         try {
-            this.b.a(playlistId, startIndex, timeMillis);
+            this.embeddedPlayer.a(playlistId, startIndex, timeMillis);
         } catch (RemoteException var4) {
             throw new q(var4);
         }
@@ -189,7 +189,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void loadPlaylist(String playlistId, int startIndex, int timeMillis) {
         try {
-            this.b.b(playlistId, startIndex, timeMillis);
+            this.embeddedPlayer.b(playlistId, startIndex, timeMillis);
         } catch (RemoteException var4) {
             throw new q(var4);
         }
@@ -197,7 +197,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void cueVideos(List<String> videoIds, int startIndex, int timeMillis) {
         try {
-            this.b.a(videoIds, startIndex, timeMillis);
+            this.embeddedPlayer.a(videoIds, startIndex, timeMillis);
         } catch (RemoteException var4) {
             throw new q(var4);
         }
@@ -205,7 +205,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void loadVideos(List<String> videoIds, int startIndex, int timeMillis) {
         try {
-            this.b.b(videoIds, startIndex, timeMillis);
+            this.embeddedPlayer.b(videoIds, startIndex, timeMillis);
         } catch (RemoteException var4) {
             throw new q(var4);
         }
@@ -213,7 +213,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void play() {
         try {
-            this.b.a();
+            this.embeddedPlayer.a();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -221,7 +221,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void pause() {
         try {
-            this.b.b();
+            this.embeddedPlayer.b();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -229,7 +229,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean isPlaying() {
         try {
-            return this.b.c();
+            return this.embeddedPlayer.c();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -237,7 +237,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean hasNext() {
         try {
-            return this.b.d();
+            return this.embeddedPlayer.d();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -245,7 +245,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean hasPrevious() {
         try {
-            return this.b.e();
+            return this.embeddedPlayer.e();
         } catch (RemoteException e) {
             throw new q(e);
         }
@@ -253,7 +253,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void next() {
         try {
-            this.b.f();
+            this.embeddedPlayer.f();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -261,7 +261,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void previous() {
         try {
-            this.b.g();
+            this.embeddedPlayer.g();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -269,7 +269,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final int getCurrentTimeMillis() {
         try {
-            return this.b.h();
+            return this.embeddedPlayer.h();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -277,7 +277,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final int getDurationMillis() {
         try {
-            return this.b.i();
+            return this.embeddedPlayer.i();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -285,7 +285,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void seekToMillis(int milliSeconds) {
         try {
-            this.b.a(milliSeconds);
+            this.embeddedPlayer.a(milliSeconds);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -293,7 +293,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void seekRelativeMillis(int milliSeconds) {
         try {
-            this.b.b(milliSeconds);
+            this.embeddedPlayer.b(milliSeconds);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -301,7 +301,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setFullscreen(boolean fullscreen) {
         try {
-            this.b.b(fullscreen);
+            this.embeddedPlayer.b(fullscreen);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -309,7 +309,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setFullscreenControlFlags(int flags) {
         try {
-            this.b.c(flags);
+            this.embeddedPlayer.c(flags);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -317,7 +317,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final int getFullscreenControlFlags() {
         try {
-            return this.b.j();
+            return this.embeddedPlayer.j();
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -325,7 +325,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void addFullscreenControlFlag(int controlFlag) {
         try {
-            this.b.d(controlFlag);
+            this.embeddedPlayer.d(controlFlag);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -333,7 +333,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setPlayerStyle(PlayerStyle style) {
         try {
-            this.b.a(style.name());
+            this.embeddedPlayer.a(style.name());
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -341,7 +341,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setShowFullscreenButton(boolean show) {
         try {
-            this.b.c(show);
+            this.embeddedPlayer.c(show);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -349,7 +349,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setManageAudioFocus(boolean manageAudioFocus) {
         try {
-            this.b.d(manageAudioFocus);
+            this.embeddedPlayer.d(manageAudioFocus);
         } catch (RemoteException var2) {
             throw new q(var2);
         }
@@ -357,7 +357,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setOnFullscreenListener(final OnFullscreenListener onFullscreenListener) {
         try {
-            this.b.a(new a() {
+            this.embeddedPlayer.a(new a() {
                 public final void a(boolean var1x) {
                     onFullscreenListener.onFullscreen(var1x);
                 }
@@ -369,7 +369,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setPlaylistEventListener(final PlaylistEventListener playlistEventListener) {
         try {
-            this.b.a(new com.google.android.youtube.player.internal.h.a() {
+            this.embeddedPlayer.a(new BinderInterface.a() {
                 public final void a() {
                     playlistEventListener.onPrevious();
                 }
@@ -389,7 +389,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setPlayerStateChangeListener(final PlayerStateChangeListener playerStateChangeListener) {
         try {
-            this.b.a(new com.google.android.youtube.player.internal.g.a() {
+            this.embeddedPlayer.a(new com.google.android.youtube.player.internal.g.a() {
                 public final void c() {
                     playerStateChangeListener.onVideoStarted();
                 }
@@ -430,7 +430,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void setPlaybackEventListener(final PlaybackEventListener playbackEventListener) {
         try {
-            this.b.a(new com.google.android.youtube.player.internal.f.a() {
+            this.embeddedPlayer.a(new com.google.android.youtube.player.internal.f.a() {
                 public final void c() {
                     playbackEventListener.onStopped();
                 }

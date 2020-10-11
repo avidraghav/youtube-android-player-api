@@ -11,87 +11,83 @@ import android.os.Build.VERSION;
 
 public final class z {
     private static final Uri a = Uri.parse("http://play.google.com/store/apps/details");
-    private static final String[] b = new String[]{"com.google.android.youtube", "com.google.android.youtube.tv", "com.google.android.youtube.googletv", "com.google.android.gms", null};
+    private static final String[] packageList = new String[]{"com.google.android.youtube", "com.google.android.youtube.tv", "com.google.android.youtube.googletv", "com.google.android.gms", null};
 
-    public static String a(Context var0) {
-        PackageManager var5 = var0.getPackageManager();
-        String[] var1;
-        int var2 = (var1 = b).length;
+    public static String getPackageName(Context context) {
+        PackageManager packageManager = context.getPackageManager();
 
-        for(int var3 = 0; var3 < var2; ++var3) {
-            String var4 = var1[var3];
-            Intent var6 = (new Intent("com.google.android.youtube.api.service.START")).setPackage(var4);
-            ResolveInfo var7;
-            if ((var7 = var5.resolveService(var6, 0)) != null && var7.serviceInfo != null && var7.serviceInfo.packageName != null) {
-                return var7.serviceInfo.packageName;
+        for (String packageName : packageList) {
+            Intent intent = (new Intent("com.google.android.youtube.api.service.START")).setPackage(packageName);
+            ResolveInfo resolveInfo = packageManager.resolveService(intent, 0);
+            if (resolveInfo != null && resolveInfo.serviceInfo != null && resolveInfo.serviceInfo.packageName != null) {
+                return resolveInfo.serviceInfo.packageName;
             }
         }
 
-        if (var5.hasSystemFeature("android.software.leanback")) {
+        if (packageManager.hasSystemFeature("android.software.leanback")) {
             return "com.google.android.youtube.tv";
-        } else if (var5.hasSystemFeature("com.google.android.tv")) {
+        } else if (packageManager.hasSystemFeature("com.google.android.tv")) {
             return "com.google.android.youtube.googletv";
         } else {
             return "com.google.android.youtube";
         }
     }
 
-    public static boolean a(Context var0, String var1) {
-        Resources var4;
+    public static boolean a(Context context, String resource) {
+        Resources res;
         try {
-            var4 = var0.getPackageManager().getResourcesForApplication(var1);
-        } catch (NameNotFoundException var3) {
+            res = context.getPackageManager().getResourcesForApplication(resource);
+        } catch (NameNotFoundException e) {
             return true;
         }
 
-        String var2 = var1;
-        if (var1.equals("com.google.android.youtube.googletvdev")) {
-            var2 = "com.google.android.youtube.googletv";
+        if (resource.equals("com.google.android.youtube.googletvdev")) {
+            resource = "com.google.android.youtube.googletv";
         }
 
-        int var6;
-        if ((var6 = var4.getIdentifier("youtube_api_version_code", "integer", var2)) == 0) {
+        int resNameId = res.getIdentifier("youtube_api_version_code", "integer", resource);
+        if (resNameId == 0) {
             return true;
         } else {
-            int var5 = var4.getInteger(var6);
-            return 12 > var5 / 100;
+            int resValue = res.getInteger(resNameId);
+            return 12 > resValue / 100;
         }
     }
 
-    public static Context b(Context var0) {
+    public static Context createContext(Context context) {
         try {
-            return var0.createPackageContext(a(var0), 3);
-        } catch (NameNotFoundException var1) {
+            return context.createPackageContext(getPackageName(context), Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
+        } catch (NameNotFoundException e) {
             return null;
         }
     }
 
-    public static int c(Context var0) {
-        Context var1 = b(var0);
-        int var2 = 0;
-        if (var1 != null) {
-            var2 = var1.getResources().getIdentifier("clientTheme", "style", a(var0));
+    public static int getDefaultStyleAttribute(Context context) {
+        Context c = createContext(context);
+        int defStyleAttr = 0;
+        if (c != null) {
+            defStyleAttr = c.getResources().getIdentifier("clientTheme", "style", getPackageName(context));
         }
 
-        if (var2 == 0) {
+        if (defStyleAttr == 0) {
             if (VERSION.SDK_INT >= 14) {
-                var2 = 16974120;
+                defStyleAttr = android.R.style.Theme_DeviceDefault;
             } else if (VERSION.SDK_INT >= 11) {
-                var2 = 16973931;
+                defStyleAttr = android.R.style.Theme_Holo;
             } else {
-                var2 = 16973829;
+                defStyleAttr = android.R.style.Theme;
             }
         }
 
-        return var2;
+        return defStyleAttr;
     }
 
     // TODO Document: returns app version
-    public static String d(Context var0) {
+    public static String d(Context context) {
         try {
-            return var0.getPackageManager().getPackageInfo(var0.getPackageName(), 0).versionName;
-        } catch (NameNotFoundException var1) {
-            throw new IllegalStateException("Cannot retrieve calling Context's PackageInfo", var1);
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (NameNotFoundException e) {
+            throw new IllegalStateException("Cannot retrieve calling Context's PackageInfo", e);
         }
     }
 
@@ -100,27 +96,40 @@ public final class z {
         return (new StringBuilder(35)).append(1).append(".2.2").toString();
     }
 
-    public static Intent a(String var0) {
-        Uri var2 = Uri.fromParts("package", var0, (String)null);
-        Intent var1;
-        (var1 = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS")).setData(var2);
-        return var1;
+    /**
+     * Provides an intent that opens the application in the device's application details settings.
+     *
+     * @param packageName The application to open in the details settings
+     * @return The intent that redirects to the application's details settings
+     */
+    public static Intent getAppDetailsSettingsIntent(String packageName) {
+        Uri uri = Uri.fromParts("package", packageName, null);
+        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+        intent.setData(uri);
+        return intent;
     }
 
-    public static Intent b(String var0) {
-        Intent var1 = new Intent("android.intent.action.VIEW");
-        Uri var2 = a.buildUpon().appendQueryParameter("id", var0).build();
-        var1.setData(var2);
-        var1.setPackage("com.android.vending");
-        var1.addFlags(524288);
-        return var1;
+    /**
+     * Provides an intent that redirects the user to the Google Play Store page of the application
+     * passed as {@param packageName}.
+     *
+     * @param packageName The application to link with the intent and open in Google Play Store.
+     * @return An intent that opens the specified application in Google Play Store
+     */
+    public static Intent getPlayStoreIntent(String packageName) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        Uri uri = a.buildUpon().appendQueryParameter("id", packageName).build();
+        intent.setData(uri);
+        intent.setPackage("com.android.vending");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        return intent;
     }
 
-    public static boolean a(PackageManager var0) {
-        return var0.hasSystemFeature("com.google.android.tv");
+    public static boolean isGoogleTV(PackageManager packageManager) {
+        return packageManager.hasSystemFeature("com.google.android.tv");
     }
 
-    public static boolean b(PackageManager var0) {
-        return var0.hasSystemFeature("android.software.leanback");
+    public static boolean supportsLeanBackUI(PackageManager packageManager) {
+        return packageManager.hasSystemFeature("android.software.leanback");
     }
 }

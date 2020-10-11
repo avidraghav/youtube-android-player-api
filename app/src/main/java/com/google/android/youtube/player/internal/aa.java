@@ -32,9 +32,9 @@ public abstract class aa {
         return a;
     }
 
-    public abstract b a(Context var1, String var2, a var3, com.google.android.youtube.player.internal.t.b var4);
+    public abstract ConnectionClient a(Context var1, String var2, a var3, com.google.android.youtube.player.internal.t.b var4);
 
-    public abstract d a(Activity var1, b var2, boolean var3) throws com.google.android.youtube.player.internal.w.a;
+    public abstract EmbeddedPlayer a(Activity var1, ConnectionClient var2, boolean var3) throws com.google.android.youtube.player.internal.w.a;
 
-    public abstract com.google.android.youtube.player.internal.a a(b var1, YouTubeThumbnailView var2);
+    public abstract com.google.android.youtube.player.internal.a a(ConnectionClient var1, YouTubeThumbnailView var2);
 }

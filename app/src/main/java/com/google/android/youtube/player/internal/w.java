@@ -7,14 +7,14 @@ import android.os.IBinder;
 import java.lang.reflect.InvocationTargetException;
 
 public final class w {
-    public static d a(Activity var0, IBinder var1, boolean var2) throws w.a {
+    public static EmbeddedPlayer a(Activity var0, IBinder var1, boolean var2) throws w.a {
         Validators.notNull(var0);
         Validators.notNull(var1);
         Context var3;
-        if ((var3 = z.b(var0)) == null) {
+        if ((var3 = z.createContext(var0)) == null) {
             throw new w.a("Could not create remote context");
         } else {
-            return com.google.android.youtube.player.internal.d.a.a(a(var3.getClassLoader(), "com.google.android.youtube.api.jar.client.RemoteEmbeddedPlayer", v.a(var3).asBinder(), v.a(var0).asBinder(), var1, var2));
+            return EmbeddedPlayer.AbstractA.a(a(var3.getClassLoader(), "com.google.android.youtube.api.jar.client.RemoteEmbeddedPlayer", v.a(var3).asBinder(), v.a(var0).asBinder(), var1, var2));
         }
     }
 

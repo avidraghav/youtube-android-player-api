@@ -118,7 +118,7 @@ public final class YouTubeIntents {
     public static boolean canResolvePlayVideoIntentWithOptions(Context context) {
         int versionCode = getInstalledYouTubeVersionCode(context);
         PackageManager packageManager;
-        return (z.b(packageManager = context.getPackageManager()) || (z.a(packageManager) ? versionCode >= 2147483647 : versionCode >= 3300)) && canResolvePlayVideoIntent(context);
+        return (z.supportsLeanBackUI(packageManager = context.getPackageManager()) || (z.isGoogleTV(packageManager) ? versionCode >= 2147483647 : versionCode >= 3300)) && canResolvePlayVideoIntent(context);
     }
 
     /**
@@ -159,7 +159,7 @@ public final class YouTubeIntents {
      * @see #createSearchIntent(Context, String)
      */
     public static boolean canResolveSearchIntent(Context context) {
-        if (z.a(context.getPackageManager()) && getInstalledYouTubeVersionCode(context) < 4700) {
+        if (z.isGoogleTV(context.getPackageManager()) && getInstalledYouTubeVersionCode(context) < 4700) {
             return false;
         } else {
             Intent intent = (new Intent(Intent.ACTION_SEARCH)).setPackage(getPackage(context));
@@ -222,7 +222,7 @@ public final class YouTubeIntents {
      */
     public static boolean canResolvePlayPlaylistIntent(Context context) {
         int versionCode = getInstalledYouTubeVersionCode(context);
-        return (z.a(context.getPackageManager()) ? versionCode >= 4700 : versionCode >= 4000) && canResolveOpenPlaylistIntent(context);
+        return (z.isGoogleTV(context.getPackageManager()) ? versionCode >= 4700 : versionCode >= 4000) && canResolveOpenPlaylistIntent(context);
     }
 
     /**
@@ -395,10 +395,10 @@ public final class YouTubeIntents {
      */
     private static String getPackage(Context context) {
         PackageManager packageManager;
-        if (z.b(packageManager = context.getPackageManager())) {
+        if (z.supportsLeanBackUI(packageManager = context.getPackageManager())) {
             return "com.google.android.youtube.tv";
         } else {
-            return z.a(packageManager) ? "com.google.android.youtube.googletv" : "com.google.android.youtube";
+            return z.isGoogleTV(packageManager) ? "com.google.android.youtube.googletv" : "com.google.android.youtube";
         }
     }
 

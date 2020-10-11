@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.view.KeyEvent;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface d extends IInterface {
+public interface EmbeddedPlayer extends IInterface {
     void a(boolean var1) throws RemoteException;
 
     void a(String var1, int var2) throws RemoteException;
@@ -65,7 +68,7 @@ public interface d extends IInterface {
 
     void a(e var1) throws RemoteException;
 
-    void a(h var1) throws RemoteException;
+    void a(BinderInterface var1) throws RemoteException;
 
     void a(g var1) throws RemoteException;
 
@@ -75,7 +78,12 @@ public interface d extends IInterface {
 
     void l() throws RemoteException;
 
-    void a(Configuration var1) throws RemoteException;
+    /**
+     * TODO: Maybe configure?
+     * @param config
+     * @throws RemoteException
+     */
+    void a(Configuration config) throws RemoteException;
 
     void m() throws RemoteException;
 
@@ -91,25 +99,25 @@ public interface d extends IInterface {
 
     Bundle r() throws RemoteException;
 
-    boolean a(Bundle var1) throws RemoteException;
+    boolean a(Bundle bundle) throws RemoteException;
 
-    boolean a(int var1, KeyEvent var2) throws RemoteException;
+    boolean a(int var1, KeyEvent keyEvent) throws RemoteException;
 
-    boolean b(int var1, KeyEvent var2) throws RemoteException;
+    boolean b(int var1, KeyEvent keyEvent) throws RemoteException;
 
     u s() throws RemoteException;
 
-    public abstract static class a extends Binder implements d {
-        public static d a(IBinder var0) {
-            if (var0 == null) {
+    abstract class AbstractA extends Binder implements EmbeddedPlayer {
+        public static EmbeddedPlayer a(IBinder binder) {
+            if (binder == null) {
                 return null;
             } else {
-                IInterface var1;
-                return (d)((var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer")) != null && var1 instanceof d ? (d)var1 : new d.a.a(var0));
+                IInterface var1 = binder.queryLocalInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                return var1 instanceof EmbeddedPlayer ? (EmbeddedPlayer) var1 : new AImpl(binder);
             }
         }
 
-        public boolean onTransact(int var1, Parcel var2, Parcel var3, int var4) throws RemoteException {
+        public boolean onTransact(int code, @NonNull Parcel data, Parcel reply, int flags) throws RemoteException {
             Bundle var6;
             boolean var7;
             IInterface var8;
@@ -119,314 +127,314 @@ public interface d extends IInterface {
             IBinder var13;
             Object var14;
             String var16;
-            ArrayList var17;
-            switch(var1) {
+            ArrayList<String> var17;
+            switch (code) {
                 case 1:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var9 = 0 != var2.readInt();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var9 = 0 != data.readInt();
                     this.a(var9);
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 2:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var16 = var2.readString();
-                    var4 = var2.readInt();
-                    this.a(var16, var4);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var16 = data.readString();
+                    flags = data.readInt();
+                    this.a(var16, flags);
+                    reply.writeNoException();
                     return true;
                 case 3:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var16 = var2.readString();
-                    var4 = var2.readInt();
-                    this.b(var16, var4);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var16 = data.readString();
+                    flags = data.readInt();
+                    this.b(var16, flags);
+                    reply.writeNoException();
                     return true;
                 case 4:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var16 = var2.readString();
-                    var4 = var2.readInt();
-                    var11 = var2.readInt();
-                    this.a(var16, var4, var11);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var16 = data.readString();
+                    flags = data.readInt();
+                    var11 = data.readInt();
+                    this.a(var16, flags, var11);
+                    reply.writeNoException();
                     return true;
                 case 5:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var16 = var2.readString();
-                    var4 = var2.readInt();
-                    var11 = var2.readInt();
-                    this.b(var16, var4, var11);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var16 = data.readString();
+                    flags = data.readInt();
+                    var11 = data.readInt();
+                    this.b(var16, flags, var11);
+                    reply.writeNoException();
                     return true;
                 case 6:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var17 = var2.createStringArrayList();
-                    var4 = var2.readInt();
-                    var11 = var2.readInt();
-                    this.a(var17, var4, var11);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var17 = data.createStringArrayList();
+                    flags = data.readInt();
+                    var11 = data.readInt();
+                    this.a(var17, flags, var11);
+                    reply.writeNoException();
                     return true;
                 case 7:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var17 = var2.createStringArrayList();
-                    var4 = var2.readInt();
-                    var11 = var2.readInt();
-                    this.b(var17, var4, var11);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var17 = data.createStringArrayList();
+                    flags = data.readInt();
+                    var11 = data.readInt();
+                    this.b(var17, flags, var11);
+                    reply.writeNoException();
                     return true;
                 case 8:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.a();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 9:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.b();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 10:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var9 = this.c();
-                    var3.writeNoException();
-                    var3.writeInt(var9 ? 1 : 0);
+                    reply.writeNoException();
+                    reply.writeInt(var9 ? 1 : 0);
                     return true;
                 case 11:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var9 = this.d();
-                    var3.writeNoException();
-                    var3.writeInt(var9 ? 1 : 0);
+                    reply.writeNoException();
+                    reply.writeInt(var9 ? 1 : 0);
                     return true;
                 case 12:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var9 = this.e();
-                    var3.writeNoException();
-                    var3.writeInt(var9 ? 1 : 0);
+                    reply.writeNoException();
+                    reply.writeInt(var9 ? 1 : 0);
                     return true;
                 case 13:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.f();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 14:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.g();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 15:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = this.h();
-                    var3.writeNoException();
-                    var3.writeInt(var1);
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = this.h();
+                    reply.writeNoException();
+                    reply.writeInt(code);
                     return true;
                 case 16:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = this.i();
-                    var3.writeNoException();
-                    var3.writeInt(var1);
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = this.i();
+                    reply.writeNoException();
+                    reply.writeInt(code);
                     return true;
                 case 17:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = var2.readInt();
-                    this.a(var1);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = data.readInt();
+                    this.a(code);
+                    reply.writeNoException();
                     return true;
                 case 18:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = var2.readInt();
-                    this.b(var1);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = data.readInt();
+                    this.b(code);
+                    reply.writeNoException();
                     return true;
                 case 19:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var9 = 0 != var2.readInt();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var9 = 0 != data.readInt();
                     this.b(var9);
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 20:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = var2.readInt();
-                    this.c(var1);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = data.readInt();
+                    this.c(code);
+                    reply.writeNoException();
                     return true;
                 case 21:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = this.j();
-                    var3.writeNoException();
-                    var3.writeInt(var1);
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = this.j();
+                    reply.writeNoException();
+                    reply.writeInt(code);
                     return true;
                 case 22:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = var2.readInt();
-                    this.d(var1);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = data.readInt();
+                    this.d(code);
+                    reply.writeNoException();
                     return true;
                 case 23:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var16 = var2.readString();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var16 = data.readString();
                     this.a(var16);
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 24:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var9 = 0 != var2.readInt();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var9 = 0 != data.readInt();
                     this.c(var9);
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 25:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var9 = 0 != var2.readInt();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var9 = 0 != data.readInt();
                     this.d(var9);
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 26:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = var2.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IOnFullscreenListener")) != null && var8 instanceof e ? (e)var8 : new com.google.android.youtube.player.internal.e.a.a(var13));
-                    this.a((e)var14);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IOnFullscreenListener")) != null && var8 instanceof e ? (e) var8 : new e.a.a(var13));
+                    this.a((e) var14);
+                    reply.writeNoException();
                     return true;
                 case 27:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = var2.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaylistEventListener")) != null && var8 instanceof h ? (h)var8 : new com.google.android.youtube.player.internal.h.a.a(var13));
-                    this.a((h)var14);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaylistEventListener")) != null && var8 instanceof BinderInterface ? (BinderInterface) var8 : new BinderInterface.a.a(var13));
+                    this.a((BinderInterface) var14);
+                    reply.writeNoException();
                     return true;
                 case 28:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = var2.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener")) != null && var8 instanceof g ? (g)var8 : new com.google.android.youtube.player.internal.g.a.a(var13));
-                    this.a((g)var14);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener")) != null && var8 instanceof g ? (g) var8 : new g.a.a(var13));
+                    this.a((g) var14);
+                    reply.writeNoException();
                     return true;
                 case 29:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = var2.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaybackEventListener")) != null && var8 instanceof f ? (f)var8 : new com.google.android.youtube.player.internal.f.a.a(var13));
-                    this.a((f)var14);
-                    var3.writeNoException();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaybackEventListener")) != null && var8 instanceof f ? (f) var8 : new f.a.a(var13));
+                    this.a((f) var14);
+                    reply.writeNoException();
                     return true;
                 case 30:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.k();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 31:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.l();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 32:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     Configuration var10;
-                    if (0 != var2.readInt()) {
-                        var10 = (Configuration)Configuration.CREATOR.createFromParcel(var2);
+                    if (0 != data.readInt()) {
+                        var10 = Configuration.CREATOR.createFromParcel(data);
                     } else {
                         var10 = null;
                     }
 
                     this.a(var10);
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 33:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.m();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 34:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.n();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 35:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.o();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 36:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.p();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 37:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var9 = 0 != var2.readInt();
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    var9 = 0 != data.readInt();
                     this.e(var9);
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 38:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     this.q();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     return true;
                 case 39:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var6 = this.r();
-                    var3.writeNoException();
+                    reply.writeNoException();
                     if (var6 != null) {
-                        var3.writeInt(1);
-                        var6.writeToParcel(var3, 1);
+                        reply.writeInt(1);
+                        var6.writeToParcel(reply, Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
                     } else {
-                        var3.writeInt(0);
+                        reply.writeInt(0);
                     }
 
                     return true;
                 case 40:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    if (0 != var2.readInt()) {
-                        var6 = (Bundle)Bundle.CREATOR.createFromParcel(var2);
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    if (0 != data.readInt()) {
+                        var6 = Bundle.CREATOR.createFromParcel(data);
                     } else {
                         var6 = null;
                     }
 
                     boolean var15 = this.a(var6);
-                    var3.writeNoException();
-                    var3.writeInt(var15 ? 1 : 0);
+                    reply.writeNoException();
+                    reply.writeInt(var15 ? 1 : 0);
                     return true;
                 case 41:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = var2.readInt();
-                    if (0 != var2.readInt()) {
-                        var12 = (KeyEvent)KeyEvent.CREATOR.createFromParcel(var2);
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = data.readInt();
+                    if (0 != data.readInt()) {
+                        var12 = KeyEvent.CREATOR.createFromParcel(data);
                     } else {
                         var12 = null;
                     }
 
-                    var7 = this.a(var1, var12);
-                    var3.writeNoException();
-                    var3.writeInt(var7 ? 1 : 0);
+                    var7 = this.a(code, var12);
+                    reply.writeNoException();
+                    reply.writeInt(var7 ? 1 : 0);
                     return true;
                 case 42:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var1 = var2.readInt();
-                    if (0 != var2.readInt()) {
-                        var12 = (KeyEvent)KeyEvent.CREATOR.createFromParcel(var2);
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    code = data.readInt();
+                    if (0 != data.readInt()) {
+                        var12 = KeyEvent.CREATOR.createFromParcel(data);
                     } else {
                         var12 = null;
                     }
 
-                    var7 = this.b(var1, var12);
-                    var3.writeNoException();
-                    var3.writeInt(var7 ? 1 : 0);
+                    var7 = this.b(code, var12);
+                    reply.writeNoException();
+                    reply.writeInt(var7 ? 1 : 0);
                     return true;
                 case 43:
-                    var2.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     u var5 = this.s();
-                    var3.writeNoException();
-                    var3.writeStrongBinder(var5 != null ? var5.asBinder() : null);
+                    reply.writeNoException();
+                    reply.writeStrongBinder(var5 != null ? var5.asBinder() : null);
                     return true;
                 case 1598968902:
-                    var3.writeString("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    reply.writeString("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     return true;
                 default:
-                    return super.onTransact(var1, var2, var3, var4);
+                    return super.onTransact(code, data, reply, flags);
             }
         }
 
-        private static class a implements d {
-            private IBinder a;
+        private static class AImpl implements EmbeddedPlayer {
+            private IBinder binder;
 
-            a(IBinder var1) {
-                this.a = var1;
+            AImpl(IBinder binder) {
+                this.binder = binder;
             }
 
             public final IBinder asBinder() {
-                return this.a;
+                return this.binder;
             }
 
             public final void a(boolean var1) throws RemoteException {
@@ -436,7 +444,7 @@ public interface d extends IInterface {
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var2.writeInt(var1 ? 1 : 0);
-                    this.a.transact(1, var2, var3, 0);
+                    this.binder.transact(1, var2, var3, 0);
                     var3.readException();
                 } finally {
                     var3.recycle();
@@ -453,7 +461,7 @@ public interface d extends IInterface {
                     var3.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var3.writeString(var1);
                     var3.writeInt(var2);
-                    this.a.transact(2, var3, var4, 0);
+                    this.binder.transact(2, var3, var4, 0);
                     var4.readException();
                 } finally {
                     var4.recycle();
@@ -470,7 +478,7 @@ public interface d extends IInterface {
                     var3.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var3.writeString(var1);
                     var3.writeInt(var2);
-                    this.a.transact(3, var3, var4, 0);
+                    this.binder.transact(3, var3, var4, 0);
                     var4.readException();
                 } finally {
                     var4.recycle();
@@ -488,7 +496,7 @@ public interface d extends IInterface {
                     var4.writeString(var1);
                     var4.writeInt(var2);
                     var4.writeInt(var3);
-                    this.a.transact(4, var4, var5, 0);
+                    this.binder.transact(4, var4, var5, 0);
                     var5.readException();
                 } finally {
                     var5.recycle();
@@ -506,7 +514,7 @@ public interface d extends IInterface {
                     var4.writeString(var1);
                     var4.writeInt(var2);
                     var4.writeInt(var3);
-                    this.a.transact(5, var4, var5, 0);
+                    this.binder.transact(5, var4, var5, 0);
                     var5.readException();
                 } finally {
                     var5.recycle();
@@ -524,7 +532,7 @@ public interface d extends IInterface {
                     var4.writeStringList(var1);
                     var4.writeInt(var2);
                     var4.writeInt(var3);
-                    this.a.transact(6, var4, var5, 0);
+                    this.binder.transact(6, var4, var5, 0);
                     var5.readException();
                 } finally {
                     var5.recycle();
@@ -542,7 +550,7 @@ public interface d extends IInterface {
                     var4.writeStringList(var1);
                     var4.writeInt(var2);
                     var4.writeInt(var3);
-                    this.a.transact(7, var4, var5, 0);
+                    this.binder.transact(7, var4, var5, 0);
                     var5.readException();
                 } finally {
                     var5.recycle();
@@ -557,7 +565,7 @@ public interface d extends IInterface {
 
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(8, var1, var2, 0);
+                    this.binder.transact(8, var1, var2, 0);
                     var2.readException();
                 } finally {
                     var2.recycle();
@@ -572,7 +580,7 @@ public interface d extends IInterface {
 
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(9, var1, var2, 0);
+                    this.binder.transact(9, var1, var2, 0);
                     var2.readException();
                 } finally {
                     var2.recycle();
@@ -588,7 +596,7 @@ public interface d extends IInterface {
                 boolean var3;
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(10, var1, var2, 0);
+                    this.binder.transact(10, var1, var2, 0);
                     var2.readException();
                     var3 = 0 != var2.readInt();
                 } finally {
@@ -606,7 +614,7 @@ public interface d extends IInterface {
                 boolean var3;
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(11, var1, var2, 0);
+                    this.binder.transact(11, var1, var2, 0);
                     var2.readException();
                     var3 = 0 != var2.readInt();
                 } finally {
@@ -624,7 +632,7 @@ public interface d extends IInterface {
                 boolean var3;
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(12, var1, var2, 0);
+                    this.binder.transact(12, var1, var2, 0);
                     var2.readException();
                     var3 = 0 != var2.readInt();
                 } finally {
@@ -641,7 +649,7 @@ public interface d extends IInterface {
 
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(13, var1, var2, 0);
+                    this.binder.transact(13, var1, var2, 0);
                     var2.readException();
                 } finally {
                     var2.recycle();
@@ -656,7 +664,7 @@ public interface d extends IInterface {
 
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(14, var1, var2, 0);
+                    this.binder.transact(14, var1, var2, 0);
                     var2.readException();
                 } finally {
                     var2.recycle();
@@ -666,314 +674,314 @@ public interface d extends IInterface {
             }
 
             public final int h() throws RemoteException {
-                Parcel var1 = Parcel.obtain();
-                Parcel var2 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 int var3;
                 try {
-                    var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(15, var1, var2, 0);
-                    var2.readException();
-                    var3 = var2.readInt();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    this.binder.transact(15, data, reply, 0);
+                    reply.readException();
+                    var3 = reply.readInt();
                 } finally {
-                    var2.recycle();
-                    var1.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
                 return var3;
             }
 
             public final int i() throws RemoteException {
-                Parcel var1 = Parcel.obtain();
-                Parcel var2 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 int var3;
                 try {
-                    var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(16, var1, var2, 0);
-                    var2.readException();
-                    var3 = var2.readInt();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    this.binder.transact(16, data, reply, 0);
+                    reply.readException();
+                    var3 = reply.readInt();
                 } finally {
-                    var2.recycle();
-                    var1.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
                 return var3;
             }
 
             public final void a(int var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel Data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeInt(var1);
-                    this.a.transact(17, var2, var3, 0);
-                    var3.readException();
+                    Data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    Data.writeInt(var1);
+                    this.binder.transact(17, Data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    Data.recycle();
                 }
 
             }
 
             public final void b(int var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeInt(var1);
-                    this.a.transact(18, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeInt(var1);
+                    this.binder.transact(18, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void b(boolean var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeInt(var1 ? 1 : 0);
-                    this.a.transact(19, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeInt(var1 ? 1 : 0);
+                    this.binder.transact(19, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void c(int var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeInt(var1);
-                    this.a.transact(20, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeInt(var1);
+                    this.binder.transact(20, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final int j() throws RemoteException {
-                Parcel var1 = Parcel.obtain();
-                Parcel var2 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 int var3;
                 try {
-                    var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(21, var1, var2, 0);
-                    var2.readException();
-                    var3 = var2.readInt();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    this.binder.transact(21, data, reply, 0);
+                    reply.readException();
+                    var3 = reply.readInt();
                 } finally {
-                    var2.recycle();
-                    var1.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
                 return var3;
             }
 
             public final void d(int var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeInt(var1);
-                    this.a.transact(22, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeInt(var1);
+                    this.binder.transact(22, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void a(String var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeString(var1);
-                    this.a.transact(23, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeString(var1);
+                    this.binder.transact(23, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void c(boolean var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeInt(var1 ? 1 : 0);
-                    this.a.transact(24, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeInt(var1 ? 1 : 0);
+                    this.binder.transact(24, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void d(boolean var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeInt(var1 ? 1 : 0);
-                    this.a.transact(25, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeInt(var1 ? 1 : 0);
+                    this.binder.transact(25, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void a(e var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeStrongBinder(var1 != null ? var1.asBinder() : null);
-                    this.a.transact(26, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    this.binder.transact(26, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
-            public final void a(h var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+            public final void a(BinderInterface var1) throws RemoteException {
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeStrongBinder(var1 != null ? var1.asBinder() : null);
-                    this.a.transact(27, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    this.binder.transact(27, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void a(g var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeStrongBinder(var1 != null ? var1.asBinder() : null);
-                    this.a.transact(28, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    this.binder.transact(28, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void a(f var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var2.writeStrongBinder(var1 != null ? var1.asBinder() : null);
-                    this.a.transact(29, var2, var3, 0);
-                    var3.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    this.binder.transact(29, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void k() throws RemoteException {
-                Parcel var1 = Parcel.obtain();
-                Parcel var2 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(30, var1, var2, 0);
-                    var2.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    this.binder.transact(30, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var2.recycle();
-                    var1.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void l() throws RemoteException {
-                Parcel var1 = Parcel.obtain();
-                Parcel var2 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(31, var1, var2, 0);
-                    var2.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    this.binder.transact(31, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var2.recycle();
-                    var1.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
-            public final void a(Configuration var1) throws RemoteException {
-                Parcel var2 = Parcel.obtain();
-                Parcel var3 = Parcel.obtain();
+            public final void a(Configuration config) throws RemoteException {
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    if (var1 != null) {
-                        var2.writeInt(1);
-                        var1.writeToParcel(var2, 0);
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    if (config != null) {
+                        data.writeInt(1);
+                        config.writeToParcel(data, 0);
                     } else {
-                        var2.writeInt(0);
+                        data.writeInt(0);
                     }
 
-                    this.a.transact(32, var2, var3, 0);
-                    var3.readException();
+                    this.binder.transact(32, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var3.recycle();
-                    var2.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
 
             public final void m() throws RemoteException {
-                Parcel var1 = Parcel.obtain();
-                Parcel var2 = Parcel.obtain();
+                Parcel data = Parcel.obtain();
+                Parcel reply = Parcel.obtain();
 
                 try {
-                    var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(33, var1, var2, 0);
-                    var2.readException();
+                    data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
+                    this.binder.transact(33, data, reply, 0);
+                    reply.readException();
                 } finally {
-                    var2.recycle();
-                    var1.recycle();
+                    reply.recycle();
+                    data.recycle();
                 }
 
             }
@@ -984,7 +992,7 @@ public interface d extends IInterface {
 
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(34, var1, var2, 0);
+                    this.binder.transact(34, var1, var2, 0);
                     var2.readException();
                 } finally {
                     var2.recycle();
@@ -999,7 +1007,7 @@ public interface d extends IInterface {
 
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(35, var1, var2, 0);
+                    this.binder.transact(35, var1, var2, 0);
                     var2.readException();
                 } finally {
                     var2.recycle();
@@ -1014,7 +1022,7 @@ public interface d extends IInterface {
 
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(36, var1, var2, 0);
+                    this.binder.transact(36, var1, var2, 0);
                     var2.readException();
                 } finally {
                     var2.recycle();
@@ -1030,7 +1038,7 @@ public interface d extends IInterface {
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var2.writeInt(var1 ? 1 : 0);
-                    this.a.transact(37, var2, var3, 0);
+                    this.binder.transact(37, var2, var3, 0);
                     var3.readException();
                 } finally {
                     var3.recycle();
@@ -1045,7 +1053,7 @@ public interface d extends IInterface {
 
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(38, var1, var2, 0);
+                    this.binder.transact(38, var1, var2, 0);
                     var2.readException();
                 } finally {
                     var2.recycle();
@@ -1061,10 +1069,10 @@ public interface d extends IInterface {
                 Bundle var3;
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(39, var1, var2, 0);
+                    this.binder.transact(39, var1, var2, 0);
                     var2.readException();
                     if (0 != var2.readInt()) {
-                        var3 = (Bundle)Bundle.CREATOR.createFromParcel(var2);
+                        var3 = Bundle.CREATOR.createFromParcel(var2);
                     } else {
                         var3 = null;
                     }
@@ -1090,7 +1098,7 @@ public interface d extends IInterface {
                         var2.writeInt(0);
                     }
 
-                    this.a.transact(40, var2, var3, 0);
+                    this.binder.transact(40, var2, var3, 0);
                     var3.readException();
                     var6 = 0 != var3.readInt();
                 } finally {
@@ -1116,7 +1124,7 @@ public interface d extends IInterface {
                         var3.writeInt(0);
                     }
 
-                    this.a.transact(41, var3, var4, 0);
+                    this.binder.transact(41, var3, var4, 0);
                     var4.readException();
                     var7 = 0 != var4.readInt();
                 } finally {
@@ -1142,7 +1150,7 @@ public interface d extends IInterface {
                         var3.writeInt(0);
                     }
 
-                    this.a.transact(42, var3, var4, 0);
+                    this.binder.transact(42, var3, var4, 0);
                     var4.readException();
                     var7 = 0 != var4.readInt();
                 } finally {
@@ -1160,7 +1168,7 @@ public interface d extends IInterface {
                 u var3;
                 try {
                     var1.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a.transact(43, var1, var2, 0);
+                    this.binder.transact(43, var1, var2, 0);
                     var2.readException();
                     var3 = com.google.android.youtube.player.internal.u.a.a(var2.readStrongBinder());
                 } finally {

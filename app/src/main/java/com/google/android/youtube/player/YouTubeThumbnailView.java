@@ -5,13 +5,15 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
+import com.google.android.youtube.player.internal.AbstractYouTubeThumbnailLoader;
 import com.google.android.youtube.player.internal.aa;
 import com.google.android.youtube.player.internal.Validators;
 import com.google.android.youtube.player.internal.ConnectionClient;
+import com.google.android.youtube.player.internal.t;
 
 public final class YouTubeThumbnailView extends AppCompatImageView {
     private ConnectionClient a;
-    private com.google.android.youtube.player.internal.a b;
+    private AbstractYouTubeThumbnailLoader b;
 
     public YouTubeThumbnailView(Context var1) {
         this(var1, (AttributeSet)null);
@@ -40,7 +42,7 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
         super.finalize();
     }
 
-    private static final class a implements com.google.android.youtube.player.internal.t.a, com.google.android.youtube.player.internal.t.b {
+    private static final class a implements com.google.android.youtube.player.internal.t.a, t.OnInitializationResult {
         private YouTubeThumbnailView a;
         private YouTubeThumbnailView.OnInitializedListener b;
 
@@ -62,8 +64,8 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
             this.c();
         }
 
-        public final void a(YouTubeInitializationResult var1) {
-            this.b.onInitializationFailure(this.a, var1);
+        public final void onResult(YouTubeInitializationResult result) {
+            this.b.onInitializationFailure(this.a, result);
             this.c();
         }
 

@@ -18,28 +18,28 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import java.util.ArrayList;
 
 public abstract class r<T extends IInterface> implements t {
-    private final Context b;
-    final Handler a;
+    private final Context context;
+    final Handler handler;
     private T c;
-    private ArrayList<com.google.android.youtube.player.internal.t.a> d;
-    private final ArrayList<com.google.android.youtube.player.internal.t.a> e = new ArrayList();
+    private ArrayList<t.a> d;
+    private final ArrayList<t.a> e = new ArrayList<>();
     private boolean f = false;
-    private ArrayList<com.google.android.youtube.player.internal.t.b> g;
+    private ArrayList<OnInitializationResult> initResultListeners;
     private boolean h = false;
-    private final ArrayList<r.b<?>> i = new ArrayList();
-    private ServiceConnection j;
+    private final ArrayList<r.b<?>> i = new ArrayList<>();
+    private ServiceConnection serviceConnection;
     private boolean k = false;
 
-    protected r(Context var1, com.google.android.youtube.player.internal.t.a var2, com.google.android.youtube.player.internal.t.b var3) {
+    protected r(Context context, t.a var2, OnInitializationResult var3) {
         if (Looper.getMainLooper().getThread() != Thread.currentThread()) {
             throw new IllegalStateException("Clients must be created on the UI thread.");
         } else {
-            this.b = (Context) Validators.notNull(var1);
-            this.d = new ArrayList();
+            this.context = Validators.notNull(context);
+            this.d = new ArrayList<>();
             this.d.add(Validators.notNull(var2));
-            this.g = new ArrayList();
-            this.g.add(Validators.notNull(var3));
-            this.a = new r.a();
+            this.initResultListeners = new ArrayList<>();
+            this.initResultListeners.add(Validators.notNull(var3));
+            this.handler = new a();
         }
     }
 
@@ -61,19 +61,19 @@ public abstract class r<T extends IInterface> implements t {
 
     public final void e() {
         this.k = true;
-        YouTubeInitializationResult var1;
-        if ((var1 = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this.b)) != YouTubeInitializationResult.SUCCESS) {
-            this.a.sendMessage(this.a.obtainMessage(3, var1));
+        YouTubeInitializationResult result = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this.context);
+        if (result != YouTubeInitializationResult.SUCCESS) {
+            this.handler.sendMessage(this.handler.obtainMessage(3, result));
         } else {
-            Intent var2 = (new Intent(this.c())).setPackage(z.getPackageName(this.b));
-            if (this.j != null) {
+            Intent intent = (new Intent(this.c())).setPackage(z.getPackageName(this.context));
+            if (this.serviceConnection != null) {
                 Log.e("YouTubeClient", "Calling connect() while still connected, missing disconnect().");
                 this.a();
             }
 
-            this.j = new r.e();
-            if (!this.b.bindService(var2, this.j, 129)) {
-                this.a.sendMessage(this.a.obtainMessage(3, YouTubeInitializationResult.ERROR_CONNECTING_TO_SERVICE));
+            this.serviceConnection = new r.e();
+            if (!this.context.bindService(intent, this.serviceConnection, Context.BIND_AUTO_CREATE | Context.BIND_ADJUST_WITH_ACTIVITY)) {
+                this.handler.sendMessage(this.handler.obtainMessage(3, YouTubeInitializationResult.ERROR_CONNECTING_TO_SERVICE));
             }
 
         }
@@ -105,33 +105,33 @@ public abstract class r<T extends IInterface> implements t {
     }
 
     private void a() {
-        if (this.j != null) {
+        if (this.serviceConnection != null) {
             try {
-                this.b.unbindService(this.j);
+                this.context.unbindService(this.serviceConnection);
             } catch (IllegalArgumentException var2) {
                 Log.w("YouTubeClient", "Unexpected error from unbindService()", var2);
             }
         }
 
         this.c = null;
-        this.j = null;
+        this.serviceConnection = null;
     }
 
     protected final void b(IBinder var1) {
         try {
-            i var3 = com.google.android.youtube.player.internal.i.a.a(var1);
-            this.a(var3, new r.d());
+            IServiceBroker var3 = IServiceBroker.ServiceBroker.a(var1);
+            this.a(var3, new d());
         } catch (RemoteException var2) {
             Log.w("YouTubeClient", "service died");
         }
     }
 
-    protected abstract void a(i var1, r.d var2) throws RemoteException;
+    protected abstract void a(IServiceBroker var1, d var2) throws RemoteException;
 
     protected final void g() {
         synchronized(this.d) {
             Validators.validateState(!this.f);
-            this.a.removeMessages(4);
+            this.handler.removeMessages(4);
             this.f = true;
             Validators.validateState(this.e.size() == 0);
             ArrayList var2 = this.d;
@@ -149,7 +149,7 @@ public abstract class r<T extends IInterface> implements t {
     }
 
     protected final void h() {
-        this.a.removeMessages(4);
+        this.handler.removeMessages(4);
         synchronized(this.d) {
             this.f = true;
             ArrayList var2 = this.d;
@@ -166,10 +166,10 @@ public abstract class r<T extends IInterface> implements t {
     }
 
     protected final void a(YouTubeInitializationResult var1) {
-        this.a.removeMessages(4);
-        synchronized(this.g) {
+        this.handler.removeMessages(4);
+        synchronized(this.initResultListeners) {
             this.h = true;
-            ArrayList var3 = this.g;
+            ArrayList var3 = this.initResultListeners;
             int var4 = 0;
 
             for(int var5 = var3.size(); var4 < var5; ++var4) {
@@ -177,8 +177,8 @@ public abstract class r<T extends IInterface> implements t {
                     return;
                 }
 
-                if (this.g.contains(var3.get(var4))) {
-                    ((com.google.android.youtube.player.internal.t.b)var3.get(var4)).a(var1);
+                if (this.initResultListeners.contains(var3.get(var4))) {
+                    ((OnInitializationResult)var3.get(var4)).onResult(var1);
                 }
             }
 
@@ -197,16 +197,16 @@ public abstract class r<T extends IInterface> implements t {
         return this.c;
     }
 
-    protected final class d extends com.google.android.youtube.player.internal.c.a {
+    protected final class d extends IConnectionCallbacks.ConnectionCallbacks {
         protected d() {
         }
 
         public final void a(String var1, IBinder var2) {
-            r.this.a.sendMessage(r.this.a.obtainMessage(1, r.this.new c(var1, var2)));
+            r.this.handler.sendMessage(r.this.handler.obtainMessage(1, r.this.new c(var1, var2)));
         }
     }
 
-    protected final class c extends r.b<Boolean> {
+    protected final class c extends b<Boolean> {
         public final YouTubeInitializationResult b;
         public final IBinder c;
 
@@ -230,7 +230,7 @@ public abstract class r<T extends IInterface> implements t {
         protected abstract void a(TListener var1);
 
         public final void a() {
-            Object var1;
+            TListener var1;
             synchronized(this) {
                 var1 = this.b;
             }
@@ -249,19 +249,20 @@ public abstract class r<T extends IInterface> implements t {
         a() {
         }
 
-        public final void handleMessage(Message var1) {
-            if (var1.what == 3) {
-                r.this.a((YouTubeInitializationResult)var1.obj);
-            } else if (var1.what == 4) {
+        @Override
+        public final void handleMessage(Message message) {
+            if (message.what == 3) {
+                r.this.a((YouTubeInitializationResult)message.obj);
+            } else if (message.what == 4) {
                 synchronized(r.this.d) {
-                    if (r.this.k && r.this.f() && r.this.d.contains(var1.obj)) {
-                        ((com.google.android.youtube.player.internal.t.a)var1.obj).a();
+                    if (r.this.k && r.this.f() && r.this.d.contains(message.obj)) {
+                        ((com.google.android.youtube.player.internal.t.a)message.obj).a();
                     }
 
                 }
-            } else if (var1.what != 2 || r.this.f()) {
-                if (var1.what == 2 || var1.what == 1) {
-                    ((r.b)var1.obj).a();
+            } else if (message.what != 2 || r.this.f()) {
+                if (message.what == 2 || message.what == 1) {
+                    ((r.b)message.obj).a();
                 }
             }
         }

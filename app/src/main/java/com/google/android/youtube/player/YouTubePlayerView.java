@@ -19,6 +19,7 @@ import com.google.android.youtube.player.internal.YouTubePlayerImpl;
 import com.google.android.youtube.player.internal.aa;
 import com.google.android.youtube.player.internal.Validators;
 import com.google.android.youtube.player.internal.YouTubePlayerFrameLayout;
+import com.google.android.youtube.player.internal.t;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -107,19 +108,19 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     @Override
     public final void initialize(String developerKey, OnInitializedListener listener) {
         Validators.notEmpty(developerKey, "Developer key cannot be null or empty");
-        this.c.a(this, developerKey, listener);
+        this.c.initialize(this, developerKey, listener);
     }
 
-    final void a(final Activity activity, Provider provider, String var3, OnInitializedListener listener, Bundle bundle) {
+    final void a(final Activity activity, Provider provider, String developerKey, OnInitializedListener listener, Bundle bundle) {
         if (this.youTubePlayer == null && this.onInitializedListener == null) {
             Validators.notNull(activity, "activity cannot be null");
             this.provider = Validators.notNull(provider, "provider cannot be null");
             this.onInitializedListener = Validators.notNull(listener, "listener cannot be null");
             this.bundle = bundle;
             this.frameLayout.startLoading();
-            this.d = aa.a().a(this.getContext(), var3, new com.google.android.youtube.player.internal.t.a() {
+            this.d = aa.a().a(this.getContext(), developerKey, new t.a() {
                 public final void a() {
-                    if (YouTubePlayerView.this.d != null) {
+                    if (d != null) {
                         YouTubePlayerView.a(YouTubePlayerView.this, activity);
                     }
 
@@ -127,23 +128,23 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
                 }
 
                 public final void b() {
-                    if (!YouTubePlayerView.this.l && YouTubePlayerView.this.youTubePlayer != null) {
-                        YouTubePlayerView.this.youTubePlayer.f();
+                    if (!l && youTubePlayer != null) {
+                        youTubePlayer.f();
                     }
 
-                    YouTubePlayerView.this.frameLayout.a();
-                    if (YouTubePlayerView.this.indexOfChild(YouTubePlayerView.this.frameLayout) < 0) {
-                        YouTubePlayerView.this.addView(YouTubePlayerView.this.frameLayout);
-                        YouTubePlayerView.this.removeView(YouTubePlayerView.this.f);
+                    frameLayout.a();
+                    if (indexOfChild(frameLayout) < 0) {
+                        addView(frameLayout);
+                        removeView(f);
                     }
 
                     YouTubePlayerView.g(YouTubePlayerView.this);
                     YouTubePlayerView.h(YouTubePlayerView.this);
                     YouTubePlayerView.b(YouTubePlayerView.this);
                 }
-            }, new com.google.android.youtube.player.internal.t.b() {
-                public final void a(YouTubeInitializationResult var1) {
-                    YouTubePlayerView.this.onInitializationCompleted(var1);
+            }, new t.OnInitializationResult() {
+                public final void onResult(YouTubeInitializationResult result) {
+                    onInitializationCompleted(result);
                     YouTubePlayerView.b(YouTubePlayerView.this);
                 }
             });
@@ -274,7 +275,6 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         if (this.youTubePlayer != null) {
             this.youTubePlayer.a(var1);
         }
-
     }
 
     @Override
@@ -312,7 +312,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     @Override
     public final void addFocusables(ArrayList<View> var1, int var2) {
-        ArrayList var3 = new ArrayList();
+        ArrayList<View> var3 = new ArrayList<>();
         super.addFocusables(var3, var2);
         var1.addAll(var3);
         this.b.clear();
@@ -364,8 +364,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     // TODO b = instantiation listener?
     interface b {
 
-        // TODO a = initialize?
-        void a(YouTubePlayerView view, String developerKey, OnInitializedListener listener);
+        void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener);
 
         void a(YouTubePlayerView view);
     }

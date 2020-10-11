@@ -6,7 +6,7 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface g extends IInterface {
+public interface IPlayerStateChangeListener extends IInterface {
     void a() throws RemoteException;
 
     void a(String var1) throws RemoteException;
@@ -19,8 +19,8 @@ public interface g extends IInterface {
 
     void b(String var1) throws RemoteException;
 
-    public abstract static class a extends Binder implements g {
-        public a() {
+    abstract class PlayerStateChangeListener extends Binder implements IPlayerStateChangeListener {
+        public PlayerStateChangeListener() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IPlayerStateChangeListener");
         }
 
@@ -71,10 +71,11 @@ public interface g extends IInterface {
             }
         }
 
-        private static class a implements g {
+        // was private before
+        public static class PlayerStateChangeListenerImpl implements IPlayerStateChangeListener {
             private IBinder a;
 
-            a(IBinder var1) {
+            PlayerStateChangeListenerImpl(IBinder var1) {
                 this.a = var1;
             }
 

@@ -18,25 +18,25 @@ public final class m {
     public final String i;
     public final String j;
 
-    public m(Context var1) {
-        Resources var2;
-        Locale var3;
-        if ((var2 = var1.getResources()) != null && var2.getConfiguration() != null && var2.getConfiguration().locale != null) {
-            var3 = var2.getConfiguration().locale;
+    public m(Context context) {
+        Resources res;
+        Locale locale;
+        if ((res = context.getResources()) != null && res.getConfiguration() != null && res.getConfiguration().locale != null) {
+            locale = res.getConfiguration().locale;
         } else {
-            var3 = Locale.getDefault();
+            locale = Locale.getDefault();
         }
 
-        Map var4 = x.a(var3);
-        this.a = (String)var4.get("error_initializing_player");
-        this.b = (String)var4.get("get_youtube_app_title");
-        this.c = (String)var4.get("get_youtube_app_text");
-        this.d = (String)var4.get("get_youtube_app_action");
-        this.e = (String)var4.get("enable_youtube_app_title");
-        this.f = (String)var4.get("enable_youtube_app_text");
-        this.g = (String)var4.get("enable_youtube_app_action");
-        this.h = (String)var4.get("update_youtube_app_title");
-        this.i = (String)var4.get("update_youtube_app_text");
-        this.j = (String)var4.get("update_youtube_app_action");
+        Map<String, String> var4 = x.a(locale);
+        this.a = var4.get("error_initializing_player");
+        this.b = var4.get("get_youtube_app_title");
+        this.c = var4.get("get_youtube_app_text");
+        this.d = var4.get("get_youtube_app_action");
+        this.e = var4.get("enable_youtube_app_title");
+        this.f = var4.get("enable_youtube_app_text");
+        this.g = var4.get("enable_youtube_app_action");
+        this.h = var4.get("update_youtube_app_title");
+        this.i = var4.get("update_youtube_app_text");
+        this.j = var4.get("update_youtube_app_action");
     }
 }

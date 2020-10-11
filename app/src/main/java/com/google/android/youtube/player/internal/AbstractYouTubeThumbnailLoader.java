@@ -8,13 +8,13 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 import java.lang.ref.WeakReference;
 import java.util.NoSuchElementException;
 
-public abstract class a implements YouTubeThumbnailLoader {
+public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnailLoader {
     private final WeakReference<YouTubeThumbnailView> thumbnailViewWeakReference;
     private OnThumbnailLoadedListener onThumbnailLoadedListener;
     private boolean c;
     private boolean d;
 
-    public a(YouTubeThumbnailView thumbnailView) {
+    public AbstractYouTubeThumbnailLoader(YouTubeThumbnailView thumbnailView) {
         this.thumbnailViewWeakReference = new WeakReference(Validators.notNull(thumbnailView));
     }
 
@@ -28,27 +28,32 @@ public abstract class a implements YouTubeThumbnailLoader {
         }
     }
 
+    @Override
     public final void setOnThumbnailLoadedListener(OnThumbnailLoadedListener listener) {
         this.i();
         this.onThumbnailLoadedListener = listener;
     }
 
+    @Override
     public final void setPlaylist(String playlistId) {
         this.setPlaylist(playlistId, 0);
     }
 
+    @Override
     public final void setPlaylist(String playlistId, int skipTo) {
         this.i();
         this.c = true;
         this.a(playlistId, skipTo);
     }
 
+    @Override
     public final void setVideo(String videoId) {
         this.i();
         this.c = false;
         this.a(videoId);
     }
 
+    @Override
     public final void next() {
         this.i();
         if (!this.c) {
@@ -60,6 +65,7 @@ public abstract class a implements YouTubeThumbnailLoader {
         }
     }
 
+    @Override
     public final void previous() {
         this.i();
         if (!this.c) {
@@ -71,6 +77,7 @@ public abstract class a implements YouTubeThumbnailLoader {
         }
     }
 
+    @Override
     public final void first() {
         this.i();
         if (!this.c) {
@@ -80,16 +87,19 @@ public abstract class a implements YouTubeThumbnailLoader {
         }
     }
 
+    @Override
     public final boolean hasNext() {
         this.i();
         return this.f();
     }
 
+    @Override
     public final boolean hasPrevious() {
         this.i();
         return this.g();
     }
 
+    @Override
     public final void release() {
         if (this.a()) {
             this.d = true;
@@ -123,19 +133,19 @@ public abstract class a implements YouTubeThumbnailLoader {
 
     public abstract void h();
 
-    public final void a(Bitmap var1, String var2) {
-        YouTubeThumbnailView var3 = (YouTubeThumbnailView)this.thumbnailViewWeakReference.get();
-        if (this.a() && var3 != null) {
-            var3.setImageBitmap(var1);
+    public final void a(Bitmap thumbnailBitmap, String videoId) {
+        YouTubeThumbnailView thumbnail = this.thumbnailViewWeakReference.get();
+        if (this.a() && thumbnail != null) {
+            thumbnail.setImageBitmap(thumbnailBitmap);
             if (this.onThumbnailLoadedListener != null) {
-                this.onThumbnailLoadedListener.onThumbnailLoaded(var3, var2);
+                this.onThumbnailLoadedListener.onThumbnailLoaded(thumbnail, videoId);
             }
         }
 
     }
 
     public final void b(String errorReasonString) {
-        YouTubeThumbnailView thumbnailView = (YouTubeThumbnailView)this.thumbnailViewWeakReference.get();
+        YouTubeThumbnailView thumbnailView = this.thumbnailViewWeakReference.get();
         if (this.a() && this.onThumbnailLoadedListener != null && thumbnailView != null) {
             ErrorReason reason;
             try {

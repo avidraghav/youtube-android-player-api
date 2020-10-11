@@ -13,8 +13,8 @@ public interface t {
      */
     void d();
 
-    interface b {
-        void a(YouTubeInitializationResult var1);
+    interface OnInitializationResult {
+        void onResult(YouTubeInitializationResult result);
     }
 
     interface a {

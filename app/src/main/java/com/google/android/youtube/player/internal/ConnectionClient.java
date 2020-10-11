@@ -8,7 +8,7 @@ import android.os.IBinder;
 public interface ConnectionClient extends t {
     IBinder a();
 
-    k a(j var1);
+    IThumbnailLoaderService a(IThumbnailLoaderClient var1);
 
     void a(boolean var1);
 }

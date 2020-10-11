@@ -6,11 +6,11 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface e extends IInterface {
+public interface IOnFullscreenListener extends IInterface {
     void a(boolean var1) throws RemoteException;
 
-    public abstract static class a extends Binder implements e {
-        public a() {
+    abstract class OnFullscreenListener extends Binder implements IOnFullscreenListener {
+        public OnFullscreenListener() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IOnFullscreenListener");
         }
 
@@ -34,10 +34,11 @@ public interface e extends IInterface {
             }
         }
 
-        private static class a implements e {
+        // was private before
+        public static class OnFullscreenListenerImpl implements IOnFullscreenListener {
             private IBinder a;
 
-            a(IBinder var1) {
+            OnFullscreenListenerImpl(IBinder var1) {
                 this.a = var1;
             }
 

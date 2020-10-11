@@ -7,13 +7,13 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface j extends IInterface {
+public interface IThumbnailLoaderClient extends IInterface {
     void a(Bitmap var1, String var2, boolean var3, boolean var4) throws RemoteException;
 
     void a(String var1, boolean var2, boolean var3) throws RemoteException;
 
-    public abstract static class a extends Binder implements j {
-        public a() {
+    abstract class ThumbnailLoaderClient extends Binder implements IThumbnailLoaderClient {
+        public ThumbnailLoaderClient() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IThumbnailLoaderClient");
         }
 
@@ -28,7 +28,7 @@ public interface j extends IInterface {
                     var2.enforceInterface("com.google.android.youtube.player.internal.IThumbnailLoaderClient");
                     Bitmap var7;
                     if (0 != var2.readInt()) {
-                        var7 = (Bitmap)Bitmap.CREATOR.createFromParcel(var2);
+                        var7 = Bitmap.CREATOR.createFromParcel(var2);
                     } else {
                         var7 = null;
                     }
@@ -55,10 +55,11 @@ public interface j extends IInterface {
             }
         }
 
-        private static class a implements j {
+        // was private before
+        public static class ThumbnailLoaderClientImpl implements IThumbnailLoaderClient {
             private IBinder a;
 
-            a(IBinder var1) {
+            ThumbnailLoaderClientImpl(IBinder var1) {
                 this.a = var1;
             }
 

@@ -28,25 +28,26 @@ public class YouTubeBaseActivity extends Activity {
         super.onCreate(bundle);
         this.a = new b() {
             @Override
-            public void a(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
+            public final void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
                 view.a(YouTubeBaseActivity.this, view, developerKey, listener, YouTubeBaseActivity.this.bundle);
                 YouTubeBaseActivity.b(YouTubeBaseActivity.this);
             }
 
             @Override
-            public void a(YouTubePlayerView view) {
-                if (YouTubeBaseActivity.this.playerView != null && YouTubeBaseActivity.this.playerView != view) {
-                    YouTubeBaseActivity.this.playerView.c(true);
+            public final void a(YouTubePlayerView view) {
+                if (playerView != null && playerView != view) {
+                    playerView.c(true);
                 }
 
-                YouTubeBaseActivity.this.playerView = view;
-                if (YouTubeBaseActivity.this.lifecycleState > 0) {
+                playerView = view;
+                if (lifecycleState > 0) {
                     view.a();
                 }
 
-                if (YouTubeBaseActivity.this.lifecycleState >= 2) {
+                if (lifecycleState >= 2) {
                     view.b();
                 }
+
             }
         };
 
@@ -60,7 +61,6 @@ public class YouTubeBaseActivity extends Activity {
         if (this.playerView != null) {
             this.playerView.a();
         }
-
     }
 
     @Override
@@ -70,7 +70,6 @@ public class YouTubeBaseActivity extends Activity {
         if (this.playerView != null) {
             this.playerView.b();
         }
-
     }
 
     @Override
@@ -79,7 +78,6 @@ public class YouTubeBaseActivity extends Activity {
         if (this.playerView != null) {
             this.playerView.c();
         }
-
         super.onPause();
     }
 
@@ -96,7 +94,6 @@ public class YouTubeBaseActivity extends Activity {
         if (this.playerView != null) {
             this.playerView.d();
         }
-
         super.onStop();
     }
 
@@ -105,7 +102,6 @@ public class YouTubeBaseActivity extends Activity {
         if (this.playerView != null) {
             this.playerView.b(this.isFinishing());
         }
-
         super.onDestroy();
     }
 }

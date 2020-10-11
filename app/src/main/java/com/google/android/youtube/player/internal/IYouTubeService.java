@@ -6,20 +6,20 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface l extends IInterface {
+public interface IYouTubeService extends IInterface {
     IBinder a() throws RemoteException;
 
-    k a(j var1) throws RemoteException;
+    IThumbnailLoaderService a(IThumbnailLoaderClient var1) throws RemoteException;
 
     void a(boolean var1) throws RemoteException;
 
-    public abstract static class a extends Binder implements l {
-        public static l a(IBinder var0) {
+    abstract class YouTubeService extends Binder implements IYouTubeService {
+        public static IYouTubeService a(IBinder var0) {
             if (var0 == null) {
                 return null;
             } else {
-                IInterface var1;
-                return (l)((var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IYouTubeService")) != null && var1 instanceof l ? (l)var1 : new l.a.a(var0));
+                IInterface var1  = var0.queryLocalInterface("com.google.android.youtube.player.internal.IYouTubeService");
+                return var1 instanceof IYouTubeService ? (IYouTubeService)var1 : new YouTubeServiceImpl(var0);
             }
         }
 
@@ -35,8 +35,8 @@ public interface l extends IInterface {
                 case 2:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IYouTubeService");
                     IInterface var8;
-                    Object var7 = (var6 = var2.readStrongBinder()) == null ? null : ((var8 = var6.queryLocalInterface("com.google.android.youtube.player.internal.IThumbnailLoaderClient")) != null && var8 instanceof j ? (j)var8 : new com.google.android.youtube.player.internal.j.a.a(var6));
-                    k var9 = this.a((j)var7);
+                    Object var7 = (var6 = var2.readStrongBinder()) == null ? null : ((var8 = var6.queryLocalInterface("com.google.android.youtube.player.internal.IThumbnailLoaderClient")) != null && var8 instanceof IThumbnailLoaderClient ? (IThumbnailLoaderClient)var8 : new IThumbnailLoaderClient.ThumbnailLoaderClient.ThumbnailLoaderClientImpl(var6));
+                    IThumbnailLoaderService var9 = this.a((IThumbnailLoaderClient)var7);
                     var3.writeNoException();
                     var3.writeStrongBinder(var9 != null ? var9.asBinder() : null);
                     return true;
@@ -54,10 +54,11 @@ public interface l extends IInterface {
             }
         }
 
-        private static class a implements l {
+        // was private before
+        public static class YouTubeServiceImpl implements IYouTubeService {
             private IBinder a;
 
-            a(IBinder var1) {
+            YouTubeServiceImpl(IBinder var1) {
                 this.a = var1;
             }
 
@@ -83,17 +84,17 @@ public interface l extends IInterface {
                 return var3;
             }
 
-            public final k a(j var1) throws RemoteException {
+            public final IThumbnailLoaderService a(IThumbnailLoaderClient var1) throws RemoteException {
                 Parcel var2 = Parcel.obtain();
                 Parcel var3 = Parcel.obtain();
 
-                k var6;
+                IThumbnailLoaderService var6;
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IYouTubeService");
                     var2.writeStrongBinder(var1 != null ? var1.asBinder() : null);
                     this.a.transact(2, var2, var3, 0);
                     var3.readException();
-                    var6 = com.google.android.youtube.player.internal.k.a.a(var3.readStrongBinder());
+                    var6 = IThumbnailLoaderService.ThumbnailLoaderService.a(var3.readStrongBinder());
                 } finally {
                     var3.recycle();
                     var2.recycle();

@@ -2,32 +2,35 @@ package com.google.android.youtube.player.internal;
 
 import android.os.IBinder;
 
+import com.google.android.youtube.player.internal.dynamic.IObjectWrapper;
+
 import java.lang.reflect.Field;
 
-public final class v<T> extends a {
+public final class ObjectWrapper<T> extends IObjectWrapper.ObjectWrapperImpl {
     private final T a;
 
-    private v(T var1) {
+    private ObjectWrapper(T var1) {
         this.a = var1;
     }
 
-    public static <T> u a(T var0) {
-        return new v(var0);
+    public static <T> IObjectWrapper a(T var0) {
+        return new ObjectWrapper(var0);
     }
 
-    public static <T> T a(u var0) {
-        if (var0 instanceof v) {
-            return ((v)var0).a;
+    public static <T> T a(IObjectWrapper wrapper) {
+        if (wrapper instanceof ObjectWrapper) {
+
+            return (T)((ObjectWrapper) wrapper).a;
         } else {
             Field[] var1;
             IBinder var5;
-            if ((var1 = (var5 = var0.asBinder()).getClass().getDeclaredFields()).length == 1) {
-                Field var6;
-                if (!(var6 = var1[0]).isAccessible()) {
-                    var6.setAccessible(true);
+            if ((var1 = (var5 = wrapper.asBinder()).getClass().getDeclaredFields()).length == 1) {
+                Field field;
+                if (!(field = var1[0]).isAccessible()) {
+                    field.setAccessible(true);
 
                     try {
-                        return var6.get(var5);
+                        return (T) field.get(var5);
                     } catch (NullPointerException var2) {
                         throw new IllegalArgumentException("Binder object is null.", var2);
                     } catch (IllegalArgumentException var3) {

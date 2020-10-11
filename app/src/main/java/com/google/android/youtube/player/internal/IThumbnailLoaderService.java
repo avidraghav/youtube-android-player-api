@@ -6,7 +6,7 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface k extends IInterface {
+public interface IThumbnailLoaderService extends IInterface {
     void a(String var1) throws RemoteException;
 
     void a(String var1, int var2) throws RemoteException;
@@ -19,13 +19,13 @@ public interface k extends IInterface {
 
     void d() throws RemoteException;
 
-    public abstract static class a extends Binder implements k {
-        public static k a(IBinder var0) {
+    abstract class ThumbnailLoaderService extends Binder implements IThumbnailLoaderService {
+        public static IThumbnailLoaderService a(IBinder var0) {
             if (var0 == null) {
                 return null;
             } else {
-                IInterface var1;
-                return (k)((var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService")) != null && var1 instanceof k ? (k)var1 : new k.a.a(var0));
+                IInterface var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
+                return var1 instanceof IThumbnailLoaderService ? (IThumbnailLoaderService)var1 : new ThumbnailLoaderServiceImpl(var0);
             }
         }
 
@@ -73,10 +73,11 @@ public interface k extends IInterface {
             }
         }
 
-        private static class a implements k {
+        // was private before
+        public static class ThumbnailLoaderServiceImpl implements IThumbnailLoaderService {
             private IBinder a;
 
-            a(IBinder var1) {
+            ThumbnailLoaderServiceImpl(IBinder var1) {
                 this.a = var1;
             }
 

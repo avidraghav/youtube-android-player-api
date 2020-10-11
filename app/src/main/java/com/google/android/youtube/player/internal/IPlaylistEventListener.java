@@ -6,15 +6,23 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface BinderInterface extends IInterface {
-    void a() throws RemoteException;
+import androidx.annotation.NonNull;
 
-    void b() throws RemoteException;
+public interface IPlaylistEventListener extends IInterface {
 
-    void c() throws RemoteException;
+    int ON_PREVIOUS = 1;
+    int ON_NEXT = 2;
+    int ON_PLAYLIST_ENDED = 3;
+    int UNKNOWN = 1598968902;
 
-    abstract class a extends Binder implements BinderInterface {
-        public a() {
+    void onPrevious() throws RemoteException;
+
+    void onNext() throws RemoteException;
+
+    void onPlaylistEnded() throws RemoteException;
+
+    abstract class PlaylistEventListener extends Binder implements IPlaylistEventListener {
+        public PlaylistEventListener() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IPlaylistEventListener");
         }
 
@@ -24,24 +32,24 @@ public interface BinderInterface extends IInterface {
         }
 
         @Override
-        public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
+        public boolean onTransact(int code, @NonNull Parcel data, Parcel reply, int flags) throws RemoteException {
             switch(code) {
-                case 1:
+                case ON_PREVIOUS:
                     data.enforceInterface("com.google.android.youtube.player.internal.IPlaylistEventListener");
-                    this.a();
+                    this.onPrevious();
                     reply.writeNoException();
                     return true;
-                case 2:
+                case ON_NEXT:
                     data.enforceInterface("com.google.android.youtube.player.internal.IPlaylistEventListener");
-                    this.b();
+                    this.onNext();
                     reply.writeNoException();
                     return true;
-                case 3:
+                case ON_PLAYLIST_ENDED:
                     data.enforceInterface("com.google.android.youtube.player.internal.IPlaylistEventListener");
-                    this.c();
+                    this.onPlaylistEnded();
                     reply.writeNoException();
                     return true;
-                case 1598968902:
+                case UNKNOWN:
                     reply.writeString("com.google.android.youtube.player.internal.IPlaylistEventListener");
                     return true;
                 default:
@@ -49,10 +57,11 @@ public interface BinderInterface extends IInterface {
             }
         }
 
-        private static class a implements BinderInterface {
+        // was private before
+        public static class PlaylistEventListenerImpl implements IPlaylistEventListener {
             private IBinder a;
 
-            a(IBinder var1) {
+            PlaylistEventListenerImpl(IBinder var1) {
                 this.a = var1;
             }
 
@@ -61,7 +70,7 @@ public interface BinderInterface extends IInterface {
                 return this.a;
             }
 
-            public final void a() throws RemoteException {
+            public final void onPrevious() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -76,7 +85,7 @@ public interface BinderInterface extends IInterface {
 
             }
 
-            public final void b() throws RemoteException {
+            public final void onNext() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -91,7 +100,7 @@ public interface BinderInterface extends IInterface {
 
             }
 
-            public final void c() throws RemoteException {
+            public final void onPlaylistEnded() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 

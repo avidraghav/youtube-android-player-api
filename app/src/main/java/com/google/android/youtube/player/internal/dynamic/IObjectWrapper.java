@@ -1,4 +1,4 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.internal.dynamic;
 
 import android.os.Binder;
 import android.os.IBinder;
@@ -6,18 +6,18 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface u extends IInterface {
-    public abstract static class a extends Binder implements u {
-        public a() {
+public interface IObjectWrapper extends IInterface {
+    abstract class ObjectWrapperImpl extends Binder implements IObjectWrapper {
+        public ObjectWrapperImpl() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.dynamic.IObjectWrapper");
         }
 
-        public static u a(IBinder var0) {
+        public static IObjectWrapper a(IBinder var0) {
             if (var0 == null) {
                 return null;
             } else {
-                IInterface var1;
-                return (u)((var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.dynamic.IObjectWrapper")) != null && var1 instanceof u ? (u)var1 : new u.a.a(var0));
+                IInterface var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.dynamic.IObjectWrapper");
+                return var1 instanceof IObjectWrapper ? (IObjectWrapper)var1 : new ObjectWrapperInstance(var0);
             }
         }
 
@@ -35,10 +35,10 @@ public interface u extends IInterface {
             }
         }
 
-        private static class a implements u {
+        private static class ObjectWrapperInstance implements IObjectWrapper {
             private IBinder a;
 
-            a(IBinder var1) {
+            ObjectWrapperInstance(IBinder var1) {
                 this.a = var1;
             }
 

@@ -6,11 +6,11 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface c extends IInterface {
+public interface IConnectionCallbacks extends IInterface {
     void a(String var1, IBinder var2) throws RemoteException;
 
-    public abstract static class a extends Binder implements c {
-        public a() {
+    abstract class ConnectionCallbacks extends Binder implements IConnectionCallbacks {
+        public ConnectionCallbacks() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IConnectionCallbacks");
         }
 
@@ -35,10 +35,11 @@ public interface c extends IInterface {
             }
         }
 
-        private static class a implements c {
+        // was private before
+        public static class ConnectionCallbacksImpl implements IConnectionCallbacks {
             private IBinder a;
 
-            a(IBinder var1) {
+            ConnectionCallbacksImpl(IBinder var1) {
                 this.a = var1;
             }
 

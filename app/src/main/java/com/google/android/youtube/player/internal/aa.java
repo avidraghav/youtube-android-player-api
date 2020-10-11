@@ -7,23 +7,23 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.google.android.youtube.player.internal.t.a;
 
 public abstract class aa {
-    private static final aa a = b();
+    private static final aa a = getInstance();
 
     public aa() {
     }
 
-    private static aa b() {
+    private static aa getInstance() {
         try {
-            Class var0 = Class.forName("com.google.android.youtube.api.locallylinked.LocallyLinkedFactory").asSubclass(aa.class);
+            Class clazz = Class.forName("com.google.android.youtube.api.locallylinked.LocallyLinkedFactory").asSubclass(aa.class);
 
             try {
-                return (aa)var0.newInstance();
-            } catch (InstantiationException var1) {
-                throw new IllegalStateException(var1);
-            } catch (IllegalAccessException var2) {
-                throw new IllegalStateException(var2);
+                return (aa)clazz.newInstance();
+            } catch (InstantiationException e) {
+                throw new IllegalStateException(e);
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException(e);
             }
-        } catch (ClassNotFoundException var3) {
+        } catch (ClassNotFoundException e) {
             return new ac();
         }
     }
@@ -32,9 +32,9 @@ public abstract class aa {
         return a;
     }
 
-    public abstract ConnectionClient a(Context var1, String var2, a var3, com.google.android.youtube.player.internal.t.b var4);
+    public abstract ConnectionClient a(Context context, String developerKey, a var3, t.OnInitializationResult result);
 
-    public abstract EmbeddedPlayer a(Activity var1, ConnectionClient var2, boolean var3) throws com.google.android.youtube.player.internal.w.a;
+    public abstract IEmbeddedPlayer a(Activity activity, ConnectionClient connectionClient, boolean var3) throws RemoteEmbeddedPlayer.RemotePlayerException;
 
-    public abstract com.google.android.youtube.player.internal.a a(ConnectionClient var1, YouTubeThumbnailView var2);
+    public abstract AbstractYouTubeThumbnailLoader a(ConnectionClient connectionClient, YouTubeThumbnailView thumbnail);
 }

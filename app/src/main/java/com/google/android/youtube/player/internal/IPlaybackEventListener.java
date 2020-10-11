@@ -6,7 +6,7 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface f extends IInterface {
+public interface IPlaybackEventListener extends IInterface {
     void a() throws RemoteException;
 
     void b() throws RemoteException;
@@ -17,8 +17,8 @@ public interface f extends IInterface {
 
     void a(int var1) throws RemoteException;
 
-    public abstract static class a extends Binder implements f {
-        public a() {
+    abstract class PlaybackEventListener extends Binder implements IPlaybackEventListener {
+        public PlaybackEventListener() {
             this.attachInterface(this, "com.google.android.youtube.player.internal.IPlaybackEventListener");
         }
 
@@ -63,10 +63,11 @@ public interface f extends IInterface {
             }
         }
 
-        private static class a implements f {
+        // was private before
+        public static class PlaybackEventListenerImpl implements IPlaybackEventListener {
             private IBinder a;
 
-            a(IBinder var1) {
+            PlaybackEventListenerImpl(IBinder var1) {
                 this.a = var1;
             }
 

@@ -7,16 +7,16 @@ import android.os.IInterface;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-public interface i extends IInterface {
-    void a(c var1, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException;
+public interface IServiceBroker extends IInterface {
+    void a(IConnectionCallbacks var1, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException;
 
-    public abstract static class a extends Binder implements i {
-        public static i a(IBinder var0) {
+    abstract class ServiceBroker extends Binder implements IServiceBroker {
+        public static IServiceBroker a(IBinder var0) {
             if (var0 == null) {
                 return null;
             } else {
-                IInterface var1;
-                return (i)((var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IServiceBroker")) != null && var1 instanceof i ? (i)var1 : new i.a.a(var0));
+                IInterface var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IServiceBroker");
+                return var1 instanceof IServiceBroker ? (IServiceBroker)var1 : new ServiceBrokerImpl(var0);
             }
         }
 
@@ -26,19 +26,19 @@ public interface i extends IInterface {
                     var2.enforceInterface("com.google.android.youtube.player.internal.IServiceBroker");
                     IBinder var8;
                     IInterface var11;
-                    Object var9 = (var8 = var2.readStrongBinder()) == null ? null : ((var11 = var8.queryLocalInterface("com.google.android.youtube.player.internal.IConnectionCallbacks")) != null && var11 instanceof c ? (c)var11 : new com.google.android.youtube.player.internal.c.a.a(var8));
+                    Object var9 = (var8 = var2.readStrongBinder()) == null ? null : ((var11 = var8.queryLocalInterface("com.google.android.youtube.player.internal.IConnectionCallbacks")) != null && var11 instanceof IConnectionCallbacks ? (IConnectionCallbacks)var11 : new IConnectionCallbacks.ConnectionCallbacks.ConnectionCallbacksImpl(var8));
                     var4 = var2.readInt();
                     String var5 = var2.readString();
                     String var6 = var2.readString();
                     String var7 = var2.readString();
                     Bundle var10;
                     if (0 != var2.readInt()) {
-                        var10 = (Bundle)Bundle.CREATOR.createFromParcel(var2);
+                        var10 = Bundle.CREATOR.createFromParcel(var2);
                     } else {
                         var10 = null;
                     }
 
-                    this.a((c)var9, var4, var5, var6, var7, var10);
+                    this.a((IConnectionCallbacks)var9, var4, var5, var6, var7, var10);
                     var3.writeNoException();
                     return true;
                 case 1598968902:
@@ -49,10 +49,11 @@ public interface i extends IInterface {
             }
         }
 
-        private static class a implements i {
+        // was private before
+        public static class ServiceBrokerImpl implements IServiceBroker {
             private IBinder a;
 
-            a(IBinder var1) {
+            ServiceBrokerImpl(IBinder var1) {
                 this.a = var1;
             }
 
@@ -60,7 +61,7 @@ public interface i extends IInterface {
                 return this.a;
             }
 
-            public final void a(c var1, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException {
+            public final void a(IConnectionCallbacks var1, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException {
                 Parcel var7 = Parcel.obtain();
                 Parcel var8 = Parcel.obtain();
 

@@ -111,7 +111,7 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
         private a() {
         }
 
-        public final void a(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
+        public final void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
             YouTubePlayerSupportFragment.this.initialize(developerKey, YouTubePlayerSupportFragment.this.onInitializedListener);
         }
 

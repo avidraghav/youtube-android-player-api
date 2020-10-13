@@ -19,12 +19,11 @@ import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.internal.ConnectionClient;
 import com.google.android.youtube.player.internal.IEmbeddedPlayer;
 import com.google.android.youtube.player.internal.RemoteEmbeddedPlayer;
-import com.google.android.youtube.player.internal.YouTubePlayerImpl;
-import com.google.android.youtube.player.internal.aa;
 import com.google.android.youtube.player.internal.Validators;
 import com.google.android.youtube.player.internal.YouTubePlayerFrameLayout;
+import com.google.android.youtube.player.internal.YouTubePlayerImpl;
+import com.google.android.youtube.player.internal.aa;
 import com.google.android.youtube.player.internal.t;
-import com.google.android.youtube.player.internal.y;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -80,15 +79,29 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
      * @param defStyleAttr The default style to apply to this view.
      * @throws IllegalArgumentException if the context is not a {@link YouTubeBaseActivity}.
      */
-    public YouTubePlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public YouTubePlayerView(Context context, final AttributeSet attrs, final int defStyleAttr) {
+        this(context, attrs, defStyleAttr, null);
+    }
+
+    /**
+     * Create a {@link YouTubePlayerView}. This constructor is for use by a
+     * {@link android.view.LayoutInflater} when the view is inflated from XML.
+     *
+     * @param context      The context this view should use. This must be a {@link YouTubeBaseActivity}.
+     * @param attrs        The attributes of the XML tag that is inflating the view.
+     * @param defStyleAttr The default style to apply to this view.
+     * @param t            TODO Rename and describe the parameter
+     * @throws IllegalArgumentException if the context is not a {@link YouTubeBaseActivity}.
+     */
+    YouTubePlayerView(final Context context, final AttributeSet attrs, final int defStyleAttr, B t) {
         super(Validators.notNull(context, "context cannot be null"), attrs, defStyleAttr);
 
         if (!(context instanceof YouTubeBaseActivity)) {
             throw new IllegalStateException("A YouTubePlayerView can only be created with an Activity which extends YouTubeBaseActivity as its context.");
         }
 
-        B var4 = ((YouTubeBaseActivity) context).getA();
-        this.c = Validators.notNull(var4, "listener cannot be null");
+        if (t == null) t = ((YouTubeBaseActivity) context).getA();
+        this.c = Validators.notNull(t, "listener cannot be null");
         if (this.getBackground() == null) {
             this.setBackgroundColor(Color.BLACK);
         }
@@ -172,15 +185,14 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         IEmbeddedPlayer player;
         try {
             player = aa.a().a(activity, youTubePlayerView.client, youTubePlayerView.k);
-        }
-        catch (RemoteEmbeddedPlayer.RemotePlayerException e) {
-            y.a("Error creating YouTubePlayerView", e);
+        } catch (RemoteEmbeddedPlayer.RemotePlayerException e) {
+            Log.w("YouTubePlayerAPI", "Error creating YouTubePlayerView", e);
             youTubePlayerView.onInitializationCompleted(YouTubeInitializationResult.INTERNAL_ERROR);
             return;
         }
         youTubePlayerView.youTubePlayer = new YouTubePlayerImpl(youTubePlayerView.client, player);
         youTubePlayerView.addView(youTubePlayerView.f = youTubePlayerView.youTubePlayer.a());
-        youTubePlayerView.removeView((View)youTubePlayerView.frameLayout);
+        youTubePlayerView.removeView((View) youTubePlayerView.frameLayout);
         youTubePlayerView.c.a(youTubePlayerView);
         if (youTubePlayerView.onInitializedListener != null) {
             boolean a3 = false;

@@ -13,20 +13,19 @@ public final class ObjectWrapper<T> extends IObjectWrapper.Stub {
         this.a = var1;
     }
 
-    public static <T> IObjectWrapper a(T var0) {
-        return new ObjectWrapper(var0);
+    public static <T> IObjectWrapper a(T t) {
+        return new ObjectWrapper<Object>(t);
     }
 
     public static <T> T a(IObjectWrapper wrapper) {
         if (wrapper instanceof ObjectWrapper) {
-
-            return (T)((ObjectWrapper) wrapper).a;
+            return (T) ((ObjectWrapper) wrapper).a;
         } else {
-            Field[] fields;
+            Field[] declaredFields;
             IBinder remoteBinder;
-            if ((fields = (remoteBinder = wrapper.asBinder()).getClass().getDeclaredFields()).length == 1) {
+            if ((declaredFields = (remoteBinder = wrapper.asBinder()).getClass().getDeclaredFields()).length == 1) {
                 Field field;
-                if (!(field = fields[0]).isAccessible()) {
+                if (!(field = declaredFields[0]).isAccessible()) {
                     field.setAccessible(true);
 
                     try {

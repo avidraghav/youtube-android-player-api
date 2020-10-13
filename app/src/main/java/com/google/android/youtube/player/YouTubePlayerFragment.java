@@ -1,7 +1,6 @@
 package com.google.android.youtube.player;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -55,7 +54,6 @@ public class YouTubePlayerFragment extends Fragment implements Provider {
     @Override
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
         this.youTubePlayerView = new YouTubePlayerView(this.getActivity(), (AttributeSet)null, 0, this.a);
-        //    (Context context, AttributeSet attrs, int defStyleAttr) {
         this.a();
         return this.youTubePlayerView;
     }

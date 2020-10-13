@@ -6,13 +6,13 @@ import android.util.AttributeSet;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.google.android.youtube.player.internal.AbstractYouTubeThumbnailLoader;
-import com.google.android.youtube.player.internal.aa;
-import com.google.android.youtube.player.internal.Validators;
 import com.google.android.youtube.player.internal.ConnectionClient;
+import com.google.android.youtube.player.internal.Validators;
+import com.google.android.youtube.player.internal.aa;
 import com.google.android.youtube.player.internal.t;
 
 public final class YouTubeThumbnailView extends AppCompatImageView {
-    private ConnectionClient a;
+    private ConnectionClient client;
     private AbstractYouTubeThumbnailLoader b;
 
     public YouTubeThumbnailView(Context var1) {
@@ -29,8 +29,8 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
 
     public final void initialize(String var1, YouTubeThumbnailView.OnInitializedListener var2) {
         YouTubeThumbnailView.a var3 = new YouTubeThumbnailView.a(this, var2);
-        this.a = aa.a().a(this.getContext(), var1, var3, var3);
-        this.a.connect();
+        this.client = aa.a().a(this.getContext(), var1, var3, var3);
+        this.client.connect();
     }
 
     @Override
@@ -53,8 +53,8 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
         }
 
         public final void a() {
-            if (this.a != null && this.a.a != null) {
-                this.a.b = aa.a().a(this.a.a, this.a);
+            if (this.a != null && this.a.client != null) {
+                this.a.b = aa.a().a(this.a.client, this.a);
                 this.b.onInitializationSuccess(this.a, this.a.b);
                 this.c();
             }
@@ -72,11 +72,10 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
 
         private void c() {
             if (this.a != null) {
-                YouTubeThumbnailView.c(this.a);
+                this.a.client = null;
                 this.a = null;
                 this.b = null;
             }
-
         }
     }
 

@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
-import com.google.android.youtube.player.YouTubePlayerView.b;
+import com.google.android.youtube.player.YouTubePlayerView.B;
 import com.google.android.youtube.player.internal.Validators;
 
 public class YouTubePlayerSupportFragment extends Fragment implements Provider {
@@ -107,7 +107,7 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
         super.onDestroy();
     }
 
-    private final class a implements b {
+    private final class a implements B {
         private a() {
         }
 

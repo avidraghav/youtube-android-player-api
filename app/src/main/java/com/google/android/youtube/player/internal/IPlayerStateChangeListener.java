@@ -72,10 +72,10 @@ public interface IPlayerStateChangeListener extends IInterface {
         }
 
         // was private before
-        public static class PlayerStateChangeListener implements IPlayerStateChangeListener {
+        public static class Proxy implements IPlayerStateChangeListener {
             private IBinder a;
 
-            PlayerStateChangeListener(IBinder var1) {
+            Proxy(IBinder var1) {
                 this.a = var1;
             }
 

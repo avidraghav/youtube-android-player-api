@@ -7,7 +7,7 @@ import android.os.Parcel;
 import android.os.RemoteException;
 
 public interface IConnectionCallbacks extends IInterface {
-    void a(String var1, IBinder var2) throws RemoteException;
+    void a(String initializationResult, IBinder var2) throws RemoteException;
 
     abstract class Stub extends Binder implements IConnectionCallbacks {
         public Stub() {
@@ -22,9 +22,9 @@ public interface IConnectionCallbacks extends IInterface {
             switch(var1) {
                 case 1:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IConnectionCallbacks");
-                    String var5 = var2.readString();
+                    String initResult = var2.readString();
                     IBinder var6 = var2.readStrongBinder();
-                    this.a(var5, var6);
+                    this.a(initResult, var6);
                     var3.writeNoException();
                     return true;
                 case 1598968902:
@@ -47,14 +47,14 @@ public interface IConnectionCallbacks extends IInterface {
                 return this.a;
             }
 
-            public final void a(String var1, IBinder var2) throws RemoteException {
+            public final void a(String initResult, IBinder binder) throws RemoteException {
                 Parcel var3 = Parcel.obtain();
                 Parcel var4 = Parcel.obtain();
 
                 try {
                     var3.writeInterfaceToken("com.google.android.youtube.player.internal.IConnectionCallbacks");
-                    var3.writeString(var1);
-                    var3.writeStrongBinder(var2);
+                    var3.writeString(initResult);
+                    var3.writeStrongBinder(binder);
                     this.a.transact(1, var3, var4, 0);
                     var4.readException();
                 } finally {

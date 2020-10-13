@@ -14,12 +14,12 @@ public interface IYouTubeService extends IInterface {
     void a(boolean var1) throws RemoteException;
 
     abstract class Stub extends Binder implements IYouTubeService {
-        public static IYouTubeService a(IBinder var0) {
-            if (var0 == null) {
+        public static IYouTubeService asInterface(IBinder binder) {
+            if (binder == null) {
                 return null;
             } else {
-                IInterface var1  = var0.queryLocalInterface("com.google.android.youtube.player.internal.IYouTubeService");
-                return var1 instanceof IYouTubeService ? (IYouTubeService)var1 : new YouTubeService(var0);
+                IInterface var1  = binder.queryLocalInterface("com.google.android.youtube.player.internal.IYouTubeService");
+                return var1 instanceof IYouTubeService ? (IYouTubeService)var1 : new YouTubeService(binder);
             }
         }
 
@@ -94,7 +94,7 @@ public interface IYouTubeService extends IInterface {
                     var2.writeStrongBinder(var1 != null ? var1.asBinder() : null);
                     this.a.transact(2, var2, var3, 0);
                     var3.readException();
-                    var6 = IThumbnailLoaderService.Stub.a(var3.readStrongBinder());
+                    var6 = IThumbnailLoaderService.Stub.asInterface(var3.readStrongBinder());
                 } finally {
                     var3.recycle();
                     var2.recycle();

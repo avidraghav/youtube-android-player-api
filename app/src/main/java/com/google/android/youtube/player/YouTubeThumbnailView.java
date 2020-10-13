@@ -30,7 +30,7 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
     public final void initialize(String var1, YouTubeThumbnailView.OnInitializedListener var2) {
         YouTubeThumbnailView.a var3 = new YouTubeThumbnailView.a(this, var2);
         this.a = aa.a().a(this.getContext(), var1, var3, var3);
-        this.a.e();
+        this.a.connect();
     }
 
     @Override
@@ -43,7 +43,7 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
         super.finalize();
     }
 
-    private static final class a implements com.google.android.youtube.player.internal.t.a, t.OnInitializationResult {
+    private static final class a implements t.C, t.OnInitializationResult {
         private YouTubeThumbnailView a;
         private YouTubeThumbnailView.OnInitializedListener b;
 

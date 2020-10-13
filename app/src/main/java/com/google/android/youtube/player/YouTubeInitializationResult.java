@@ -13,10 +13,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.android.youtube.player.internal.Validators;
-import com.google.android.youtube.player.internal.m;
-import com.google.android.youtube.player.internal.Logging;
+import com.google.android.youtube.player.internal.LocalizedYouTubePlayerTexts;
 import com.google.android.youtube.player.internal.z;
 
 /**
@@ -169,56 +169,67 @@ public enum YouTubeInitializationResult {
      * @return
      */
     public final Dialog getErrorDialog(Activity activity, int requestCode, OnCancelListener cancelListener) {
-        Builder var4 = new Builder(activity);
+        Builder builder = new Builder(activity);
         if (cancelListener != null) {
-            var4.setOnCancelListener(cancelListener);
+            builder.setOnCancelListener(cancelListener);
         }
 
-        Intent var10000;
+        Intent intent;
         switch (this) {
             case SERVICE_MISSING:
             case SERVICE_VERSION_UPDATE_REQUIRED:
-                var10000 = z.getPlayStoreIntent(z.getPackageName(activity));
+                intent = z.getPlayStoreIntent(z.getPackageName(activity));
                 break;
             case SERVICE_DISABLED:
-                var10000 = z.getAppDetailsSettingsIntent(z.getPackageName(activity));
+                intent = z.getAppDetailsSettingsIntent(z.getPackageName(activity));
                 break;
             default:
-                var10000 = null;
+                intent = null;
         }
 
-        Intent intent = var10000;
-        YouTubeInitializationResult.a var7 = new YouTubeInitializationResult.a(activity, intent, requestCode);
-        m var6 = new m(activity);
+        OnActionClickListener clickListener = new OnActionClickListener(activity, intent, requestCode);
+        LocalizedYouTubePlayerTexts localizedTexts = new LocalizedYouTubePlayerTexts(activity);
         switch (this) {
             case SERVICE_MISSING:
-                return var4.setTitle(var6.b).setMessage(var6.c).setPositiveButton(var6.d, var7).create();
+                return builder
+                        .setTitle(localizedTexts.getYouTubeAppTitle)
+                        .setMessage(localizedTexts.getYouTubeAppText)
+                        .setPositiveButton(localizedTexts.getYouTubeAppAction, clickListener)
+                        .create();
             case SERVICE_DISABLED:
-                return var4.setTitle(var6.e).setMessage(var6.f).setPositiveButton(var6.g, var7).create();
+                return builder
+                        .setTitle(localizedTexts.enableYouTubeAppTitle)
+                        .setMessage(localizedTexts.enableYouTubeAppText)
+                        .setPositiveButton(localizedTexts.enableYouTubeAppAction, clickListener)
+                        .create();
             case SERVICE_VERSION_UPDATE_REQUIRED:
-                return var4.setTitle(var6.h).setMessage(var6.i).setPositiveButton(var6.j, var7).create();
+                return builder
+                        .setTitle(localizedTexts.updateYouTubeAppTitle)
+                        .setMessage(localizedTexts.updateYouTubeAppText)
+                        .setPositiveButton(localizedTexts.updateYouTubeAppAction, clickListener)
+                        .create();
             default:
                 throw new IllegalArgumentException("Unexpected errorReason: ".concat(this.name()));
         }
     }
 
-    private static final class a implements OnClickListener {
+    private static final class OnActionClickListener implements OnClickListener {
         private final Activity activity;
         private final Intent intent;
-        private final int c;
+        private final int requestCode;
 
-        public a(Activity activity, Intent var2, int var3) {
+        public OnActionClickListener(Activity activity, Intent intent, int requestCode) {
             this.activity = (Activity) Validators.notNull(activity);
-            this.intent = (Intent) Validators.notNull(var2);
-            this.c = (Integer) Validators.notNull(var3);
+            this.intent = (Intent) Validators.notNull(intent);
+            this.requestCode = Validators.notNull(requestCode);
         }
 
         public final void onClick(DialogInterface dialog, int var2) {
             try {
-                this.activity.startActivityForResult(this.intent, this.c);
+                this.activity.startActivityForResult(this.intent, this.requestCode);
                 dialog.dismiss();
-            } catch (ActivityNotFoundException var3) {
-                Logging.error("Can't perform resolution for YouTubeInitalizationError", var3);
+            } catch (ActivityNotFoundException e) {
+                Log.e("YouTubeAndroidPlayerAPI", "Can't perform resolution for YouTubeInitializationError", e);
             }
         }
     }

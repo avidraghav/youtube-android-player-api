@@ -22,15 +22,15 @@ public final class ObjectWrapper<T> extends IObjectWrapper.Stub {
 
             return (T)((ObjectWrapper) wrapper).a;
         } else {
-            Field[] var1;
-            IBinder var5;
-            if ((var1 = (var5 = wrapper.asBinder()).getClass().getDeclaredFields()).length == 1) {
+            Field[] fields;
+            IBinder remoteBinder;
+            if ((fields = (remoteBinder = wrapper.asBinder()).getClass().getDeclaredFields()).length == 1) {
                 Field field;
-                if (!(field = var1[0]).isAccessible()) {
+                if (!(field = fields[0]).isAccessible()) {
                     field.setAccessible(true);
 
                     try {
-                        return (T) field.get(var5);
+                        return (T) field.get(remoteBinder);
                     } catch (NullPointerException var2) {
                         throw new IllegalArgumentException("Binder object is null.", var2);
                     } catch (IllegalArgumentException var3) {

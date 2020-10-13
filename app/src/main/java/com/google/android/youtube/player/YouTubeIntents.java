@@ -369,7 +369,7 @@ public final class YouTubeIntents {
      */
     static Intent addIntentExtras(Intent intent, Context context) {
         intent.putExtra("app_package", context.getPackageName())
-                .putExtra("app_version", z.d(context))
+                .putExtra("app_version", z.getPackageVersionName(context))
                 .putExtra("client_library_version", z.a());
         return intent;
     }

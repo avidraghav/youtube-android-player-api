@@ -1,6 +1,7 @@
 package com.google.android.youtube.player.internal;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -12,19 +13,20 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
     private final WeakReference<YouTubeThumbnailView> thumbnailViewWeakReference;
     private OnThumbnailLoadedListener onThumbnailLoadedListener;
     private boolean hasPlaylist;
+    // TODO isDisconnected
     private boolean isReleased;
 
     public AbstractYouTubeThumbnailLoader(YouTubeThumbnailView thumbnailView) {
         this.thumbnailViewWeakReference = new WeakReference<>(Validators.notNull(thumbnailView));
     }
 
-    // TODO hasResources / holdsResources
-    protected boolean hasResources() {
+    // TODO hasResources / holdsResources / isConnected
+    protected boolean isConnected() {
         return !this.isReleased;
     }
 
     private void checkResources() {
-        if (!this.hasResources()) {
+        if (!this.isConnected()) {
             throw new IllegalStateException("This YouTubeThumbnailLoader has been released");
         }
     }
@@ -102,7 +104,7 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
 
     @Override
     public final void release() {
-        if (this.hasResources()) {
+        if (this.isConnected()) {
             this.isReleased = true;
             this.onThumbnailLoadedListener = null;
             this.h();
@@ -111,8 +113,8 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
 
     // TODO finalize
     public final void b() {
-        if (this.hasResources()) {
-            Logging.warn("The finalize() method for a YouTubeThumbnailLoader has work to do. You should have called release().");
+        if (this.isConnected()) {
+            Log.w("YouTubeAndroidPlayerAPI", "The finalize() method for a YouTubeThumbnailLoader has work to do. You should have called release().");
             this.release();
         }
     }
@@ -138,13 +140,13 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
     // TODO hasPrevious
     public abstract boolean g();
 
-    // TODO release
+    // TODO disconnect / release
     public abstract void h();
 
     // TODO loadThumbnail might also be setThumbnail
     public final void loadThumbnail(Bitmap thumbnailBitmap, String videoId) {
         YouTubeThumbnailView thumbnail = this.thumbnailViewWeakReference.get();
-        if (this.hasResources() && thumbnail != null) {
+        if (this.isConnected() && thumbnail != null) {
             thumbnail.setImageBitmap(thumbnailBitmap);
             if (this.onThumbnailLoadedListener != null) {
                 this.onThumbnailLoadedListener.onThumbnailLoaded(thumbnail, videoId);
@@ -155,7 +157,7 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
 
     public final void b(String errorReasonString) {
         YouTubeThumbnailView thumbnailView = this.thumbnailViewWeakReference.get();
-        if (this.hasResources() && this.onThumbnailLoadedListener != null && thumbnailView != null) {
+        if (this.isConnected() && this.onThumbnailLoadedListener != null && thumbnailView != null) {
             ErrorReason reason;
             try {
                 reason = ErrorReason.valueOf(errorReasonString);

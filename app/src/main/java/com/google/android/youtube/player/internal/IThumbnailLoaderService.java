@@ -22,12 +22,12 @@ public interface IThumbnailLoaderService extends IInterface {
     void release() throws RemoteException;
 
     abstract class Stub extends Binder implements IThumbnailLoaderService {
-        public static IThumbnailLoaderService a(IBinder var0) {
-            if (var0 == null) {
+        public static IThumbnailLoaderService asInterface(IBinder binder) {
+            if (binder == null) {
                 return null;
             } else {
-                IInterface var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
-                return var1 instanceof IThumbnailLoaderService ? (IThumbnailLoaderService)var1 : new ThumbnailLoaderService(var0);
+                IInterface var1 = binder.queryLocalInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
+                return var1 instanceof IThumbnailLoaderService ? (IThumbnailLoaderService)var1 : new ThumbnailLoaderService(binder);
             }
         }
 

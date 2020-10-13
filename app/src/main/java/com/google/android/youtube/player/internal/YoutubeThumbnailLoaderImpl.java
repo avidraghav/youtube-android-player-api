@@ -44,8 +44,8 @@ public final class YoutubeThumbnailLoaderImpl extends AbstractYouTubeThumbnailLo
     }
 
     @Override
-    protected final boolean hasResources() {
-        return super.hasResources() && this.thumbnailLoaderService != null;
+    protected final boolean isConnected() {
+        return super.isConnected() && this.thumbnailLoaderService != null;
     }
 
     @Override
@@ -110,7 +110,7 @@ public final class YoutubeThumbnailLoaderImpl extends AbstractYouTubeThumbnailLo
         } catch (RemoteException var1) {
         }
 
-        this.connectionClient.d();
+        this.connectionClient.disconnect();
         this.thumbnailLoaderService = null;
         this.connectionClient = null;
     }

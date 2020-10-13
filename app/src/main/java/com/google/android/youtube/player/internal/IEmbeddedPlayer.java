@@ -138,7 +138,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
     abstract class Stub extends Binder implements IEmbeddedPlayer {
 
-        public static IEmbeddedPlayer getInstance(IBinder binder) {
+        public static IEmbeddedPlayer asInterface(IBinder binder) {
             if (binder == null) {
                 return null;
             } else {
@@ -317,25 +317,25 @@ public interface IEmbeddedPlayer extends IInterface {
                     return true;
                 case 26:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IOnFullscreenListener")) != null && var8 instanceof IOnFullscreenListener ? (IOnFullscreenListener) var8 : new IOnFullscreenListener.Stub.OnFullscreenListener(var13));
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IOnFullscreenListener")) != null && var8 instanceof IOnFullscreenListener ? (IOnFullscreenListener) var8 : new IOnFullscreenListener.Stub.Proxy(var13));
                     this.setOnFullscreenListener((IOnFullscreenListener) var14);
                     reply.writeNoException();
                     return true;
                 case 27:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaylistEventListener")) != null && var8 instanceof IPlaylistEventListener ? (IPlaylistEventListener) var8 : new IPlaylistEventListener.Stub.PlaylistEventListener(var13));
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaylistEventListener")) != null && var8 instanceof IPlaylistEventListener ? (IPlaylistEventListener) var8 : new IPlaylistEventListener.Stub.Proxy(var13));
                     this.setPlaylistEventListener((IPlaylistEventListener) var14);
                     reply.writeNoException();
                     return true;
                 case 28:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener")) != null && var8 instanceof IPlayerStateChangeListener ? (IPlayerStateChangeListener) var8 : new IPlayerStateChangeListener.Stub.PlayerStateChangeListener(var13));
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener")) != null && var8 instanceof IPlayerStateChangeListener ? (IPlayerStateChangeListener) var8 : new IPlayerStateChangeListener.Stub.Proxy(var13));
                     this.setPlayerStateChangeListener((IPlayerStateChangeListener) var14);
                     reply.writeNoException();
                     return true;
                 case 29:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaybackEventListener")) != null && var8 instanceof IPlaybackEventListener ? (IPlaybackEventListener) var8 : new IPlaybackEventListener.Stub.PlaybackEventListener(var13));
+                    var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaybackEventListener")) != null && var8 instanceof IPlaybackEventListener ? (IPlaybackEventListener) var8 : new IPlaybackEventListener.Stub.Proxy(var13));
                     this.setPlaybackEventListener((IPlaybackEventListener) var14);
                     reply.writeNoException();
                     return true;

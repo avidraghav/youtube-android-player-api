@@ -10,63 +10,68 @@ public final class YouTubeStandalonePlayer {
     private YouTubeStandalonePlayer() {
     }
 
-    public static Intent createVideoIntent(Activity var0, String var1, String var2) {
-        return createVideoIntent(var0, var1, var2, 0, false, false);
+    public static Intent createVideoIntent(Activity activity, String developerKey, String videoId) {
+        return createVideoIntent(activity, developerKey, videoId, 0, false, false);
     }
 
-    public static Intent createVideoIntent(Activity var0, String var1, String var2, int var3, boolean var4, boolean var5) {
-        if (var2 == null) {
+    public static Intent createVideoIntent(Activity activity, String developerKey, String videoId, int startTimeMillis, boolean autoPlay, boolean lightBoxMode) {
+        if (videoId == null) {
             throw new NullPointerException("The videoId cannot be null");
-        } else if (var1 == null) {
+        } else if (developerKey == null) {
             throw new NullPointerException("The developerKey cannot be null");
         } else {
-            return a((new Intent("com.google.android.youtube.api.StandalonePlayerActivity.START")).putExtra("video_id", var2), var0, var1, var3, var4, var5);
+            return a((new Intent("com.google.android.youtube.api.StandalonePlayerActivity.START")).putExtra("video_id", videoId), activity, developerKey, startTimeMillis, autoPlay, lightBoxMode);
         }
     }
 
-    public static Intent createPlaylistIntent(Activity var0, String var1, String var2) {
-        return createPlaylistIntent(var0, var1, var2, 0, 0, false, false);
+    public static Intent createPlaylistIntent(Activity activity, String developerKey, String playlistId) {
+        return createPlaylistIntent(activity, developerKey, playlistId, 0, 0, false, false);
     }
 
-    public static Intent createPlaylistIntent(Activity var0, String var1, String var2, int var3, int var4, boolean var5, boolean var6) {
-        if (var2 == null) {
+    public static Intent createPlaylistIntent(Activity activity, String developerKey, String playlistId, int currentIndex, int startTimeMillis, boolean autoPlay, boolean lightBoxMode) {
+        if (playlistId == null) {
             throw new NullPointerException("The playlistId cannot be null");
-        } else if (var1 == null) {
+        } else if (developerKey == null) {
             throw new NullPointerException("The developerKey cannot be null");
         } else {
-            return a((new Intent("com.google.android.youtube.api.StandalonePlayerActivity.START")).putExtra("playlist_id", var2).putExtra("current_index", var3), var0, var1, var4, var5, var6);
+            return a((new Intent("com.google.android.youtube.api.StandalonePlayerActivity.START"))
+                    .putExtra("playlist_id", playlistId)
+                    .putExtra("current_index", currentIndex), activity, developerKey, startTimeMillis, autoPlay, lightBoxMode);
         }
     }
 
-    public static Intent createVideosIntent(Activity var0, String var1, List<String> var2) {
-        return createVideosIntent(var0, var1, var2, 0, 0, false, false);
+    public static Intent createVideosIntent(Activity activity, String developerKey, List<String> videoIds) {
+        return createVideosIntent(activity, developerKey, videoIds, 0, 0, false, false);
     }
 
-    public static Intent createVideosIntent(Activity var0, String var1, List<String> var2, int var3, int var4, boolean var5, boolean var6) {
-        if (var2 == null) {
+    public static Intent createVideosIntent(Activity activity, String developerKey, List<String> videoIds, int currentIndex, int startTimeMillis, boolean autoPlay, boolean lightBoxMode) {
+        if (videoIds == null) {
             throw new NullPointerException("The list of videoIds cannot be null");
-        } else if (var2.isEmpty()) {
+        } else if (videoIds.isEmpty()) {
             throw new IllegalStateException("The list of videoIds cannot be empty");
-        } else if (var1 == null) {
+        } else if (developerKey == null) {
             throw new NullPointerException("The developerKey cannot be null");
         } else {
-            return a((new Intent("com.google.android.youtube.api.StandalonePlayerActivity.START")).putStringArrayListExtra("video_ids", new ArrayList(var2)).putExtra("current_index", var3), var0, var1, var4, var5, var6);
+            return a((new Intent("com.google.android.youtube.api.StandalonePlayerActivity.START"))
+                    .putStringArrayListExtra("video_ids", new ArrayList<>(videoIds))
+                    .putExtra("current_index", currentIndex), activity, developerKey, startTimeMillis, autoPlay, lightBoxMode);
         }
     }
 
-    private static Intent a(Intent var0, Activity var1, String var2, int var3, boolean var4, boolean var5) {
-        YouTubeIntents.addIntentExtras(var0, var1).putExtra("developer_key", var2).putExtra("autoplay", var4).putExtra("lightbox_mode", var5).putExtra("start_time_millis", var3).putExtra("window_has_status_bar", (var1.getWindow().getAttributes().flags & 1024) == 0);
-        return var0;
+    private static Intent a(Intent intent, Activity activity, String developerKey, int startTimeMillis, boolean autoPlay, boolean lightBoxMode) {
+        YouTubeIntents.addIntentExtras(intent, activity)
+                .putExtra("developer_key", developerKey)
+                .putExtra("autoplay", autoPlay)
+                .putExtra("lightbox_mode", lightBoxMode)
+                .putExtra("start_time_millis", startTimeMillis)
+                .putExtra("window_has_status_bar", (activity.getWindow().getAttributes().flags & 1024) == 0);
+        return intent;
     }
 
-    public static YouTubeInitializationResult getReturnedInitializationResult(Intent var0) {
-        String var3 = var0.getExtras().getString("initialization_result");
-
+    public static YouTubeInitializationResult getReturnedInitializationResult(Intent intent) {
         try {
-            return YouTubeInitializationResult.valueOf(var3);
-        } catch (IllegalArgumentException var1) {
-            return YouTubeInitializationResult.UNKNOWN_ERROR;
-        } catch (NullPointerException var2) {
+            return YouTubeInitializationResult.valueOf(intent.getExtras().getString("initialization_result"));
+        } catch (IllegalArgumentException | NullPointerException e) {
             return YouTubeInitializationResult.UNKNOWN_ERROR;
         }
     }

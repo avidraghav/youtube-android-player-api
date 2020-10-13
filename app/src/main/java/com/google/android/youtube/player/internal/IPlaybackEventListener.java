@@ -64,10 +64,10 @@ public interface IPlaybackEventListener extends IInterface {
         }
 
         // was private before
-        public static class PlaybackEventListener implements IPlaybackEventListener {
+        public static class Proxy implements IPlaybackEventListener {
             private IBinder a;
 
-            PlaybackEventListener(IBinder var1) {
+            Proxy(IBinder var1) {
                 this.a = var1;
             }
 

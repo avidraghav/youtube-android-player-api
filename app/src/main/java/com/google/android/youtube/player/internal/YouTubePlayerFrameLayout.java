@@ -13,7 +13,7 @@ public final class YouTubePlayerFrameLayout extends FrameLayout {
 
     public YouTubePlayerFrameLayout(Context context) {
         super(context, null, z.getDefaultStyleAttribute(context));
-        m var2 = new m(context);
+        LocalizedYouTubePlayerTexts var2 = new LocalizedYouTubePlayerTexts(context);
         this.setBackgroundColor(Color.BLACK);
         this.progressBar = new ProgressBar(context);
         this.progressBar.setVisibility(GONE);
@@ -25,7 +25,7 @@ public final class YouTubePlayerFrameLayout extends FrameLayout {
         this.textView.setVisibility(GONE);
         this.textView.setPadding(var3, var3, var3, var3);
         this.textView.setGravity(Gravity.CENTER);
-        this.textView.setText(var2.a);
+        this.textView.setText(var2.errorInitializingPlayer);
         this.addView(this.textView, new LayoutParams(-2, -2, Gravity.CENTER));
     }
 

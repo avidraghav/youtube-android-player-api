@@ -19,6 +19,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
         this.embeddedPlayer = Validators.notNull(embeddedPlayer, "embeddedPlayer cannot be null");
     }
 
+    // TODO release / disconnect / setDisconnected / setReleased
     public final void a(boolean var1) {
         try {
             this.embeddedPlayer.a(var1);
@@ -27,7 +28,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
             throw new YouTubePlayerException(e);
         }
 
-        this.connectionClient.d();
+        this.connectionClient.disconnect();
     }
 
     @Override

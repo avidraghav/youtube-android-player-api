@@ -58,10 +58,10 @@ public interface IPlaylistEventListener extends IInterface {
         }
 
         // was private before
-        public static class PlaylistEventListener implements IPlaylistEventListener {
+        public static class Proxy implements IPlaylistEventListener {
             private IBinder a;
 
-            PlaylistEventListener(IBinder var1) {
+            Proxy(IBinder var1) {
                 this.a = var1;
             }
 

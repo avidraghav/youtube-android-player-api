@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,11 +17,14 @@ import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.internal.ConnectionClient;
+import com.google.android.youtube.player.internal.IEmbeddedPlayer;
+import com.google.android.youtube.player.internal.RemoteEmbeddedPlayer;
 import com.google.android.youtube.player.internal.YouTubePlayerImpl;
 import com.google.android.youtube.player.internal.aa;
 import com.google.android.youtube.player.internal.Validators;
 import com.google.android.youtube.player.internal.YouTubePlayerFrameLayout;
 import com.google.android.youtube.player.internal.t;
+import com.google.android.youtube.player.internal.y;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,9 +32,9 @@ import java.util.Set;
 
 public final class YouTubePlayerView extends ViewGroup implements Provider {
     private final OnGlobalFocusChangeListener globalFocusChangeListener;
-    private final Set<View> b;
-    private final YouTubePlayerView.b c;
-    private ConnectionClient d;
+    private Set<View> b;
+    private final B c;
+    private ConnectionClient client;
     private YouTubePlayerImpl youTubePlayer;
     private View f;
     private YouTubePlayerFrameLayout frameLayout;
@@ -82,7 +87,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
             throw new IllegalStateException("A YouTubePlayerView can only be created with an Activity which extends YouTubeBaseActivity as its context.");
         }
 
-        YouTubePlayerView.b var4 = ((YouTubeBaseActivity) context).getA();
+        B var4 = ((YouTubeBaseActivity) context).getA();
         this.c = Validators.notNull(var4, "listener cannot be null");
         if (this.getBackground() == null) {
             this.setBackgroundColor(Color.BLACK);
@@ -105,6 +110,16 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         };
     }
 
+    @Deprecated
+    final void a(final boolean k) {
+        if (k && Build.VERSION.SDK_INT < 14) {
+            Log.w("YouTubePlayerAPI", "Could not enable TextureView because API level is lower than 14");
+            this.k = false;
+            return;
+        }
+        this.k = k;
+    }
+
     @Override
     public final void initialize(String developerKey, OnInitializedListener listener) {
         Validators.notEmpty(developerKey, "Developer key cannot be null or empty");
@@ -118,13 +133,14 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
             this.onInitializedListener = Validators.notNull(listener, "listener cannot be null");
             this.bundle = bundle;
             this.frameLayout.startLoading();
-            this.d = aa.a().a(this.getContext(), developerKey, new t.a() {
+            this.client = aa.a().a(this.getContext(), developerKey, new t.C() {
                 public final void a() {
-                    if (d != null) {
+
+                    if (client != null) {
                         YouTubePlayerView.a(YouTubePlayerView.this, activity);
                     }
 
-                    YouTubePlayerView.b(YouTubePlayerView.this);
+                    b = null;
                 }
 
                 public final void b() {
@@ -138,17 +154,42 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
                         removeView(f);
                     }
 
-                    YouTubePlayerView.g(YouTubePlayerView.this);
-                    YouTubePlayerView.h(YouTubePlayerView.this);
-                    YouTubePlayerView.b(YouTubePlayerView.this);
+                    client = null;
+                    youTubePlayer = null;
+                    f = null;
                 }
             }, new t.OnInitializationResult() {
                 public final void onResult(YouTubeInitializationResult result) {
                     onInitializationCompleted(result);
-                    YouTubePlayerView.b(YouTubePlayerView.this);
+                    client = null;
                 }
             });
-            this.d.e();
+            this.client.connect();
+        }
+    }
+
+    private static void a(final YouTubePlayerView youTubePlayerView, final Activity activity) {
+        IEmbeddedPlayer player;
+        try {
+            player = aa.a().a(activity, youTubePlayerView.client, youTubePlayerView.k);
+        }
+        catch (RemoteEmbeddedPlayer.RemotePlayerException e) {
+            y.a("Error creating YouTubePlayerView", e);
+            youTubePlayerView.onInitializationCompleted(YouTubeInitializationResult.INTERNAL_ERROR);
+            return;
+        }
+        youTubePlayerView.youTubePlayer = new YouTubePlayerImpl(youTubePlayerView.client, player);
+        youTubePlayerView.addView(youTubePlayerView.f = youTubePlayerView.youTubePlayer.a());
+        youTubePlayerView.removeView((View)youTubePlayerView.frameLayout);
+        youTubePlayerView.c.a(youTubePlayerView);
+        if (youTubePlayerView.onInitializedListener != null) {
+            boolean a3 = false;
+            if (youTubePlayerView.bundle != null) {
+                a3 = youTubePlayerView.youTubePlayer.a(youTubePlayerView.bundle);
+                youTubePlayerView.bundle = null;
+            }
+            youTubePlayerView.onInitializedListener.onInitializationSuccess(youTubePlayerView.provider, youTubePlayerView.youTubePlayer, a3);
+            youTubePlayerView.onInitializedListener = null;
         }
     }
 
@@ -355,7 +396,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     }
 
     // TODO b = instantiation listener?
-    interface b {
+    interface B {
 
         void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener);
 

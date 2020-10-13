@@ -82,8 +82,7 @@ public final class z {
         return defStyleAttr;
     }
 
-    // TODO Document: returns app version
-    public static String d(Context context) {
+    public static String getPackageVersionName(Context context) {
         try {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         } catch (NameNotFoundException e) {

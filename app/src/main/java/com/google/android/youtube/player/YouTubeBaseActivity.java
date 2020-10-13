@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
-import com.google.android.youtube.player.YouTubePlayerView.b;
+import com.google.android.youtube.player.YouTubePlayerView.B;
 
 /**
  * Any activity that wants to directly incorporate {@link YouTubePlayerView} views in its UI must
  * extend this activity.
  */
 public class YouTubeBaseActivity extends Activity {
-    private b a;
+    private B a;
     private YouTubePlayerView playerView;
     private int lifecycleState;
     private Bundle bundle;
@@ -19,18 +19,18 @@ public class YouTubeBaseActivity extends Activity {
     public YouTubeBaseActivity() {
     }
 
-    final b getA() {
+    final B getA() {
         return this.a;
     }
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        this.a = new b() {
+        this.a = new B() {
             @Override
             public final void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
                 view.a(YouTubeBaseActivity.this, view, developerKey, listener, YouTubeBaseActivity.this.bundle);
-                YouTubeBaseActivity.b(YouTubeBaseActivity.this);
+                playerView = null;
             }
 
             @Override
@@ -47,7 +47,6 @@ public class YouTubeBaseActivity extends Activity {
                 if (lifecycleState >= 2) {
                     view.b();
                 }
-
             }
         };
 

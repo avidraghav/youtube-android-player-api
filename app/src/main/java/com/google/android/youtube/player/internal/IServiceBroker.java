@@ -8,15 +8,15 @@ import android.os.Parcel;
 import android.os.RemoteException;
 
 public interface IServiceBroker extends IInterface {
-    void a(IConnectionCallbacks var1, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException;
+    void a(IConnectionCallbacks callbacks, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException;
 
     abstract class Stub extends Binder implements IServiceBroker {
-        public static IServiceBroker a(IBinder var0) {
-            if (var0 == null) {
+        public static IServiceBroker asInterface(IBinder binder) {
+            if (binder == null) {
                 return null;
             } else {
-                IInterface var1 = var0.queryLocalInterface("com.google.android.youtube.player.internal.IServiceBroker");
-                return var1 instanceof IServiceBroker ? (IServiceBroker)var1 : new ServiceBroker(var0);
+                IInterface var1 = binder.queryLocalInterface("com.google.android.youtube.player.internal.IServiceBroker");
+                return var1 instanceof IServiceBroker ? (IServiceBroker)var1 : new ServiceBroker(binder);
             }
         }
 
@@ -61,13 +61,13 @@ public interface IServiceBroker extends IInterface {
                 return this.a;
             }
 
-            public final void a(IConnectionCallbacks var1, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException {
+            public final void a(IConnectionCallbacks connectionCallbacks, int var2, String var3, String var4, String var5, Bundle var6) throws RemoteException {
                 Parcel var7 = Parcel.obtain();
                 Parcel var8 = Parcel.obtain();
 
                 try {
                     var7.writeInterfaceToken("com.google.android.youtube.player.internal.IServiceBroker");
-                    var7.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    var7.writeStrongBinder(connectionCallbacks != null ? connectionCallbacks.asBinder() : null);
                     var7.writeInt(var2);
                     var7.writeString(var3);
                     var7.writeString(var4);

@@ -7,7 +7,7 @@ import android.os.Parcel;
 import android.os.RemoteException;
 
 public interface IOnFullscreenListener extends IInterface {
-    void a(boolean var1) throws RemoteException;
+    void onFullscreen(boolean fullscreen) throws RemoteException;
 
     abstract class Stub extends Binder implements IOnFullscreenListener {
         public Stub() {
@@ -23,7 +23,7 @@ public interface IOnFullscreenListener extends IInterface {
                 case 1:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IOnFullscreenListener");
                     boolean var5 = 0 != var2.readInt();
-                    this.a(var5);
+                    this.onFullscreen(var5);
                     var3.writeNoException();
                     return true;
                 case 1598968902:
@@ -46,13 +46,13 @@ public interface IOnFullscreenListener extends IInterface {
                 return this.a;
             }
 
-            public final void a(boolean var1) throws RemoteException {
+            public final void onFullscreen(boolean fullscreen) throws RemoteException {
                 Parcel var2 = Parcel.obtain();
                 Parcel var3 = Parcel.obtain();
 
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IOnFullscreenListener");
-                    var2.writeInt(var1 ? 1 : 0);
+                    var2.writeInt(fullscreen ? 1 : 0);
                     this.a.transact(1, var2, var3, 0);
                     var3.readException();
                 } finally {

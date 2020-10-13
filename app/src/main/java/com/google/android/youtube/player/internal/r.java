@@ -134,12 +134,11 @@ public abstract class r<T extends IInterface> implements t {
             this.handler.removeMessages(4);
             this.f = true;
             Validators.validateState(this.e.size() == 0);
-            ArrayList var2 = this.d;
-            int var3 = 0;
+            ArrayList<t.a> var2 = this.d;
 
-            for(int var4 = var2.size(); var3 < var4 && this.k && this.f(); ++var3) {
-                if (!this.e.contains(var2.get(var3))) {
-                    ((com.google.android.youtube.player.internal.t.a)var2.get(var3)).a();
+            for(int i = 0; i < var2.size() && this.k && this.f(); ++i) {
+                if (!this.e.contains(var2.get(i))) {
+                    var2.get(i).a();
                 }
             }
 

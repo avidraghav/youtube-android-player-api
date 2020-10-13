@@ -7,17 +7,19 @@ import android.os.Parcel;
 import android.os.RemoteException;
 
 public interface IThumbnailLoaderService extends IInterface {
-    void a(String var1) throws RemoteException;
 
-    void a(String var1, int var2) throws RemoteException;
 
-    void a() throws RemoteException;
+    void setVideo(String videoId) throws RemoteException;
 
-    void b() throws RemoteException;
+    void setPlaylist(String playlistId, int skipTo) throws RemoteException;
 
-    void c() throws RemoteException;
+    void next() throws RemoteException;
 
-    void d() throws RemoteException;
+    void previous() throws RemoteException;
+
+    void first() throws RemoteException;
+
+    void release() throws RemoteException;
 
     abstract class Stub extends Binder implements IThumbnailLoaderService {
         public static IThumbnailLoaderService a(IBinder var0) {
@@ -35,34 +37,34 @@ public interface IThumbnailLoaderService extends IInterface {
                 case 1:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
                     var5 = var2.readString();
-                    this.a(var5);
+                    this.setVideo(var5);
                     var3.writeNoException();
                     return true;
                 case 2:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
                     var5 = var2.readString();
                     int var6 = var2.readInt();
-                    this.a(var5, var6);
+                    this.setPlaylist(var5, var6);
                     var3.writeNoException();
                     return true;
                 case 3:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
-                    this.a();
+                    this.next();
                     var3.writeNoException();
                     return true;
                 case 4:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
-                    this.b();
+                    this.previous();
                     var3.writeNoException();
                     return true;
                 case 5:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
-                    this.c();
+                    this.first();
                     var3.writeNoException();
                     return true;
                 case 6:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IThumbnailLoaderService");
-                    this.d();
+                    this.release();
                     var3.writeNoException();
                     return true;
                 case 1598968902:
@@ -85,13 +87,13 @@ public interface IThumbnailLoaderService extends IInterface {
                 return this.a;
             }
 
-            public final void a(String var1) throws RemoteException {
+            public final void setVideo(String videoId) throws RemoteException {
                 Parcel var2 = Parcel.obtain();
                 Parcel var3 = Parcel.obtain();
 
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IThumbnailLoaderService");
-                    var2.writeString(var1);
+                    var2.writeString(videoId);
                     this.a.transact(1, var2, var3, 0);
                     var3.readException();
                 } finally {
@@ -101,14 +103,14 @@ public interface IThumbnailLoaderService extends IInterface {
 
             }
 
-            public final void a(String var1, int var2) throws RemoteException {
+            public final void setPlaylist(String playlistId, int skipTo) throws RemoteException {
                 Parcel var3 = Parcel.obtain();
                 Parcel var4 = Parcel.obtain();
 
                 try {
                     var3.writeInterfaceToken("com.google.android.youtube.player.internal.IThumbnailLoaderService");
-                    var3.writeString(var1);
-                    var3.writeInt(var2);
+                    var3.writeString(playlistId);
+                    var3.writeInt(skipTo);
                     this.a.transact(2, var3, var4, 0);
                     var4.readException();
                 } finally {
@@ -118,7 +120,7 @@ public interface IThumbnailLoaderService extends IInterface {
 
             }
 
-            public final void a() throws RemoteException {
+            public final void next() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -133,7 +135,7 @@ public interface IThumbnailLoaderService extends IInterface {
 
             }
 
-            public final void b() throws RemoteException {
+            public final void previous() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -148,7 +150,7 @@ public interface IThumbnailLoaderService extends IInterface {
 
             }
 
-            public final void c() throws RemoteException {
+            public final void first() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -163,7 +165,7 @@ public interface IThumbnailLoaderService extends IInterface {
 
             }
 
-            public final void d() throws RemoteException {
+            public final void release() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 

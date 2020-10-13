@@ -96,10 +96,10 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         this.globalFocusChangeListener = new OnGlobalFocusChangeListener() {
             @Override
             public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-                if (YouTubePlayerView.this.youTubePlayer != null
-                        && YouTubePlayerView.this.b.contains(newFocus)
-                        && !YouTubePlayerView.this.b.contains(oldFocus)) {
-                    YouTubePlayerView.this.youTubePlayer.g();
+                if (youTubePlayer != null
+                        && b.contains(newFocus)
+                        && !b.contains(oldFocus)) {
+                    youTubePlayer.g();
                 }
             }
         };
@@ -206,30 +206,31 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     }
 
-    private void a(View var1) {
-        if (var1 != this.frameLayout && (this.youTubePlayer == null || var1 != this.f)) {
+    // TODO Called from within addView / checkIfSelf?
+    private void a(View view) {
+        if (view != this.frameLayout && (this.youTubePlayer == null || view != this.f)) {
             throw new UnsupportedOperationException("No views can be added on top of the player");
         }
     }
 
     @Override
-    public final void setPadding(int var1, int var2, int var3, int var4) {
+    public final void setPadding(int left, int top, int right, int bottom) {
     }
 
     @Override
-    public final void setClipToPadding(boolean var1) {
+    public final void setClipToPadding(boolean clipToPadding) {
     }
 
     @Override
-    public final void addView(View var1) {
-        this.a(var1);
-        super.addView(var1);
+    public final void addView(View child) {
+        this.a(child);
+        super.addView(child);
     }
 
     @Override
-    public final void addView(View var1, int var2) {
-        this.a(var1);
-        super.addView(var1, var2);
+    public final void addView(View child, int index) {
+        this.a(child);
+        super.addView(child, index);
     }
 
     @Override
@@ -299,9 +300,9 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     }
 
     @Override
-    public final void requestChildFocus(View var1, View var2) {
-        super.requestChildFocus(var1, var2);
-        this.b.add(var2);
+    public final void requestChildFocus(View child, View focused) {
+        super.requestChildFocus(child, focused);
+        this.b.add(focused);
     }
 
     @Override
@@ -311,12 +312,12 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     }
 
     @Override
-    public final void addFocusables(ArrayList<View> var1, int var2) {
-        ArrayList<View> var3 = new ArrayList<>();
-        super.addFocusables(var3, var2);
-        var1.addAll(var3);
+    public final void addFocusables(ArrayList<View> views, int direction) {
+        ArrayList<View> focusables = new ArrayList<>();
+        super.addFocusables(focusables, direction);
+        views.addAll(focusables);
         this.b.clear();
-        this.b.addAll(var3);
+        this.b.addAll(focusables);
     }
 
     @Override
@@ -337,20 +338,12 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     @Override
     public final boolean dispatchKeyEvent(KeyEvent event) {
         if (this.youTubePlayer != null) {
-            if (event.getAction() == 0) {
-                if (!this.youTubePlayer.a(event.getKeyCode(), event) && !super.dispatchKeyEvent(event)) {
-                    return false;
-                }
-
-                return true;
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                return this.youTubePlayer.a(event.getKeyCode(), event) || super.dispatchKeyEvent(event);
             }
 
-            if (event.getAction() == 1) {
-                if (!this.youTubePlayer.b(event.getKeyCode(), event) && !super.dispatchKeyEvent(event)) {
-                    return false;
-                }
-
-                return true;
+            if (event.getAction() == KeyEvent.ACTION_UP) {
+                return this.youTubePlayer.b(event.getKeyCode(), event) || super.dispatchKeyEvent(event);
             }
         }
 

@@ -52,72 +52,67 @@ public interface IEmbeddedPlayer extends IInterface {
 
     void a(boolean var1) throws RemoteException;
 
-    void a(String var1, int var2) throws RemoteException;
+    void cueVideo(String videoId, int timeMillis) throws RemoteException;
 
-    void b(String var1, int var2) throws RemoteException;
+    void loadVideo(String videoId, int timeMillis) throws RemoteException;
 
-    void a(String var1, int var2, int var3) throws RemoteException;
+    void cuePlaylist(String playlistId, int startIndex, int timeMillis) throws RemoteException;
 
-    void b(String var1, int var2, int var3) throws RemoteException;
+    void loadPlaylist(String playlistId, int startIndex, int timeMillis) throws RemoteException;
 
-    void a(List<String> var1, int var2, int var3) throws RemoteException;
+    void cueVideos(List<String> videoIds, int startIndex, int timeMillis) throws RemoteException;
 
-    void b(List<String> var1, int var2, int var3) throws RemoteException;
+    void loadVideos(List<String> videoIds, int startIndex, int timeMillis) throws RemoteException;
 
-    void a() throws RemoteException;
+    void play() throws RemoteException;
 
-    void b() throws RemoteException;
+    void pause() throws RemoteException;
 
-    boolean c() throws RemoteException;
+    boolean isPlaying() throws RemoteException;
 
-    boolean d() throws RemoteException;
+    boolean hasNext() throws RemoteException;
 
-    boolean e() throws RemoteException;
+    boolean hasPrevious() throws RemoteException;
 
-    void f() throws RemoteException;
+    void next() throws RemoteException;
 
-    void g() throws RemoteException;
+    void previous() throws RemoteException;
 
-    int h() throws RemoteException;
+    int getCurrentTimeMillis() throws RemoteException;
 
-    int i() throws RemoteException;
+    int getDurationMillis() throws RemoteException;
 
-    void a(int var1) throws RemoteException;
+    void seekToMillis(int milliSeconds) throws RemoteException;
 
-    void b(int var1) throws RemoteException;
+    void seekRelativeMillis(int milliSeconds) throws RemoteException;
 
-    void b(boolean var1) throws RemoteException;
+    void setFullscreen(boolean fullscreen) throws RemoteException;
 
-    void c(int var1) throws RemoteException;
+    void setFullscreenControlFlags(int controlFlag) throws RemoteException;
 
-    int j() throws RemoteException;
+    int getFullscreenControlFlags() throws RemoteException;
 
-    void d(int var1) throws RemoteException;
+    void addFullscreenControlFlag(int controlFlag) throws RemoteException;
 
-    void a(String var1) throws RemoteException;
+    void setPlayerStyle(String style) throws RemoteException;
 
-    void c(boolean var1) throws RemoteException;
+    void setShowFullscreenButton(boolean show) throws RemoteException;
 
-    void d(boolean var1) throws RemoteException;
+    void setManageAudioFocus(boolean manageAudioFocus) throws RemoteException;
 
-    void a(IOnFullscreenListener var1) throws RemoteException;
+    void setOnFullscreenListener(IOnFullscreenListener onFullscreenListener) throws RemoteException;
 
-    void a(IPlaylistEventListener var1) throws RemoteException;
+    void setPlaylistEventListener(IPlaylistEventListener playlistEventListener) throws RemoteException;
 
-    void a(IPlayerStateChangeListener var1) throws RemoteException;
+    void setPlayerStateChangeListener(IPlayerStateChangeListener playerStateChangeListener) throws RemoteException;
 
-    void a(IPlaybackEventListener var1) throws RemoteException;
+    void setPlaybackEventListener(IPlaybackEventListener playbackEventListener) throws RemoteException;
 
     void k() throws RemoteException;
 
     void l() throws RemoteException;
 
-    /**
-     * TODO: Maybe configure?
-     * @param config
-     * @throws RemoteException
-     */
-    void a(Configuration config) throws RemoteException;
+    void onConfigurationChanged(Configuration config) throws RemoteException;
 
     void m() throws RemoteException;
 
@@ -131,13 +126,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
     void q() throws RemoteException;
 
-    Bundle r() throws RemoteException;
+    Bundle getBundle() throws RemoteException;
 
     boolean a(Bundle bundle) throws RemoteException;
 
-    boolean a(int var1, KeyEvent keyEvent) throws RemoteException;
+    boolean dispatchKeyEventDown(int keyCode, KeyEvent keyEvent) throws RemoteException;
 
-    boolean b(int var1, KeyEvent keyEvent) throws RemoteException;
+    boolean dispatchKeyEventUp(int keyCode, KeyEvent keyEvent) throws RemoteException;
 
     IObjectWrapper s() throws RemoteException;
 
@@ -174,14 +169,14 @@ public interface IEmbeddedPlayer extends IInterface {
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var16 = data.readString();
                     flags = data.readInt();
-                    this.a(var16, flags);
+                    this.cueVideo(var16, flags);
                     reply.writeNoException();
                     return true;
                 case 3:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var16 = data.readString();
                     flags = data.readInt();
-                    this.b(var16, flags);
+                    this.loadVideo(var16, flags);
                     reply.writeNoException();
                     return true;
                 case 4:
@@ -189,7 +184,7 @@ public interface IEmbeddedPlayer extends IInterface {
                     var16 = data.readString();
                     flags = data.readInt();
                     var11 = data.readInt();
-                    this.a(var16, flags, var11);
+                    this.cuePlaylist(var16, flags, var11);
                     reply.writeNoException();
                     return true;
                 case 5:
@@ -197,7 +192,7 @@ public interface IEmbeddedPlayer extends IInterface {
                     var16 = data.readString();
                     flags = data.readInt();
                     var11 = data.readInt();
-                    this.b(var16, flags, var11);
+                    this.loadPlaylist(var16, flags, var11);
                     reply.writeNoException();
                     return true;
                 case 6:
@@ -205,7 +200,7 @@ public interface IEmbeddedPlayer extends IInterface {
                     var17 = data.createStringArrayList();
                     flags = data.readInt();
                     var11 = data.readInt();
-                    this.a(var17, flags, var11);
+                    this.cueVideos(var17, flags, var11);
                     reply.writeNoException();
                     return true;
                 case 7:
@@ -213,135 +208,135 @@ public interface IEmbeddedPlayer extends IInterface {
                     var17 = data.createStringArrayList();
                     flags = data.readInt();
                     var11 = data.readInt();
-                    this.b(var17, flags, var11);
+                    this.loadVideos(var17, flags, var11);
                     reply.writeNoException();
                     return true;
                 case PLAY:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.a();
+                    this.play();
                     reply.writeNoException();
                     return true;
                 case PAUSE:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.b();
+                    this.pause();
                     reply.writeNoException();
                     return true;
                 case IS_PLAYING:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var9 = this.c();
+                    var9 = this.isPlaying();
                     reply.writeNoException();
                     reply.writeInt(var9 ? 1 : 0);
                     return true;
                 case HAS_NEXT:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var9 = this.d();
+                    var9 = this.hasNext();
                     reply.writeNoException();
                     reply.writeInt(var9 ? 1 : 0);
                     return true;
                 case HAS_PREVIOUS:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var9 = this.e();
+                    var9 = this.hasPrevious();
                     reply.writeNoException();
                     reply.writeInt(var9 ? 1 : 0);
                     return true;
                 case NEXT:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.f();
+                    this.next();
                     reply.writeNoException();
                     return true;
                 case PREVIOUS:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    this.g();
+                    this.previous();
                     reply.writeNoException();
                     return true;
                 case 15:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    code = this.h();
+                    code = this.getCurrentTimeMillis();
                     reply.writeNoException();
                     reply.writeInt(code);
                     return true;
                 case 16:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    code = this.i();
+                    code = this.getDurationMillis();
                     reply.writeNoException();
                     reply.writeInt(code);
                     return true;
                 case 17:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     code = data.readInt();
-                    this.a(code);
+                    this.seekToMillis(code);
                     reply.writeNoException();
                     return true;
                 case 18:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     code = data.readInt();
-                    this.b(code);
+                    this.seekRelativeMillis(code);
                     reply.writeNoException();
                     return true;
                 case 19:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var9 = 0 != data.readInt();
-                    this.b(var9);
+                    this.setFullscreen(var9);
                     reply.writeNoException();
                     return true;
                 case 20:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     code = data.readInt();
-                    this.c(code);
+                    this.setFullscreenControlFlags(code);
                     reply.writeNoException();
                     return true;
                 case 21:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    code = this.j();
+                    code = this.getFullscreenControlFlags();
                     reply.writeNoException();
                     reply.writeInt(code);
                     return true;
                 case 22:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     code = data.readInt();
-                    this.d(code);
+                    this.addFullscreenControlFlag(code);
                     reply.writeNoException();
                     return true;
                 case 23:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var16 = data.readString();
-                    this.a(var16);
+                    this.setPlayerStyle(var16);
                     reply.writeNoException();
                     return true;
                 case 24:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var9 = 0 != data.readInt();
-                    this.c(var9);
+                    this.setShowFullscreenButton(var9);
                     reply.writeNoException();
                     return true;
                 case 25:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var9 = 0 != data.readInt();
-                    this.d(var9);
+                    this.setManageAudioFocus(var9);
                     reply.writeNoException();
                     return true;
                 case 26:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IOnFullscreenListener")) != null && var8 instanceof IOnFullscreenListener ? (IOnFullscreenListener) var8 : new IOnFullscreenListener.Stub.OnFullscreenListener(var13));
-                    this.a((IOnFullscreenListener) var14);
+                    this.setOnFullscreenListener((IOnFullscreenListener) var14);
                     reply.writeNoException();
                     return true;
                 case 27:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaylistEventListener")) != null && var8 instanceof IPlaylistEventListener ? (IPlaylistEventListener) var8 : new IPlaylistEventListener.Stub.PlaylistEventListener(var13));
-                    this.a((IPlaylistEventListener) var14);
+                    this.setPlaylistEventListener((IPlaylistEventListener) var14);
                     reply.writeNoException();
                     return true;
                 case 28:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener")) != null && var8 instanceof IPlayerStateChangeListener ? (IPlayerStateChangeListener) var8 : new IPlayerStateChangeListener.Stub.PlayerStateChangeListener(var13));
-                    this.a((IPlayerStateChangeListener) var14);
+                    this.setPlayerStateChangeListener((IPlayerStateChangeListener) var14);
                     reply.writeNoException();
                     return true;
                 case 29:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
                     var14 = (var13 = data.readStrongBinder()) == null ? null : ((var8 = var13.queryLocalInterface("com.google.android.youtube.player.internal.IPlaybackEventListener")) != null && var8 instanceof IPlaybackEventListener ? (IPlaybackEventListener) var8 : new IPlaybackEventListener.Stub.PlaybackEventListener(var13));
-                    this.a((IPlaybackEventListener) var14);
+                    this.setPlaybackEventListener((IPlaybackEventListener) var14);
                     reply.writeNoException();
                     return true;
                 case 30:
@@ -363,7 +358,7 @@ public interface IEmbeddedPlayer extends IInterface {
                         var10 = null;
                     }
 
-                    this.a(var10);
+                    this.onConfigurationChanged(var10);
                     reply.writeNoException();
                     return true;
                 case 33:
@@ -399,7 +394,7 @@ public interface IEmbeddedPlayer extends IInterface {
                     return true;
                 case 39:
                     data.enforceInterface("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var6 = this.r();
+                    var6 = this.getBundle();
                     reply.writeNoException();
                     if (var6 != null) {
                         reply.writeInt(1);
@@ -430,7 +425,7 @@ public interface IEmbeddedPlayer extends IInterface {
                         var12 = null;
                     }
 
-                    var7 = this.a(code, var12);
+                    var7 = this.dispatchKeyEventDown(code, var12);
                     reply.writeNoException();
                     reply.writeInt(var7 ? 1 : 0);
                     return true;
@@ -443,7 +438,7 @@ public interface IEmbeddedPlayer extends IInterface {
                         var12 = null;
                     }
 
-                    var7 = this.b(code, var12);
+                    var7 = this.dispatchKeyEventUp(code, var12);
                     reply.writeNoException();
                     reply.writeInt(var7 ? 1 : 0);
                     return true;
@@ -489,14 +484,14 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(String var1, int var2) throws RemoteException {
+            public final void cueVideo(String videoId, int timeMillis) throws RemoteException {
                 Parcel var3 = Parcel.obtain();
                 Parcel var4 = Parcel.obtain();
 
                 try {
                     var3.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var3.writeString(var1);
-                    var3.writeInt(var2);
+                    var3.writeString(videoId);
+                    var3.writeInt(timeMillis);
                     this.binder.transact(2, var3, var4, 0);
                     var4.readException();
                 } finally {
@@ -506,14 +501,14 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void b(String var1, int var2) throws RemoteException {
+            public final void loadVideo(String videoId, int timeMillis) throws RemoteException {
                 Parcel var3 = Parcel.obtain();
                 Parcel var4 = Parcel.obtain();
 
                 try {
                     var3.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var3.writeString(var1);
-                    var3.writeInt(var2);
+                    var3.writeString(videoId);
+                    var3.writeInt(timeMillis);
                     this.binder.transact(3, var3, var4, 0);
                     var4.readException();
                 } finally {
@@ -523,15 +518,15 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(String var1, int var2, int var3) throws RemoteException {
+            public final void cuePlaylist(String playlistId, int startIndex, int timeMillis) throws RemoteException {
                 Parcel var4 = Parcel.obtain();
                 Parcel var5 = Parcel.obtain();
 
                 try {
                     var4.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var4.writeString(var1);
-                    var4.writeInt(var2);
-                    var4.writeInt(var3);
+                    var4.writeString(playlistId);
+                    var4.writeInt(startIndex);
+                    var4.writeInt(timeMillis);
                     this.binder.transact(4, var4, var5, 0);
                     var5.readException();
                 } finally {
@@ -541,15 +536,15 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void b(String var1, int var2, int var3) throws RemoteException {
+            public final void loadPlaylist(String playlistId, int startIndex, int timeMillis) throws RemoteException {
                 Parcel var4 = Parcel.obtain();
                 Parcel var5 = Parcel.obtain();
 
                 try {
                     var4.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var4.writeString(var1);
-                    var4.writeInt(var2);
-                    var4.writeInt(var3);
+                    var4.writeString(playlistId);
+                    var4.writeInt(startIndex);
+                    var4.writeInt(timeMillis);
                     this.binder.transact(5, var4, var5, 0);
                     var5.readException();
                 } finally {
@@ -559,15 +554,15 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(List<String> var1, int var2, int var3) throws RemoteException {
+            public final void cueVideos(List<String> videoIds, int startIndex, int timeMillis) throws RemoteException {
                 Parcel var4 = Parcel.obtain();
                 Parcel var5 = Parcel.obtain();
 
                 try {
                     var4.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var4.writeStringList(var1);
-                    var4.writeInt(var2);
-                    var4.writeInt(var3);
+                    var4.writeStringList(videoIds);
+                    var4.writeInt(startIndex);
+                    var4.writeInt(timeMillis);
                     this.binder.transact(6, var4, var5, 0);
                     var5.readException();
                 } finally {
@@ -577,15 +572,15 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void b(List<String> var1, int var2, int var3) throws RemoteException {
+            public final void loadVideos(List<String> videoIds, int startIndex, int timeMillis) throws RemoteException {
                 Parcel var4 = Parcel.obtain();
                 Parcel var5 = Parcel.obtain();
 
                 try {
                     var4.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var4.writeStringList(var1);
-                    var4.writeInt(var2);
-                    var4.writeInt(var3);
+                    var4.writeStringList(videoIds);
+                    var4.writeInt(startIndex);
+                    var4.writeInt(timeMillis);
                     this.binder.transact(7, var4, var5, 0);
                     var5.readException();
                 } finally {
@@ -595,7 +590,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a() throws RemoteException {
+            public final void play() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -610,7 +605,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void b() throws RemoteException {
+            public final void pause() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -625,7 +620,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final boolean c() throws RemoteException {
+            public final boolean isPlaying() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -643,7 +638,7 @@ public interface IEmbeddedPlayer extends IInterface {
                 return var3;
             }
 
-            public final boolean d() throws RemoteException {
+            public final boolean hasNext() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -661,7 +656,7 @@ public interface IEmbeddedPlayer extends IInterface {
                 return var3;
             }
 
-            public final boolean e() throws RemoteException {
+            public final boolean hasPrevious() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -679,7 +674,7 @@ public interface IEmbeddedPlayer extends IInterface {
                 return var3;
             }
 
-            public final void f() throws RemoteException {
+            public final void next() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -694,7 +689,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void g() throws RemoteException {
+            public final void previous() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -709,7 +704,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final int h() throws RemoteException {
+            public final int getCurrentTimeMillis() throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
@@ -727,7 +722,7 @@ public interface IEmbeddedPlayer extends IInterface {
                 return var3;
             }
 
-            public final int i() throws RemoteException {
+            public final int getDurationMillis() throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
@@ -745,13 +740,13 @@ public interface IEmbeddedPlayer extends IInterface {
                 return var3;
             }
 
-            public final void a(int var1) throws RemoteException {
+            public final void seekToMillis(int milliSeconds) throws RemoteException {
                 Parcel Data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     Data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    Data.writeInt(var1);
+                    Data.writeInt(milliSeconds);
                     this.binder.transact(17, Data, reply, 0);
                     reply.readException();
                 } finally {
@@ -761,13 +756,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void b(int var1) throws RemoteException {
+            public final void seekRelativeMillis(int milliSeconds) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeInt(var1);
+                    data.writeInt(milliSeconds);
                     this.binder.transact(18, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -777,13 +772,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void b(boolean var1) throws RemoteException {
+            public final void setFullscreen(boolean fullscreen) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeInt(var1 ? 1 : 0);
+                    data.writeInt(fullscreen ? 1 : 0);
                     this.binder.transact(19, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -793,13 +788,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void c(int var1) throws RemoteException {
+            public final void setFullscreenControlFlags(int controlFlag) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeInt(var1);
+                    data.writeInt(controlFlag);
                     this.binder.transact(20, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -809,7 +804,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final int j() throws RemoteException {
+            public final int getFullscreenControlFlags() throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
@@ -827,13 +822,13 @@ public interface IEmbeddedPlayer extends IInterface {
                 return var3;
             }
 
-            public final void d(int var1) throws RemoteException {
+            public final void addFullscreenControlFlag(int controlFlag) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeInt(var1);
+                    data.writeInt(controlFlag);
                     this.binder.transact(22, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -843,13 +838,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(String var1) throws RemoteException {
+            public final void setPlayerStyle(String style) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeString(var1);
+                    data.writeString(style);
                     this.binder.transact(23, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -859,13 +854,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void c(boolean var1) throws RemoteException {
+            public final void setShowFullscreenButton(boolean show) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeInt(var1 ? 1 : 0);
+                    data.writeInt(show ? 1 : 0);
                     this.binder.transact(24, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -875,13 +870,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void d(boolean var1) throws RemoteException {
+            public final void setManageAudioFocus(boolean manageAudioFocus) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeInt(var1 ? 1 : 0);
+                    data.writeInt(manageAudioFocus ? 1 : 0);
                     this.binder.transact(25, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -891,13 +886,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(IOnFullscreenListener var1) throws RemoteException {
+            public final void setOnFullscreenListener(IOnFullscreenListener onFullscreenListener) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    data.writeStrongBinder(onFullscreenListener != null ? onFullscreenListener.asBinder() : null);
                     this.binder.transact(26, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -907,13 +902,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(IPlaylistEventListener var1) throws RemoteException {
+            public final void setPlaylistEventListener(IPlaylistEventListener playlistEventListener) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    data.writeStrongBinder(playlistEventListener != null ? playlistEventListener.asBinder() : null);
                     this.binder.transact(27, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -923,13 +918,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(IPlayerStateChangeListener var1) throws RemoteException {
+            public final void setPlayerStateChangeListener(IPlayerStateChangeListener playerStateChangeListener) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    data.writeStrongBinder(playerStateChangeListener != null ? playerStateChangeListener.asBinder() : null);
                     this.binder.transact(28, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -939,13 +934,13 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(IPlaybackEventListener var1) throws RemoteException {
+            public final void setPlaybackEventListener(IPlaybackEventListener playbackEventListener) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
                 try {
                     data.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    data.writeStrongBinder(playbackEventListener != null ? playbackEventListener.asBinder() : null);
                     this.binder.transact(29, data, reply, 0);
                     reply.readException();
                 } finally {
@@ -985,7 +980,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final void a(Configuration config) throws RemoteException {
+            public final void onConfigurationChanged(Configuration config) throws RemoteException {
                 Parcel data = Parcel.obtain();
                 Parcel reply = Parcel.obtain();
 
@@ -1098,7 +1093,7 @@ public interface IEmbeddedPlayer extends IInterface {
 
             }
 
-            public final Bundle r() throws RemoteException {
+            public final Bundle getBundle() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -1145,14 +1140,14 @@ public interface IEmbeddedPlayer extends IInterface {
                 return var6;
             }
 
-            public final boolean a(int var1, KeyEvent var2) throws RemoteException {
+            public final boolean dispatchKeyEventDown(int keyCode, KeyEvent var2) throws RemoteException {
                 Parcel var3 = Parcel.obtain();
                 Parcel var4 = Parcel.obtain();
 
                 boolean var7;
                 try {
                     var3.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var3.writeInt(var1);
+                    var3.writeInt(keyCode);
                     if (var2 != null) {
                         var3.writeInt(1);
                         var2.writeToParcel(var3, 0);
@@ -1171,14 +1166,14 @@ public interface IEmbeddedPlayer extends IInterface {
                 return var7;
             }
 
-            public final boolean b(int var1, KeyEvent var2) throws RemoteException {
+            public final boolean dispatchKeyEventUp(int keyCode, KeyEvent var2) throws RemoteException {
                 Parcel var3 = Parcel.obtain();
                 Parcel var4 = Parcel.obtain();
 
                 boolean var7;
                 try {
                     var3.writeInterfaceToken("com.google.android.youtube.player.internal.IEmbeddedPlayer");
-                    var3.writeInt(var1);
+                    var3.writeInt(keyCode);
                     if (var2 != null) {
                         var3.writeInt(1);
                         var2.writeToParcel(var3, 0);

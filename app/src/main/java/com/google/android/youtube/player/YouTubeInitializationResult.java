@@ -16,7 +16,7 @@ import android.content.Intent;
 
 import com.google.android.youtube.player.internal.Validators;
 import com.google.android.youtube.player.internal.m;
-import com.google.android.youtube.player.internal.y;
+import com.google.android.youtube.player.internal.Logging;
 import com.google.android.youtube.player.internal.z;
 
 /**
@@ -218,7 +218,7 @@ public enum YouTubeInitializationResult {
                 this.activity.startActivityForResult(this.intent, this.c);
                 dialog.dismiss();
             } catch (ActivityNotFoundException var3) {
-                y.a("Can't perform resolution for YouTubeInitalizationError", var3);
+                Logging.error("Can't perform resolution for YouTubeInitalizationError", var3);
             }
         }
     }

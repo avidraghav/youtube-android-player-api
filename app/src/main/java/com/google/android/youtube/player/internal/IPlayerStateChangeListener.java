@@ -7,17 +7,17 @@ import android.os.Parcel;
 import android.os.RemoteException;
 
 public interface IPlayerStateChangeListener extends IInterface {
-    void a() throws RemoteException;
+    void onLoading() throws RemoteException;
 
-    void a(String var1) throws RemoteException;
+    void onLoaded(String videoId) throws RemoteException;
 
-    void b() throws RemoteException;
+    void onAdStarted() throws RemoteException;
 
-    void c() throws RemoteException;
+    void onVideoStarted() throws RemoteException;
 
-    void d() throws RemoteException;
+    void onVideoEnded() throws RemoteException;
 
-    void b(String var1) throws RemoteException;
+    void onError(String reason) throws RemoteException;
 
     abstract class Stub extends Binder implements IPlayerStateChangeListener {
         public Stub() {
@@ -33,34 +33,34 @@ public interface IPlayerStateChangeListener extends IInterface {
             switch(var1) {
                 case 1:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener");
-                    this.a();
+                    this.onLoading();
                     var3.writeNoException();
                     return true;
                 case 2:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener");
                     var5 = var2.readString();
-                    this.a(var5);
+                    this.onLoaded(var5);
                     var3.writeNoException();
                     return true;
                 case 3:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener");
-                    this.b();
+                    this.onAdStarted();
                     var3.writeNoException();
                     return true;
                 case 4:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener");
-                    this.c();
+                    this.onVideoStarted();
                     var3.writeNoException();
                     return true;
                 case 5:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener");
-                    this.d();
+                    this.onVideoEnded();
                     var3.writeNoException();
                     return true;
                 case 6:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlayerStateChangeListener");
                     var5 = var2.readString();
-                    this.b(var5);
+                    this.onError(var5);
                     var3.writeNoException();
                     return true;
                 case 1598968902:
@@ -83,7 +83,7 @@ public interface IPlayerStateChangeListener extends IInterface {
                 return this.a;
             }
 
-            public final void a() throws RemoteException {
+            public final void onLoading() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -98,13 +98,13 @@ public interface IPlayerStateChangeListener extends IInterface {
 
             }
 
-            public final void a(String var1) throws RemoteException {
+            public final void onLoaded(String videoId) throws RemoteException {
                 Parcel var2 = Parcel.obtain();
                 Parcel var3 = Parcel.obtain();
 
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IPlayerStateChangeListener");
-                    var2.writeString(var1);
+                    var2.writeString(videoId);
                     this.a.transact(2, var2, var3, 0);
                     var3.readException();
                 } finally {
@@ -114,7 +114,7 @@ public interface IPlayerStateChangeListener extends IInterface {
 
             }
 
-            public final void b() throws RemoteException {
+            public final void onAdStarted() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -129,7 +129,7 @@ public interface IPlayerStateChangeListener extends IInterface {
 
             }
 
-            public final void c() throws RemoteException {
+            public final void onVideoStarted() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -144,7 +144,7 @@ public interface IPlayerStateChangeListener extends IInterface {
 
             }
 
-            public final void d() throws RemoteException {
+            public final void onVideoEnded() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -159,13 +159,13 @@ public interface IPlayerStateChangeListener extends IInterface {
 
             }
 
-            public final void b(String var1) throws RemoteException {
+            public final void onError(String reason) throws RemoteException {
                 Parcel var2 = Parcel.obtain();
                 Parcel var3 = Parcel.obtain();
 
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IPlayerStateChangeListener");
-                    var2.writeString(var1);
+                    var2.writeString(reason);
                     this.a.transact(6, var2, var3, 0);
                     var3.readException();
                 } finally {

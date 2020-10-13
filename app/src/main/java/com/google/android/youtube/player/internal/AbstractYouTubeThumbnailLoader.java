@@ -11,26 +11,27 @@ import java.util.NoSuchElementException;
 public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnailLoader {
     private final WeakReference<YouTubeThumbnailView> thumbnailViewWeakReference;
     private OnThumbnailLoadedListener onThumbnailLoadedListener;
-    private boolean c;
-    private boolean d;
+    private boolean hasPlaylist;
+    private boolean isReleased;
 
     public AbstractYouTubeThumbnailLoader(YouTubeThumbnailView thumbnailView) {
-        this.thumbnailViewWeakReference = new WeakReference(Validators.notNull(thumbnailView));
+        this.thumbnailViewWeakReference = new WeakReference<>(Validators.notNull(thumbnailView));
     }
 
-    protected boolean a() {
-        return !this.d;
+    // TODO hasResources / holdsResources
+    protected boolean hasResources() {
+        return !this.isReleased;
     }
 
-    private void i() {
-        if (!this.a()) {
+    private void checkResources() {
+        if (!this.hasResources()) {
             throw new IllegalStateException("This YouTubeThumbnailLoader has been released");
         }
     }
 
     @Override
     public final void setOnThumbnailLoadedListener(OnThumbnailLoadedListener listener) {
-        this.i();
+        this.checkResources();
         this.onThumbnailLoadedListener = listener;
     }
 
@@ -41,22 +42,22 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
 
     @Override
     public final void setPlaylist(String playlistId, int skipTo) {
-        this.i();
-        this.c = true;
+        this.checkResources();
+        this.hasPlaylist = true;
         this.a(playlistId, skipTo);
     }
 
     @Override
     public final void setVideo(String videoId) {
-        this.i();
-        this.c = false;
+        this.checkResources();
+        this.hasPlaylist = false;
         this.a(videoId);
     }
 
     @Override
     public final void next() {
-        this.i();
-        if (!this.c) {
+        this.checkResources();
+        if (!this.hasPlaylist) {
             throw new IllegalStateException("Must call setPlaylist first");
         } else if (!this.f()) {
             throw new NoSuchElementException("Called next at end of playlist");
@@ -67,8 +68,8 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
 
     @Override
     public final void previous() {
-        this.i();
-        if (!this.c) {
+        this.checkResources();
+        if (!this.hasPlaylist) {
             throw new IllegalStateException("Must call setPlaylist first");
         } else if (!this.g()) {
             throw new NoSuchElementException("Called previous at start of playlist");
@@ -79,8 +80,8 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
 
     @Override
     public final void first() {
-        this.i();
-        if (!this.c) {
+        this.checkResources();
+        if (!this.hasPlaylist) {
             throw new IllegalStateException("Must call setPlaylist first");
         } else {
             this.e();
@@ -89,53 +90,61 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
 
     @Override
     public final boolean hasNext() {
-        this.i();
+        this.checkResources();
         return this.f();
     }
 
     @Override
     public final boolean hasPrevious() {
-        this.i();
+        this.checkResources();
         return this.g();
     }
 
     @Override
     public final void release() {
-        if (this.a()) {
-            this.d = true;
+        if (this.hasResources()) {
+            this.isReleased = true;
             this.onThumbnailLoadedListener = null;
             this.h();
         }
-
     }
 
+    // TODO finalize
     public final void b() {
-        if (this.a()) {
-            y.a("The finalize() method for a YouTubeThumbnailLoader has work to do. You should have called release().", new Object[0]);
+        if (this.hasResources()) {
+            Logging.warn("The finalize() method for a YouTubeThumbnailLoader has work to do. You should have called release().");
             this.release();
         }
-
     }
 
-    public abstract void a(String var1);
+    // TODO setVideo
+    public abstract void a(String videoId);
 
-    public abstract void a(String var1, int var2);
+    // TODO setPlaylist
+    public abstract void a(String playlistId, int skipTo);
 
+    // TODO next
     public abstract void c();
 
+    // TODO previous
     public abstract void d();
 
+    // TODO first
     public abstract void e();
 
+    // TODO hasNext
     public abstract boolean f();
 
+    // TODO hasPrevious
     public abstract boolean g();
 
+    // TODO release
     public abstract void h();
 
-    public final void a(Bitmap thumbnailBitmap, String videoId) {
+    // TODO loadThumbnail might also be setThumbnail
+    public final void loadThumbnail(Bitmap thumbnailBitmap, String videoId) {
         YouTubeThumbnailView thumbnail = this.thumbnailViewWeakReference.get();
-        if (this.a() && thumbnail != null) {
+        if (this.hasResources() && thumbnail != null) {
             thumbnail.setImageBitmap(thumbnailBitmap);
             if (this.onThumbnailLoadedListener != null) {
                 this.onThumbnailLoadedListener.onThumbnailLoaded(thumbnail, videoId);
@@ -146,7 +155,7 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
 
     public final void b(String errorReasonString) {
         YouTubeThumbnailView thumbnailView = this.thumbnailViewWeakReference.get();
-        if (this.a() && this.onThumbnailLoadedListener != null && thumbnailView != null) {
+        if (this.hasResources() && this.onThumbnailLoadedListener != null && thumbnailView != null) {
             ErrorReason reason;
             try {
                 reason = ErrorReason.valueOf(errorReasonString);

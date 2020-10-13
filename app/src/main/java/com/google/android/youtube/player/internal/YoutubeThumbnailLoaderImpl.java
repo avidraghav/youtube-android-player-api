@@ -7,14 +7,14 @@ import android.os.RemoteException;
 
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
-public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLoader {
+public final class YoutubeThumbnailLoaderImpl extends AbstractYouTubeThumbnailLoader {
     private final Handler handler;
     private ConnectionClient connectionClient;
     private IThumbnailLoaderService thumbnailLoaderService;
     private boolean d;
     private boolean e;
 
-    public YoutubeThumbNailLoaderImpl(ConnectionClient connectionClient, YouTubeThumbnailView thumbnail) {
+    public YoutubeThumbnailLoaderImpl(ConnectionClient connectionClient, YouTubeThumbnailView thumbnail) {
         super(thumbnail);
         this.connectionClient = Validators.notNull(connectionClient, "connectionClient cannot be null");
         this.thumbnailLoaderService = connectionClient.a(new IThumbnailLoaderClient.Stub() {
@@ -24,7 +24,7 @@ public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLo
                     public final void run() {
                         d = var3;
                         e = var4;
-                        YoutubeThumbNailLoaderImpl.this.a(var1, var2);
+                        YoutubeThumbnailLoaderImpl.this.loadThumbnail(var1, var2);
                     }
                 });
             }
@@ -35,7 +35,7 @@ public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLo
                     public final void run() {
                         d = var2;
                         e = var3;
-                        YoutubeThumbNailLoaderImpl.this.b(var1);
+                        YoutubeThumbnailLoaderImpl.this.b(var1);
                     }
                 });
             }
@@ -44,23 +44,23 @@ public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLo
     }
 
     @Override
-    protected final boolean a() {
-        return super.a() && this.thumbnailLoaderService != null;
+    protected final boolean hasResources() {
+        return super.hasResources() && this.thumbnailLoaderService != null;
     }
 
     @Override
-    public final void a(String var1) {
+    public final void a(String videoId) {
         try {
-            this.thumbnailLoaderService.a(var1);
+            this.thumbnailLoaderService.setVideo(videoId);
         } catch (RemoteException var2) {
             throw new IllegalStateException(var2);
         }
     }
 
     @Override
-    public final void a(String var1, int var2) {
+    public final void a(String playlistId, int skipTo) {
         try {
-            this.thumbnailLoaderService.a(var1, var2);
+            this.thumbnailLoaderService.setPlaylist(playlistId, skipTo);
         } catch (RemoteException var3) {
             throw new IllegalStateException(var3);
         }
@@ -69,7 +69,7 @@ public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLo
     @Override
     public final void c() {
         try {
-            this.thumbnailLoaderService.a();
+            this.thumbnailLoaderService.next();
         } catch (RemoteException var2) {
             throw new IllegalStateException(var2);
         }
@@ -78,7 +78,7 @@ public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLo
     @Override
     public final void d() {
         try {
-            this.thumbnailLoaderService.b();
+            this.thumbnailLoaderService.previous();
         } catch (RemoteException var2) {
             throw new IllegalStateException(var2);
         }
@@ -87,7 +87,7 @@ public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLo
     @Override
     public final void e() {
         try {
-            this.thumbnailLoaderService.c();
+            this.thumbnailLoaderService.first();
         } catch (RemoteException var2) {
             throw new IllegalStateException(var2);
         }
@@ -106,7 +106,7 @@ public final class YoutubeThumbNailLoaderImpl extends AbstractYouTubeThumbnailLo
     @Override
     public final void h() {
         try {
-            this.thumbnailLoaderService.d();
+            this.thumbnailLoaderService.release();
         } catch (RemoteException var1) {
         }
 

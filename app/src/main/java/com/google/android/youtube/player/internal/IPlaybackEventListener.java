@@ -7,15 +7,15 @@ import android.os.Parcel;
 import android.os.RemoteException;
 
 public interface IPlaybackEventListener extends IInterface {
-    void a() throws RemoteException;
+    void onPlaying() throws RemoteException;
 
-    void b() throws RemoteException;
+    void onPaused() throws RemoteException;
 
-    void c() throws RemoteException;
+    void onStopped() throws RemoteException;
 
-    void a(boolean var1) throws RemoteException;
+    void onBuffering(boolean isBuffering) throws RemoteException;
 
-    void a(int var1) throws RemoteException;
+    void onSeekTo(int newPositionMillis) throws RemoteException;
 
     abstract class Stub extends Binder implements IPlaybackEventListener {
         public Stub() {
@@ -30,29 +30,29 @@ public interface IPlaybackEventListener extends IInterface {
             switch(var1) {
                 case 1:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlaybackEventListener");
-                    this.a();
+                    this.onPlaying();
                     var3.writeNoException();
                     return true;
                 case 2:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlaybackEventListener");
-                    this.b();
+                    this.onPaused();
                     var3.writeNoException();
                     return true;
                 case 3:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlaybackEventListener");
-                    this.c();
+                    this.onStopped();
                     var3.writeNoException();
                     return true;
                 case 4:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlaybackEventListener");
                     boolean var5 = 0 != var2.readInt();
-                    this.a(var5);
+                    this.onBuffering(var5);
                     var3.writeNoException();
                     return true;
                 case 5:
                     var2.enforceInterface("com.google.android.youtube.player.internal.IPlaybackEventListener");
                     var1 = var2.readInt();
-                    this.a(var1);
+                    this.onSeekTo(var1);
                     var3.writeNoException();
                     return true;
                 case 1598968902:
@@ -75,7 +75,7 @@ public interface IPlaybackEventListener extends IInterface {
                 return this.a;
             }
 
-            public final void a() throws RemoteException {
+            public final void onPlaying() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -90,7 +90,7 @@ public interface IPlaybackEventListener extends IInterface {
 
             }
 
-            public final void b() throws RemoteException {
+            public final void onPaused() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -105,7 +105,7 @@ public interface IPlaybackEventListener extends IInterface {
 
             }
 
-            public final void c() throws RemoteException {
+            public final void onStopped() throws RemoteException {
                 Parcel var1 = Parcel.obtain();
                 Parcel var2 = Parcel.obtain();
 
@@ -120,13 +120,13 @@ public interface IPlaybackEventListener extends IInterface {
 
             }
 
-            public final void a(boolean var1) throws RemoteException {
+            public final void onBuffering(boolean isBuffering) throws RemoteException {
                 Parcel var2 = Parcel.obtain();
                 Parcel var3 = Parcel.obtain();
 
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IPlaybackEventListener");
-                    var2.writeInt(var1 ? 1 : 0);
+                    var2.writeInt(isBuffering ? 1 : 0);
                     this.a.transact(4, var2, var3, 0);
                     var3.readException();
                 } finally {
@@ -136,13 +136,13 @@ public interface IPlaybackEventListener extends IInterface {
 
             }
 
-            public final void a(int var1) throws RemoteException {
+            public final void onSeekTo(int newPositionMillis) throws RemoteException {
                 Parcel var2 = Parcel.obtain();
                 Parcel var3 = Parcel.obtain();
 
                 try {
                     var2.writeInterfaceToken("com.google.android.youtube.player.internal.IPlaybackEventListener");
-                    var2.writeInt(var1);
+                    var2.writeInt(newPositionMillis);
                     this.a.transact(5, var2, var3, 0);
                     var3.readException();
                 } finally {

@@ -19,6 +19,6 @@ public final class ac extends aa {
     }
 
     public final AbstractYouTubeThumbnailLoader a(ConnectionClient var1, YouTubeThumbnailView thumbnail) {
-        return new YoutubeThumbNailLoaderImpl(var1, thumbnail);
+        return new YoutubeThumbnailLoaderImpl(var1, thumbnail);
     }
 }

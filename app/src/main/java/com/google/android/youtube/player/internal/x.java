@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+// TODO This class returns localized youtube texts
 public final class x {
     public static Map<String, String> a(Locale locale) {
         HashMap<String, String> var1;

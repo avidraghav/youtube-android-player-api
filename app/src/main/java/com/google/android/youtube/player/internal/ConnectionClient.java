@@ -2,9 +2,6 @@ package com.google.android.youtube.player.internal;
 
 import android.os.IBinder;
 
-/**
- * TODO: Connection client
- */
 public interface ConnectionClient extends t {
     IBinder a();
 

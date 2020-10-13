@@ -3,7 +3,7 @@ package com.google.android.youtube.player.internal;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 
 /**
- * TODO Maybe Connection?
+ * TODO Connection / Initializer /
  */
 public interface t {
     void e();

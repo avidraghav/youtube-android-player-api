@@ -33,6 +33,7 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
         this.a.e();
     }
 
+    @Override
     protected final void finalize() throws Throwable {
         if (this.b != null) {
             this.b.b();

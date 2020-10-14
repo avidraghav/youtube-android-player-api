@@ -1,7 +1,8 @@
 package com.google.android.youtube.player;
 
-import android.app.Activity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayerView.B;
@@ -10,7 +11,7 @@ import com.google.android.youtube.player.YouTubePlayerView.B;
  * Any activity that wants to directly incorporate {@link YouTubePlayerView} views in its UI must
  * extend this activity.
  */
-public class YouTubeBaseActivity extends Activity {
+public class YouTubeBaseActivity extends AppCompatActivity {
     private B a;
     private YouTubePlayerView playerView;
     private int lifecycleState;

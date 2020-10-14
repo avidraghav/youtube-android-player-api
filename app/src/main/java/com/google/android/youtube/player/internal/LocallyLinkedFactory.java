@@ -6,8 +6,8 @@ import android.content.Context;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.google.android.youtube.player.internal.t.C;
 
-public final class ac extends aa {
-    public ac() {
+public final class LocallyLinkedFactory extends aa {
+    public LocallyLinkedFactory() {
     }
 
     public final ConnectionClient a(Context context, String developerKey, C var3, t.OnInitializationResult result) {

@@ -26,7 +26,7 @@ public interface IServiceBroker extends IInterface {
                     var2.enforceInterface("com.google.android.youtube.player.internal.IServiceBroker");
                     IBinder var8;
                     IInterface var11;
-                    Object var9 = (var8 = var2.readStrongBinder()) == null ? null : ((var11 = var8.queryLocalInterface("com.google.android.youtube.player.internal.IConnectionCallbacks")) != null && var11 instanceof IConnectionCallbacks ? (IConnectionCallbacks)var11 : new IConnectionCallbacks.Stub.ConnectionCallbacks(var8));
+                    IConnectionCallbacks var9 = (var8 = var2.readStrongBinder()) == null ? null : ((var11 = var8.queryLocalInterface("com.google.android.youtube.player.internal.IConnectionCallbacks")) != null && var11 instanceof IConnectionCallbacks ? (IConnectionCallbacks) var11 : new IConnectionCallbacks.Stub.Proxy(var8));
                     var4 = var2.readInt();
                     String var5 = var2.readString();
                     String var6 = var2.readString();
@@ -38,7 +38,7 @@ public interface IServiceBroker extends IInterface {
                         var10 = null;
                     }
 
-                    this.a((IConnectionCallbacks)var9, var4, var5, var6, var7, var10);
+                    this.a(var9, var4, var5, var6, var7, var10);
                     var3.writeNoException();
                     return true;
                 case 1598968902:
@@ -49,8 +49,7 @@ public interface IServiceBroker extends IInterface {
             }
         }
 
-        // was private before
-        public static class ServiceBroker implements IServiceBroker {
+        private static class ServiceBroker implements IServiceBroker {
             private IBinder a;
 
             ServiceBroker(IBinder var1) {

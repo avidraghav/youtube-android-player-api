@@ -36,10 +36,10 @@ public interface IConnectionCallbacks extends IInterface {
         }
 
         // was private before
-        public static class ConnectionCallbacks implements IConnectionCallbacks {
+        public static class Proxy implements IConnectionCallbacks {
             private IBinder a;
 
-            ConnectionCallbacks(IBinder var1) {
+            Proxy(IBinder var1) {
                 this.a = var1;
             }
 

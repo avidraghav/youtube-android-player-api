@@ -29,7 +29,7 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
 
     public final void initialize(String var1, YouTubeThumbnailView.OnInitializedListener var2) {
         YouTubeThumbnailView.a var3 = new YouTubeThumbnailView.a(this, var2);
-        this.client = aa.a().a(this.getContext(), var1, var3, var3);
+        this.client = aa.getInstance().a(this.getContext(), var1, var3, var3);
         this.client.connect();
     }
 
@@ -54,7 +54,7 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
 
         public final void a() {
             if (this.a != null && this.a.client != null) {
-                this.a.b = aa.a().a(this.a.client, this.a);
+                this.a.b = aa.getInstance().a(this.a.client, this.a);
                 this.b.onInitializationSuccess(this.a, this.a.b);
                 this.c();
             }

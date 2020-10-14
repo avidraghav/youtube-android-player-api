@@ -21,7 +21,7 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
     private final Context context;
     final Handler handler;
     private T connection;
-    private ArrayList<C> d;
+    private ArrayList<C> dd;
     private final ArrayList<C> e = new ArrayList<>();
     private boolean f = false;
     // TODO Instantiate here, make final and clear only in constructor for thread safety
@@ -36,8 +36,8 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
             throw new IllegalStateException("Clients must be created on the UI thread.");
         } else {
             this.context = Validators.notNull(context);
-            this.d = new ArrayList<>();
-            this.d.add(Validators.notNull(var2));
+            this.dd = new ArrayList<>();
+            this.dd.add(Validators.notNull(var2));
             this.initResultListeners = new ArrayList<>();
             this.initResultListeners.add(Validators.notNull(onInitResult));
             this.handler = new A();
@@ -123,8 +123,8 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
     // TODO bind?
     protected final void b(IBinder var1) {
         try {
-            IServiceBroker var3 = IServiceBroker.Stub.asInterface(var1);
-            this.a(var3, new d());
+            IServiceBroker broker = IServiceBroker.Stub.asInterface(var1);
+            this.a(broker, new d());
         } catch (RemoteException var2) {
             Log.w("YouTubeClient", "service died");
         }
@@ -133,14 +133,14 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
     protected abstract void a(IServiceBroker var1, d var2) throws RemoteException;
 
     protected final void g() {
-        synchronized(this.d) {
+        synchronized (this.dd) {
             Validators.validateState(!this.f);
             this.handler.removeMessages(4);
             this.f = true;
             Validators.validateState(this.e.size() == 0);
-            ArrayList<C> var2 = this.d;
+            ArrayList<C> var2 = this.dd;
 
-            for(int i = 0; i < var2.size() && this.isConnected && this.isConnected(); ++i) {
+            for (int i = 0; i < var2.size() && this.isConnected && this.isConnected(); ++i) {
                 if (!this.e.contains(var2.get(i))) {
                     var2.get(i).a();
                 }
@@ -153,12 +153,12 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
 
     protected final void h() {
         this.handler.removeMessages(4);
-        synchronized(this.d) {
+        synchronized (this.dd) {
             this.f = true;
-            ArrayList<C> list = this.d;
+            ArrayList<C> list = this.dd;
 
-            for(int i = 0; i < list.size() && this.isConnected; ++i) {
-                if (this.d.contains(list.get(i))) {
+            for (int i = 0; i < list.size() && this.isConnected; ++i) {
+                if (this.dd.contains(list.get(i))) {
                     list.get(i).b();
                 }
             }
@@ -199,8 +199,6 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
     }
 
     protected final class d extends IConnectionCallbacks.Stub {
-        protected d() {
-        }
 
         public final void a(String initResult, IBinder binder) {
             handler.sendMessage(handler.obtainMessage(1, new D(initResult, binder)));
@@ -261,9 +259,9 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
             if (message.what == 3) {
                 a((YouTubeInitializationResult)message.obj);
             } else if (message.what == 4) {
-                synchronized(d) {
-                    if (isConnected && isConnected() && d.contains(message.obj)) {
-                        ((C)message.obj).a();
+                synchronized (dd) {
+                    if (isConnected && isConnected() && dd.contains(message.obj)) {
+                        ((C) message.obj).a();
                     }
 
                 }

@@ -7,28 +7,27 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.google.android.youtube.player.internal.t.C;
 
 public abstract class aa {
-    private static final aa INSTANCE = getInstance();
 
-    public aa() {
-    }
+    private static final aa INSTANCE = instantiate();
 
-    private static aa getInstance() {
+    private static aa instantiate() {
+        if (INSTANCE != null) return INSTANCE;
         try {
-            Class clazz = Class.forName("com.google.android.youtube.api.locallylinked.LocallyLinkedFactory").asSubclass(aa.class);
+            final Class<? extends aa> clazz = Class.forName("com.google.android.youtube.player.internal.LocallyLinkedFactory").asSubclass(aa.class);
 
             try {
-                return (aa)clazz.newInstance();
+                return clazz.newInstance();
             } catch (InstantiationException e) {
                 throw new IllegalStateException(e);
             } catch (IllegalAccessException e) {
                 throw new IllegalStateException(e);
             }
         } catch (ClassNotFoundException e) {
-            return new ac();
+            return new LocallyLinkedFactory();
         }
     }
 
-    public static aa a() {
+    public static aa getInstance() {
         return INSTANCE;
     }
 

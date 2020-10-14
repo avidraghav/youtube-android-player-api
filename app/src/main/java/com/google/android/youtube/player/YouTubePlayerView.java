@@ -16,23 +16,25 @@ import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
 
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.internal.Client;
 import com.google.android.youtube.player.internal.ConnectionClient;
 import com.google.android.youtube.player.internal.IEmbeddedPlayer;
+import com.google.android.youtube.player.internal.LinkedFactory;
 import com.google.android.youtube.player.internal.RemoteEmbeddedPlayer;
 import com.google.android.youtube.player.internal.Validators;
 import com.google.android.youtube.player.internal.YouTubePlayerFrameLayout;
 import com.google.android.youtube.player.internal.YouTubePlayerImpl;
-import com.google.android.youtube.player.internal.aa;
-import com.google.android.youtube.player.internal.t;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public final class YouTubePlayerView extends ViewGroup implements Provider {
+
+    private static final String TAG = "YouTubePlayerView";
     private final OnGlobalFocusChangeListener globalFocusChangeListener;
     private Set<View> focusedViews;
-    private final B c;
+    private final B listener;
     private ConnectionClient client;
     private YouTubePlayerImpl youTubePlayer;
     private View f;
@@ -90,18 +92,18 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
      * @param context      The context this view should use. This must be a {@link YouTubeBaseActivity}.
      * @param attrs        The attributes of the XML tag that is inflating the view.
      * @param defStyleAttr The default style to apply to this view.
-     * @param t            TODO Rename and describe the parameter
+     * @param listener     TODO Rename and describe the parameter
      * @throws IllegalArgumentException if the context is not a {@link YouTubeBaseActivity}.
      */
-    YouTubePlayerView(final Context context, final AttributeSet attrs, final int defStyleAttr, B t) {
+    YouTubePlayerView(final Context context, final AttributeSet attrs, final int defStyleAttr, B listener) {
         super(Validators.notNull(context, "context cannot be null"), attrs, defStyleAttr);
 
         if (!(context instanceof YouTubeBaseActivity)) {
             throw new IllegalStateException("A YouTubePlayerView can only be created with an Activity which extends YouTubeBaseActivity as its context.");
         }
 
-        if (t == null) t = ((YouTubeBaseActivity) context).getA();
-        this.c = Validators.notNull(t, "listener cannot be null");
+        if (listener == null) listener = ((YouTubeBaseActivity) context).getB();
+        this.listener = Validators.notNull(listener, "listener cannot be null");
         if (this.getBackground() == null) {
             this.setBackgroundColor(Color.BLACK);
         }
@@ -123,26 +125,10 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         };
     }
 
-    @Deprecated
-    final void a(final boolean k) {
-        if (k && Build.VERSION.SDK_INT < 14) {
-            Log.w("YouTubePlayerAPI", "Could not enable TextureView because API level is lower than 14");
-            this.k = false;
-            return;
-        }
-        this.k = k;
-    }
-
-    @Override
-    public final void initialize(String developerKey, OnInitializedListener listener) {
-        Validators.notEmpty(developerKey, "Developer key cannot be null or empty");
-        this.c.initialize(this, developerKey, listener);
-    }
-
     private static void a(final YouTubePlayerView youTubePlayerView, final Activity activity) {
         IEmbeddedPlayer player;
         try {
-            player = aa.getInstance().a(activity, youTubePlayerView.client, youTubePlayerView.k);
+            player = LinkedFactory.getInstance().getPlayer(activity, youTubePlayerView.client, youTubePlayerView.k);
         } catch (RemoteEmbeddedPlayer.RemotePlayerException e) {
             Log.w("YouTubePlayerAPI", "Error creating YouTubePlayerView", e);
             youTubePlayerView.onInitializationCompleted(YouTubeInitializationResult.INTERNAL_ERROR);
@@ -150,8 +136,8 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         }
         youTubePlayerView.youTubePlayer = new YouTubePlayerImpl(youTubePlayerView.client, player);
         youTubePlayerView.addView(youTubePlayerView.f = youTubePlayerView.youTubePlayer.a());
-        youTubePlayerView.removeView((View) youTubePlayerView.frameLayout);
-        youTubePlayerView.c.a(youTubePlayerView);
+        youTubePlayerView.removeView(youTubePlayerView.frameLayout);
+        youTubePlayerView.listener.a(youTubePlayerView);
         if (youTubePlayerView.onInitializedListener != null) {
             boolean a3 = false;
             if (youTubePlayerView.bundle != null) {
@@ -163,6 +149,24 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         }
     }
 
+    @Deprecated
+    final void a(final boolean k) {
+        Log.w(TAG, "Deprecated method called.");
+        if (k && Build.VERSION.SDK_INT < 14) {
+            Log.w("YouTubePlayerAPI", "Could not enable TextureView because API level is lower than 14");
+            this.k = false;
+            return;
+        }
+        this.k = k;
+    }
+
+    @Override
+    public final void initialize(String developerKey, OnInitializedListener listener) {
+        Log.d(TAG, "initialization of YouTubePlayerView started.");
+        Validators.notEmpty(developerKey, "Developer key cannot be null or empty");
+        this.listener.initialize(this, developerKey, listener);
+    }
+
     final void a(final Activity activity, Provider provider, String developerKey, OnInitializedListener listener, Bundle bundle) {
         if (this.youTubePlayer == null && this.onInitializedListener == null) {
             Validators.notNull(activity, "activity cannot be null");
@@ -170,8 +174,8 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
             this.onInitializedListener = Validators.notNull(listener, "listener cannot be null");
             this.bundle = bundle;
             this.frameLayout.startLoading();
-            this.client = aa.getInstance().a(this.getContext(), developerKey, new t.C() {
-                public final void a() {
+            this.client = LinkedFactory.getInstance().getClient(this.getContext(), developerKey, new Client.Connection() {
+                public final void bind() {
 
                     if (client != null) {
                         YouTubePlayerView.a(YouTubePlayerView.this, activity);
@@ -180,7 +184,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
                     focusedViews = null;
                 }
 
-                public final void b() {
+                public final void release() {
                     if (!l && youTubePlayer != null) {
                         youTubePlayer.f();
                     }
@@ -195,7 +199,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
                     youTubePlayer = null;
                     f = null;
                 }
-            }, new t.OnInitializationResult() {
+            }, new Client.OnInitializationResult() {
                 public final void onResult(YouTubeInitializationResult result) {
                     onInitializationCompleted(result);
                     client = null;
@@ -215,6 +219,8 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     }
 
+    // TODO Called from onStart()
+    // TODO requestFocus?
     final void a() {
         if (this.youTubePlayer != null) {
             this.youTubePlayer.b();
@@ -222,6 +228,8 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     }
 
+    // TODO Called from onResume()
+    // TODO requestFocus?
     final void b() {
         if (this.youTubePlayer != null) {
             this.youTubePlayer.c();
@@ -229,6 +237,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     }
 
+    // TODO Called from onPause()
     final void c() {
         if (this.youTubePlayer != null) {
             this.youTubePlayer.d();
@@ -236,6 +245,8 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     }
 
+    // TODO Called from onStop()
+    // Rename to / unbind() / unbindService()
     final void d() {
         if (this.youTubePlayer != null) {
             this.youTubePlayer.e();
@@ -243,14 +254,16 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     }
 
-    final void b(boolean var1) {
+    final void b(boolean isFinishing) {
         if (this.youTubePlayer != null) {
-            this.youTubePlayer.b(var1);
-            this.c(var1);
+            this.youTubePlayer.destroy(isFinishing);
+            this.c(isFinishing);
         }
 
     }
 
+    // TODO Called from onDestroy() and onDestroyView()
+    // TODO focusChanged
     final void c(boolean var1) {
         this.l = true;
         if (this.youTubePlayer != null) {
@@ -412,6 +425,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
         void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener);
 
+        // TODO onFocusChanged?
         void a(YouTubePlayerView view);
     }
 }

@@ -1,6 +1,7 @@
 package com.google.android.youtube.player;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +13,13 @@ import com.google.android.youtube.player.YouTubePlayerView.B;
  * extend this activity.
  */
 public class YouTubeBaseActivity extends AppCompatActivity {
-    private B a;
+
+    private static final int IS_STOPPING = 0;
+    private static final int IS_STARTING = 1;
+    private static final int IS_RESUMING = 2;
+    private static final int IS_PAUSING = 1;
+
+    private B b;
     private YouTubePlayerView playerView;
     private int lifecycleState;
     private Bundle bundle;
@@ -20,36 +27,14 @@ public class YouTubeBaseActivity extends AppCompatActivity {
     public YouTubeBaseActivity() {
     }
 
-    final B getA() {
-        return this.a;
+    final B getB() {
+        return this.b;
     }
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        this.a = new B() {
-            @Override
-            public final void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
-                view.a(YouTubeBaseActivity.this, view, developerKey, listener, YouTubeBaseActivity.this.bundle);
-                playerView = null;
-            }
-
-            @Override
-            public final void a(YouTubePlayerView view) {
-                if (playerView != null && playerView != view) {
-                    playerView.c(true);
-                }
-
-                playerView = view;
-                if (lifecycleState > 0) {
-                    view.a();
-                }
-
-                if (lifecycleState >= 2) {
-                    view.b();
-                }
-            }
-        };
+        this.b = new BBB();
 
         this.bundle = bundle != null ? bundle.getBundle("YouTubeBaseActivity.KEY_PLAYER_VIEW_STATE") : null;
     }
@@ -57,7 +42,7 @@ public class YouTubeBaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        this.lifecycleState = 1;
+        this.lifecycleState = IS_STARTING;
         if (this.playerView != null) {
             this.playerView.a();
         }
@@ -66,7 +51,7 @@ public class YouTubeBaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        this.lifecycleState = 2;
+        this.lifecycleState = IS_RESUMING;
         if (this.playerView != null) {
             this.playerView.b();
         }
@@ -74,7 +59,7 @@ public class YouTubeBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        this.lifecycleState = 1;
+        this.lifecycleState = IS_PAUSING;
         if (this.playerView != null) {
             this.playerView.c();
         }
@@ -90,7 +75,7 @@ public class YouTubeBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        this.lifecycleState = 0;
+        this.lifecycleState = IS_STOPPING;
         if (this.playerView != null) {
             this.playerView.d();
         }
@@ -103,5 +88,30 @@ public class YouTubeBaseActivity extends AppCompatActivity {
             this.playerView.b(this.isFinishing());
         }
         super.onDestroy();
+    }
+
+    private class BBB implements B {
+        @Override
+        public final void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
+            Log.d("YouTubeBaseActivity", "initialize called.");
+            view.a(YouTubeBaseActivity.this, view, developerKey, listener, YouTubeBaseActivity.this.bundle);
+            playerView = null;
+        }
+
+        @Override
+        public final void a(YouTubePlayerView view) {
+            if (playerView != null && playerView != view) {
+                playerView.c(true);
+            }
+
+            playerView = view;
+            if (lifecycleState > IS_STOPPING) {
+                view.a();
+            }
+
+            if (lifecycleState >= IS_RESUMING) {
+                view.b();
+            }
+        }
     }
 }

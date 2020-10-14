@@ -22,8 +22,8 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
     // TODO release / disconnect / setDisconnected / setReleased
     public final void a(boolean var1) {
         try {
-            this.embeddedPlayer.a(var1);
-            this.connectionClient.a(var1);
+            this.embeddedPlayer.ii(var1);
+            this.connectionClient.rr(var1);
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -63,7 +63,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final View a() {
         try {
-            return (View) ObjectWrapper.a(this.embeddedPlayer.s());
+            return (View) ObjectWrapper.a(this.embeddedPlayer.qq());
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -71,7 +71,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void b() {
         try {
-            this.embeddedPlayer.m();
+            this.embeddedPlayer.ll();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -79,7 +79,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void c() {
         try {
-            this.embeddedPlayer.n();
+            this.embeddedPlayer.mm();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -87,7 +87,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void d() {
         try {
-            this.embeddedPlayer.o();
+            this.embeddedPlayer.nn();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -95,15 +95,16 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void e() {
         try {
-            this.embeddedPlayer.p();
+            this.embeddedPlayer.oo();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
     }
 
-    public final void b(boolean var1) {
+    // TODO See if destroy is the right name
+    public final void destroy(boolean isFinishing) {
         try {
-            this.embeddedPlayer.e(var1);
+            this.embeddedPlayer.destroy(isFinishing);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }
@@ -119,7 +120,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void f() {
         try {
-            this.embeddedPlayer.q();
+            this.embeddedPlayer.pp();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -127,7 +128,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final void g() {
         try {
-            this.embeddedPlayer.l();
+            this.embeddedPlayer.kk();
         } catch (RemoteException e) {
             throw new YouTubePlayerException(e);
         }
@@ -159,7 +160,7 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     public final boolean a(Bundle var1) {
         try {
-            return this.embeddedPlayer.a(var1);
+            return this.embeddedPlayer.setBundle(var1);
         } catch (RemoteException var2) {
             throw new YouTubePlayerException(var2);
         }

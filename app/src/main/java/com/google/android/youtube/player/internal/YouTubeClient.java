@@ -17,36 +17,34 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 
 import java.util.ArrayList;
 
-public abstract class YouTubeClient<T extends IInterface> implements t {
+public abstract class YouTubeClient<T extends IInterface> implements Client {
     private final Context context;
     final Handler handler;
     private T connection;
-    private ArrayList<C> dd;
-    private final ArrayList<C> e = new ArrayList<>();
-    private boolean f = false;
+    private final ArrayList<Connection> connections = new ArrayList<>();
+    private final ArrayList<Connection> activeConnections = new ArrayList<>();
     // TODO Instantiate here, make final and clear only in constructor for thread safety
-    private ArrayList<OnInitializationResult> initResultListeners;
+    private final ArrayList<OnInitializationResult> initResultListeners = new ArrayList<>();
+    private boolean isProcessingConnections = false;
     private boolean h = false;
     private final ArrayList<B<?>> i = new ArrayList<>();
     private ServiceConnection serviceConnection;
     private boolean isConnected = false;
 
-    protected YouTubeClient(Context context, C var2, OnInitializationResult onInitResult) {
+    protected YouTubeClient(Context context, Connection connection, OnInitializationResult onInitResult) {
         if (Looper.getMainLooper().getThread() != Thread.currentThread()) {
             throw new IllegalStateException("Clients must be created on the UI thread.");
         } else {
             this.context = Validators.notNull(context);
-            this.dd = new ArrayList<>();
-            this.dd.add(Validators.notNull(var2));
-            this.initResultListeners = new ArrayList<>();
+            this.connections.add(Validators.notNull(connection));
             this.initResultListeners.add(Validators.notNull(onInitResult));
-            this.handler = new A();
+            this.handler = new InternalHandler();
         }
     }
 
     protected abstract String c();
 
-    protected abstract String b();
+    protected abstract String getConnectionDescriptor();
 
     protected abstract T a(IBinder var1);
 
@@ -73,7 +71,7 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
                 this.unbindService();
             }
 
-            this.serviceConnection = new e();
+            this.serviceConnection = new YouTubeServiceConnection();
             if (!this.context.bindService(intent, this.serviceConnection, Context.BIND_AUTO_CREATE | Context.BIND_ADJUST_WITH_ACTIVITY)) {
                 this.handler.sendMessage(this.handler.obtainMessage(3, YouTubeInitializationResult.ERROR_CONNECTING_TO_SERVICE));
             }
@@ -87,13 +85,13 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
 
     @Override
     public void disconnect() {
-        this.h();
+        this.releaseAll();
         this.isConnected = false;
-        synchronized(this.i) {
+        synchronized (this.i) {
             int length = this.i.size();
             int i = 0;
 
-            while(true) {
+            while (true) {
                 if (i >= length) {
                     this.i.clear();
                     break;
@@ -121,66 +119,60 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
     }
 
     // TODO bind?
-    protected final void b(IBinder var1) {
+    protected final void getConnectionDescriptor(IBinder var1) {
         try {
             IServiceBroker broker = IServiceBroker.Stub.asInterface(var1);
-            this.a(broker, new d());
+            this.a(broker, new OnConnectionCompletedListener());
         } catch (RemoteException var2) {
             Log.w("YouTubeClient", "service died");
         }
     }
 
-    protected abstract void a(IServiceBroker var1, d var2) throws RemoteException;
+    protected abstract void a(IServiceBroker broker, OnConnectionCompletedListener onCompletedListener) throws RemoteException;
 
-    protected final void g() {
-        synchronized (this.dd) {
-            Validators.validateState(!this.f);
+    protected final void bindAll() {
+        synchronized (this.connections) {
+            Validators.validateState(!this.isProcessingConnections);
             this.handler.removeMessages(4);
-            this.f = true;
-            Validators.validateState(this.e.size() == 0);
-            ArrayList<C> var2 = this.dd;
+            this.isProcessingConnections = true;
 
-            for (int i = 0; i < var2.size() && this.isConnected && this.isConnected(); ++i) {
-                if (!this.e.contains(var2.get(i))) {
-                    var2.get(i).a();
-                }
+            // TODO See if this is thread safe
+            for (Connection connection : connections) {
+                if (this.isConnected && this.isConnected()) break;
+                connection.bind();
             }
 
-            this.e.clear();
-            this.f = false;
+            this.isProcessingConnections = false;
         }
     }
 
-    protected final void h() {
+    protected final void releaseAll() {
         this.handler.removeMessages(4);
-        synchronized (this.dd) {
-            this.f = true;
-            ArrayList<C> list = this.dd;
+        synchronized (this.connections) {
+            this.isProcessingConnections = true;
+            ArrayList<Connection> list = this.connections;
 
             for (int i = 0; i < list.size() && this.isConnected; ++i) {
-                if (this.dd.contains(list.get(i))) {
-                    list.get(i).b();
+                if (this.connections.contains(list.get(i))) {
+                    list.get(i).release();
                 }
             }
 
-            this.f = false;
+            this.isProcessingConnections = false;
         }
     }
 
     protected final void a(YouTubeInitializationResult result) {
         this.handler.removeMessages(4);
-        synchronized(this.initResultListeners) {
+        synchronized (this.initResultListeners) {
             this.h = true;
-            ArrayList<OnInitializationResult> var3 = this.initResultListeners;
 
-            for(int i = 0; i < var3.size(); ++i) {
+            // TODO Check if this loop is thread safe
+            for (OnInitializationResult listener : this.initResultListeners) {
                 if (!this.isConnected) {
                     return;
                 }
-
-                if (this.initResultListeners.contains(var3.get(i))) {
-                    ((OnInitializationResult)var3.get(i)).onResult(result);
-                }
+                listener.onResult(result);
             }
 
             this.h = false;
@@ -198,9 +190,9 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
         return this.connection;
     }
 
-    protected final class d extends IConnectionCallbacks.Stub {
+    protected final class OnConnectionCompletedListener extends IConnectionCallbacks.Stub {
 
-        public final void a(String initResult, IBinder binder) {
+        public final void onConnectionCompleted(String initResult, IBinder binder) {
             handler.sendMessage(handler.obtainMessage(1, new D(initResult, binder)));
         }
     }
@@ -218,72 +210,68 @@ public abstract class YouTubeClient<T extends IInterface> implements t {
         // TODO was not implemented before
         @Override
         protected void a(Boolean var1) {
-            super.b = var1;
+
         }
     }
 
     protected abstract class B<TListener> {
-        private TListener b;
+        private TListener tListener;
 
-        public B(TListener var2) {
-            this.b = var2;
-            synchronized(YouTubeClient.this.i) {
-                YouTubeClient.this.i.add(this);
+        public B(final TListener tListener) {
+            this.tListener = tListener;
+            synchronized (i) {
+                i.add(this);
             }
         }
 
-        protected abstract void a(TListener var1);
+        protected abstract void a(final TListener tListener);
 
         public final void a() {
-            TListener var1;
-            synchronized(this) {
-                var1 = this.b;
+            TListener tListener;
+            synchronized (this) {
+                tListener = this.tListener;
             }
 
-            this.a(var1);
+            this.a(tListener);
         }
 
         public final void b() {
-            synchronized(this) {
-                this.b = null;
+            synchronized (this) {
+                this.tListener = null;
             }
         }
     }
 
-    final class A extends Handler {
-        A() {
-        }
+    private final class InternalHandler extends Handler {
 
         @Override
-        public final void handleMessage(Message message) {
+        public final void handleMessage(final Message message) {
             if (message.what == 3) {
-                a((YouTubeInitializationResult)message.obj);
+                a((YouTubeInitializationResult) message.obj);
             } else if (message.what == 4) {
-                synchronized (dd) {
-                    if (isConnected && isConnected() && dd.contains(message.obj)) {
-                        ((C) message.obj).a();
+                synchronized (connections) {
+                    if (isConnected && isConnected() && connections.contains(message.obj)) {
+                        ((Connection) message.obj).bind();
                     }
 
                 }
             } else if (message.what != 2 || isConnected()) {
                 if (message.what == 2 || message.what == 1) {
-                    ((B)message.obj).a();
+                    ((B) message.obj).a();
                 }
             }
         }
     }
 
-    final class e implements ServiceConnection {
-        e() {
-        }
+    final class YouTubeServiceConnection implements ServiceConnection {
 
         public final void onServiceConnected(ComponentName component, IBinder binder) {
-            b(binder);
+            getConnectionDescriptor(binder);
         }
 
         public final void onServiceDisconnected(ComponentName component) {
             connection = null;
-            h();
+            releaseAll();
         }
     }
 }

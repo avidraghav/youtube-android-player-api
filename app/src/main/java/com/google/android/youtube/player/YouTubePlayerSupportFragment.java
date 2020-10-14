@@ -18,7 +18,7 @@ import com.google.android.youtube.player.internal.Validators;
 public class YouTubePlayerSupportFragment extends Fragment implements Provider {
     private final YouTubePlayerSupportFragment.a a = new YouTubePlayerSupportFragment.a();
     private Bundle bundle;
-    private YouTubePlayerView youTubePl;
+    private YouTubePlayerView youTubePlayerView;
     private String d;
     private OnInitializedListener onInitializedListener;
     private boolean f;
@@ -37,9 +37,9 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
     }
 
     private void a() {
-        if (this.youTubePl != null && this.onInitializedListener != null) {
-            this.youTubePl.a(this.f);
-            this.youTubePl.a(this.getActivity(), this, this.d, this.onInitializedListener, this.bundle);
+        if (this.youTubePlayerView != null && this.onInitializedListener != null) {
+            this.youTubePlayerView.a(this.f);
+            this.youTubePlayerView.a(this.getActivity(), this, this.d, this.onInitializedListener, this.bundle);
             this.bundle = null;
             this.onInitializedListener = null;
         }
@@ -54,54 +54,54 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
 
     @Override
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
-        this.youTubePl = new YouTubePlayerView(this.getActivity(), (AttributeSet)null, 0, this.a);
+        this.youTubePlayerView = new YouTubePlayerView(this.getActivity(), (AttributeSet) null, 0, this.a);
         this.a();
-        return this.youTubePl;
+        return this.youTubePlayerView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        this.youTubePl.a();
+        this.youTubePlayerView.a();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.youTubePl.b();
+        this.youTubePlayerView.b();
     }
 
     @Override
     public void onPause() {
-        this.youTubePl.c();
+        this.youTubePlayerView.c();
         super.onPause();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle b) {
         super.onSaveInstanceState(b);
-        Bundle var2 = this.youTubePl != null ? this.youTubePl.getBundle() : this.bundle;
+        Bundle var2 = this.youTubePlayerView != null ? this.youTubePlayerView.getBundle() : this.bundle;
         b.putBundle("YouTubePlayerSupportFragment.KEY_PLAYER_VIEW_STATE", var2);
     }
 
     @Override
     public void onStop() {
-        this.youTubePl.d();
+        this.youTubePlayerView.d();
         super.onStop();
     }
 
     @Override
     public void onDestroyView() {
-        this.youTubePl.c(this.getActivity().isFinishing());
-        this.youTubePl = null;
+        this.youTubePlayerView.c(this.getActivity().isFinishing());
+        this.youTubePlayerView = null;
         super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-        if (this.youTubePl != null) {
+        if (this.youTubePlayerView != null) {
             FragmentActivity var1 = this.getActivity();
-            this.youTubePl.b(var1 == null || var1.isFinishing());
+            this.youTubePlayerView.b(var1 == null || var1.isFinishing());
         }
 
         super.onDestroy();

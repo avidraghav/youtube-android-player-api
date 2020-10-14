@@ -4,21 +4,21 @@ import android.content.Context;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-public final class O extends YouTubeClient<IYouTubeService> implements ConnectionClient {
+public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeService> implements ConnectionClient {
     private final String b;
     private final String callingPackage;
     private final String callingAppVersion;
     private boolean released;
 
-    public O(Context context, String var2, String callingPackage, String callingAppVersion, C var5, OnInitializationResult onInitializationResult) {
+    public YouTubePlayerConnectionClient(Context context, String developerKey, String callingPackage, String callingAppVersion, Connection var5, OnInitializationResult onInitializationResult) {
         super(context, var5, onInitializationResult);
-        this.b = Validators.notNull(var2);
+        this.b = Validators.notNull(developerKey);
         this.callingPackage = Validators.notEmpty(callingPackage, "callingPackage cannot be null or empty");
         this.callingAppVersion = Validators.notEmpty(callingAppVersion, "callingAppVersion cannot be null or empty");
     }
 
     @Override
-    protected final String b() {
+    protected final String getConnectionDescriptor() {
         return "com.google.android.youtube.player.internal.IYouTubeService";
     }
 
@@ -41,16 +41,16 @@ public final class O extends YouTubeClient<IYouTubeService> implements Connectio
     }
 
     @Override
-    protected final void a(IServiceBroker serviceBroker, d connectionCallbacks) throws RemoteException {
-        serviceBroker.a(connectionCallbacks, 1202, this.callingPackage, this.callingAppVersion, this.b, null);
+    protected final void a(IServiceBroker serviceBroker, OnConnectionCompletedListener callback) throws RemoteException {
+        serviceBroker.gg(callback, 1202, this.callingPackage, this.callingAppVersion, this.b, null);
     }
 
     @Override
-    public final IThumbnailLoaderService a(IThumbnailLoaderClient var1) {
+    public final IThumbnailLoaderService ss(IThumbnailLoaderClient var1) {
         this.isNotReleased();
 
         try {
-            return this.j().a(var1);
+            return this.j().ee(var1);
         } catch (RemoteException var2) {
             throw new IllegalStateException(var2);
         }
@@ -61,17 +61,17 @@ public final class O extends YouTubeClient<IYouTubeService> implements Connectio
         this.isNotReleased();
 
         try {
-            return this.j().a();
+            return this.j().ff();
         } catch (RemoteException var2) {
             throw new IllegalStateException(var2);
         }
     }
 
     @Override
-    public final void a(boolean var1) {
+    public final void rr(boolean var1) {
         if (this.isConnected()) {
             try {
-                this.j().a(var1);
+                this.j().dd(var1);
             } catch (RemoteException var2) {
             }
 
@@ -82,7 +82,7 @@ public final class O extends YouTubeClient<IYouTubeService> implements Connectio
     @Override
     public final void disconnect() {
         if (!this.released) {
-            this.a(true);
+            this.rr(true);
         }
         super.disconnect();
     }

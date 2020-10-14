@@ -2,12 +2,11 @@ package com.google.android.youtube.player.internal;
 
 import android.os.IBinder;
 
-public interface ConnectionClient extends t {
+public interface ConnectionClient extends Client {
     IBinder getBinder();
 
-    IThumbnailLoaderService a(IThumbnailLoaderClient var1);
+    IThumbnailLoaderService ss(IThumbnailLoaderClient var1);
 
     // TODO Called from YouTubePlayer release(boolean var1) / disconnect /
-    // TODO
-    void a(boolean var1);
+    void rr(final boolean var1);
 }

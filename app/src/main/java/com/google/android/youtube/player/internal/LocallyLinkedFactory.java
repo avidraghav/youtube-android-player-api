@@ -4,21 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.google.android.youtube.player.YouTubeThumbnailView;
-import com.google.android.youtube.player.internal.t.C;
+import com.google.android.youtube.player.internal.Client.Connection;
 
-public final class LocallyLinkedFactory extends aa {
+public final class LocallyLinkedFactory extends LinkedFactory {
     public LocallyLinkedFactory() {
     }
 
-    public final ConnectionClient a(Context context, String developerKey, C var3, t.OnInitializationResult result) {
-        return new O(context, developerKey, context.getPackageName(), z.getPackageVersionName(context), var3, result);
+    public final ConnectionClient getClient(Context context, String developerKey, Connection var3, Client.OnInitializationResult result) {
+        return new YouTubePlayerConnectionClient(context, developerKey, context.getPackageName(), z.getPackageVersionName(context), var3, result);
     }
 
-    public final IEmbeddedPlayer a(Activity activity, ConnectionClient client, boolean var3) throws RemoteEmbeddedPlayer.RemotePlayerException {
+    public final IEmbeddedPlayer getPlayer(Activity activity, ConnectionClient client, boolean var3) throws RemoteEmbeddedPlayer.RemotePlayerException {
         return RemoteEmbeddedPlayer.a(activity, client.getBinder(), var3);
     }
 
-    public final AbstractYouTubeThumbnailLoader a(ConnectionClient client, YouTubeThumbnailView thumbnail) {
+    public final AbstractYouTubeThumbnailLoader getThumbnailLoader(ConnectionClient client, YouTubeThumbnailView thumbnail) {
         return new YoutubeThumbnailLoaderImpl(client, thumbnail);
     }
 }

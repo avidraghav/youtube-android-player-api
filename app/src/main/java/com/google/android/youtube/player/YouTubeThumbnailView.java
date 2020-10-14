@@ -6,10 +6,10 @@ import android.util.AttributeSet;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.google.android.youtube.player.internal.AbstractYouTubeThumbnailLoader;
+import com.google.android.youtube.player.internal.Client;
 import com.google.android.youtube.player.internal.ConnectionClient;
+import com.google.android.youtube.player.internal.LinkedFactory;
 import com.google.android.youtube.player.internal.Validators;
-import com.google.android.youtube.player.internal.aa;
-import com.google.android.youtube.player.internal.t;
 
 public final class YouTubeThumbnailView extends AppCompatImageView {
     private ConnectionClient client;
@@ -29,7 +29,7 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
 
     public final void initialize(String var1, YouTubeThumbnailView.OnInitializedListener var2) {
         YouTubeThumbnailView.a var3 = new YouTubeThumbnailView.a(this, var2);
-        this.client = aa.getInstance().a(this.getContext(), var1, var3, var3);
+        this.client = LinkedFactory.getInstance().getClient(this.getContext(), var1, var3, var3);
         this.client.connect();
     }
 
@@ -43,7 +43,7 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
         super.finalize();
     }
 
-    private static final class a implements t.C, t.OnInitializationResult {
+    private static final class a implements Client.Connection, Client.OnInitializationResult {
         private YouTubeThumbnailView a;
         private YouTubeThumbnailView.OnInitializedListener b;
 
@@ -52,16 +52,16 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
             this.b = (YouTubeThumbnailView.OnInitializedListener) Validators.notNull(var2, "onInitializedlistener cannot be null");
         }
 
-        public final void a() {
+        public final void bind() {
             if (this.a != null && this.a.client != null) {
-                this.a.b = aa.getInstance().a(this.a.client, this.a);
+                this.a.b = LinkedFactory.getInstance().getThumbnailLoader(this.a.client, this.a);
                 this.b.onInitializationSuccess(this.a, this.a.b);
                 this.c();
             }
 
         }
 
-        public final void b() {
+        public final void release() {
             this.c();
         }
 

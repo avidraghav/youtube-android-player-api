@@ -2,10 +2,7 @@ package com.google.android.youtube.player.internal;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 
-/**
- * TODO Connection / Initializer / Client
- */
-public interface t {
+public interface Client {
     void connect();
 
     void disconnect();
@@ -14,9 +11,9 @@ public interface t {
         void onResult(YouTubeInitializationResult result);
     }
 
-    interface C {
-        void a();
+    interface Connection {
+        void bind();
 
-        void b();
+        void release();
     }
 }

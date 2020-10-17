@@ -15,9 +15,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.android.youtube.player.internal.Validators;
+import com.google.android.youtube.player.internal.ApplicationUtils;
 import com.google.android.youtube.player.internal.LocalizedYouTubePlayerTexts;
-import com.google.android.youtube.player.internal.z;
+import com.google.android.youtube.player.internal.Validators;
 
 /**
  * Provides the result of initializing the YouTube API Service. If initialization fails, the reason
@@ -178,10 +178,10 @@ public enum YouTubeInitializationResult {
         switch (this) {
             case SERVICE_MISSING:
             case SERVICE_VERSION_UPDATE_REQUIRED:
-                intent = z.getPlayStoreIntent(z.getPackageName(activity));
+                intent = ApplicationUtils.getPlayStoreIntent(ApplicationUtils.getPackageName(activity));
                 break;
             case SERVICE_DISABLED:
-                intent = z.getAppDetailsSettingsIntent(z.getPackageName(activity));
+                intent = ApplicationUtils.getAppDetailsSettingsIntent(ApplicationUtils.getPackageName(activity));
                 break;
             default:
                 intent = null;

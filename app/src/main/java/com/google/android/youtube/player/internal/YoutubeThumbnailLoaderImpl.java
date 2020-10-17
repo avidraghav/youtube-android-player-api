@@ -11,31 +11,31 @@ public final class YoutubeThumbnailLoaderImpl extends AbstractYouTubeThumbnailLo
     private final Handler handler;
     private ConnectionClient connectionClient;
     private IThumbnailLoaderService thumbnailLoaderService;
-    private boolean d;
-    private boolean e;
+    private boolean hasPrevious;
+    private boolean hasNext;
 
     public YoutubeThumbnailLoaderImpl(ConnectionClient connectionClient, YouTubeThumbnailView thumbnail) {
         super(thumbnail);
         this.connectionClient = Validators.notNull(connectionClient, "connectionClient cannot be null");
-        this.thumbnailLoaderService = connectionClient.ss(new IThumbnailLoaderClient.Stub() {
+        this.thumbnailLoaderService = connectionClient.getThumbnailLoaderService(new IThumbnailLoaderClient.Stub() {
             @Override
-            public void cc(final Bitmap var1, final String var2, final boolean var3, final boolean var4) throws RemoteException {
+            public void loadThumbnail(final Bitmap thumbnail, final String videoId, final boolean hasPrevious, final boolean hasNext) throws RemoteException {
                 handler.post(new Runnable() {
                     public final void run() {
-                        d = var3;
-                        e = var4;
-                        YoutubeThumbnailLoaderImpl.this.loadThumbnail(var1, var2);
+                        YoutubeThumbnailLoaderImpl.this.hasPrevious = hasPrevious;
+                        YoutubeThumbnailLoaderImpl.this.hasNext = hasNext;
+                        YoutubeThumbnailLoaderImpl.this.loadThumbnail(thumbnail, videoId);
                     }
                 });
             }
 
             @Override
-            public void bb(final String var1, final boolean var2, final boolean var3) throws RemoteException {
+            public void onLoadingError(final String reason, final boolean hasPrevious, final boolean hasNext) throws RemoteException {
                 handler.post(new Runnable() {
                     public final void run() {
-                        d = var2;
-                        e = var3;
-                        YoutubeThumbnailLoaderImpl.this.b(var1);
+                        YoutubeThumbnailLoaderImpl.this.hasPrevious = hasPrevious;
+                        YoutubeThumbnailLoaderImpl.this.hasNext = hasNext;
+                        YoutubeThumbnailLoaderImpl.this.onThumbnailError(reason);
                     }
                 });
             }
@@ -49,65 +49,65 @@ public final class YoutubeThumbnailLoaderImpl extends AbstractYouTubeThumbnailLo
     }
 
     @Override
-    public final void a(String videoId) {
+    public final void loadThumbnail(String videoId) {
         try {
             this.thumbnailLoaderService.setVideo(videoId);
-        } catch (RemoteException var2) {
-            throw new IllegalStateException(var2);
+        } catch (RemoteException e) {
+            throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public final void a(String playlistId, int skipTo) {
+    public final void loadThumbnail(String playlistId, int skipTo) {
         try {
             this.thumbnailLoaderService.setPlaylist(playlistId, skipTo);
-        } catch (RemoteException var3) {
-            throw new IllegalStateException(var3);
+        } catch (RemoteException e) {
+            throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public final void c() {
+    public final void loadNext() {
         try {
             this.thumbnailLoaderService.next();
-        } catch (RemoteException var2) {
-            throw new IllegalStateException(var2);
+        } catch (RemoteException e) {
+            throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public final void d() {
+    public final void loadPrevious() {
         try {
             this.thumbnailLoaderService.previous();
-        } catch (RemoteException var2) {
-            throw new IllegalStateException(var2);
+        } catch (RemoteException e) {
+            throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public final void e() {
+    public final void loadFirst() {
         try {
             this.thumbnailLoaderService.first();
-        } catch (RemoteException var2) {
-            throw new IllegalStateException(var2);
+        } catch (RemoteException e) {
+            throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public final boolean f() {
-        return this.e;
+    public final boolean hasNextThumbnail() {
+        return this.hasNext;
     }
 
     @Override
-    public final boolean g() {
-        return this.d;
+    public final boolean hasPreviousThumbnail() {
+        return this.hasPrevious;
     }
 
     @Override
     public final void h() {
         try {
             this.thumbnailLoaderService.release();
-        } catch (RemoteException var1) {
+        } catch (RemoteException e) {
         }
 
         this.connectionClient.disconnect();

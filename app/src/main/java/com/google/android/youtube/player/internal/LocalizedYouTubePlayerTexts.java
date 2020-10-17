@@ -28,7 +28,7 @@ public final class LocalizedYouTubePlayerTexts {
             locale = Locale.getDefault();
         }
 
-        Map<String, String> var4 = x.a(locale);
+        Map<String, String> var4 = LocalizedYouTubeTexts.a(locale);
         this.errorInitializingPlayer = var4.get("error_initializing_player");
         this.getYouTubeAppTitle = var4.get("get_youtube_app_title");
         this.getYouTubeAppText = var4.get("get_youtube_app_text");

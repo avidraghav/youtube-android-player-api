@@ -68,7 +68,7 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
     @Override
     public void onResume() {
         super.onResume();
-        this.youTubePlayerView.b();
+        this.youTubePlayerView.bind();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
 
     @Override
     public void onDestroyView() {
-        this.youTubePlayerView.c(this.getActivity().isFinishing());
+        this.youTubePlayerView.stopSelf(this.getActivity().isFinishing());
         this.youTubePlayerView = null;
         super.onDestroyView();
     }
@@ -100,8 +100,8 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
     @Override
     public void onDestroy() {
         if (this.youTubePlayerView != null) {
-            FragmentActivity var1 = this.getActivity();
-            this.youTubePlayerView.b(var1 == null || var1.isFinishing());
+            FragmentActivity activity = this.getActivity();
+            this.youTubePlayerView.release(activity == null || activity.isFinishing());
         }
 
         super.onDestroy();
@@ -115,7 +115,7 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
             YouTubePlayerSupportFragment.this.initialize(developerKey, YouTubePlayerSupportFragment.this.onInitializedListener);
         }
 
-        public final void a(YouTubePlayerView view) {
+        public final void onFocusChanged(YouTubePlayerView view) {
         }
     }
 }

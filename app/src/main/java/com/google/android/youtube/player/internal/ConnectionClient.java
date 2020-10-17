@@ -5,8 +5,8 @@ import android.os.IBinder;
 public interface ConnectionClient extends Client {
     IBinder getBinder();
 
-    IThumbnailLoaderService ss(IThumbnailLoaderClient var1);
+    IThumbnailLoaderService getThumbnailLoaderService(IThumbnailLoaderClient client);
 
     // TODO Called from YouTubePlayer release(boolean var1) / disconnect /
-    void rr(final boolean var1);
+    void release(final boolean var1);
 }

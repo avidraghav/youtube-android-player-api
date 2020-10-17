@@ -11,7 +11,7 @@ public final class LocallyLinkedFactory extends LinkedFactory {
     }
 
     public final ConnectionClient getClient(Context context, String developerKey, Connection var3, Client.OnInitializationResult result) {
-        return new YouTubePlayerConnectionClient(context, developerKey, context.getPackageName(), z.getPackageVersionName(context), var3, result);
+        return new YouTubePlayerConnectionClient(context, developerKey, context.getPackageName(), ApplicationUtils.getPackageVersionName(context), var3, result);
     }
 
     public final IEmbeddedPlayer getPlayer(Activity activity, ConnectionClient client, boolean var3) throws RemoteEmbeddedPlayer.RemotePlayerException {

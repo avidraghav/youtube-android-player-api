@@ -6,8 +6,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.util.Log;
 
-import com.google.android.youtube.player.internal.z;
+import com.google.android.youtube.player.internal.ApplicationUtils;
 
 import java.util.List;
 
@@ -23,6 +24,9 @@ import java.util.List;
  * has a version of the YouTube application that supports the given intent.
  */
 public final class YouTubeIntents {
+
+    private static final String TAG = "YouTubeIntents";
+
     private YouTubeIntents() {
     }
 
@@ -34,6 +38,7 @@ public final class YouTubeIntents {
      * {@code false} otherwise.
      */
     public static boolean isYouTubeInstalled(Context context) {
+        Log.d(TAG, "isYouTubeInstalled: called.");
         try {
             context.getPackageManager().getApplicationInfo(getPackage(context), 0);
             return true;
@@ -50,6 +55,7 @@ public final class YouTubeIntents {
      * {@code null} if YouTube is not installed.
      */
     public static String getInstalledYouTubeVersionName(Context context) {
+        Log.d(TAG, "getInstalledYouTubeVersionName: called.");
         try {
             return context.getPackageManager().getPackageInfo(getPackage(context), 0).versionName;
         } catch (NameNotFoundException e) {
@@ -65,6 +71,7 @@ public final class YouTubeIntents {
      * {@code -1} if YouTube is not installed.
      */
     public static int getInstalledYouTubeVersionCode(Context context) {
+        Log.d(TAG, "getInstalledYouTubeVersionCode: called.");
         try {
             return context.getPackageManager().getPackageInfo(getPackage(context), 0).versionCode;
         } catch (NameNotFoundException var1) {
@@ -82,6 +89,7 @@ public final class YouTubeIntents {
      * @see #createPlayVideoIntent(Context, String)
      */
     public static boolean canResolvePlayVideoIntent(Context context) {
+        Log.d(TAG, "canResolvePlayVideoIntent: called.");
         Uri uri = Uri.parse("https://www.youtube.com/watch?v=");
         return canResolveUriIntent(context, uri);
     }
@@ -97,6 +105,7 @@ public final class YouTubeIntents {
      * @see #canResolvePlayVideoIntent(Context)
      */
     public static Intent createPlayVideoIntent(Context context, String videoId) {
+        Log.d(TAG, "createPlayVideoIntent: called.");
         return createPlayVideoIntentWithOptions(context, videoId, false, false);
     }
 
@@ -116,9 +125,10 @@ public final class YouTubeIntents {
      * @see #createPlayVideoIntentWithOptions(Context, String, boolean, boolean)
      */
     public static boolean canResolvePlayVideoIntentWithOptions(Context context) {
+        Log.d(TAG, "canResolvePlayVideoIntentWithOptions: called.");
         int versionCode = getInstalledYouTubeVersionCode(context);
         PackageManager packageManager;
-        return (z.supportsLeanBackUI(packageManager = context.getPackageManager()) || (z.isGoogleTV(packageManager) ? versionCode >= 2147483647 : versionCode >= 3300)) && canResolvePlayVideoIntent(context);
+        return (ApplicationUtils.supportsLeanBackUI(packageManager = context.getPackageManager()) || (ApplicationUtils.isGoogleTV(packageManager) ? versionCode >= 2147483647 : versionCode >= 3300)) && canResolvePlayVideoIntent(context);
     }
 
     /**
@@ -137,6 +147,7 @@ public final class YouTubeIntents {
      * @see #canResolvePlayVideoIntentWithOptions(Context)
      */
     public static Intent createPlayVideoIntentWithOptions(Context context, String videoId, boolean fullscreen, boolean finishOnEnd) {
+        Log.d(TAG, "createPlayVideoIntentWithOptions: called.");
         String videoUrl = "https://www.youtube.com/watch?v=";
 
         if (videoId != null) {
@@ -159,7 +170,8 @@ public final class YouTubeIntents {
      * @see #createSearchIntent(Context, String)
      */
     public static boolean canResolveSearchIntent(Context context) {
-        if (z.isGoogleTV(context.getPackageManager()) && getInstalledYouTubeVersionCode(context) < 4700) {
+        Log.d(TAG, "canResolveSearchIntent: called.");
+        if (ApplicationUtils.isGoogleTV(context.getPackageManager()) && getInstalledYouTubeVersionCode(context) < 4700) {
             return false;
         } else {
             Intent intent = (new Intent(Intent.ACTION_SEARCH)).setPackage(getPackage(context));
@@ -178,6 +190,7 @@ public final class YouTubeIntents {
      * @see #canResolveSearchIntent(Context)
      */
     public static Intent createSearchIntent(Context context, String query) {
+        Log.d(TAG, "createSearchIntent: called.");
         return addIntentExtras((new Intent(Intent.ACTION_SEARCH))
                 .setPackage(getPackage(context))
                 .putExtra("query", query), context);
@@ -193,6 +206,7 @@ public final class YouTubeIntents {
      * @see #createOpenPlaylistIntent(Context, String)
      */
     public static boolean canResolveOpenPlaylistIntent(Context context) {
+        Log.d(TAG, "canResolveOpenPlaylistIntent: called.");
         Uri uri = Uri.parse("https://www.youtube.com/playlist?list=");
         return canResolveUriIntent(context, uri);
     }
@@ -207,6 +221,7 @@ public final class YouTubeIntents {
      * @see #canResolveOpenPlaylistIntent(Context)
      */
     public static Intent createOpenPlaylistIntent(Context context, String playlistId) {
+        Log.d(TAG, "createOpenPlaylistIntent: called.");
         Uri uri = createPlaylistUri(playlistId);
         return addIntentExtras(createUriIntent(context, uri), context);
     }
@@ -221,8 +236,9 @@ public final class YouTubeIntents {
      * @see #createPlayPlaylistIntent(Context, String)
      */
     public static boolean canResolvePlayPlaylistIntent(Context context) {
+        Log.d(TAG, "canResolvePlayPlaylistIntent: called.");
         int versionCode = getInstalledYouTubeVersionCode(context);
-        return (z.isGoogleTV(context.getPackageManager()) ? versionCode >= 4700 : versionCode >= 4000) && canResolveOpenPlaylistIntent(context);
+        return (ApplicationUtils.isGoogleTV(context.getPackageManager()) ? versionCode >= 4700 : versionCode >= 4000) && canResolveOpenPlaylistIntent(context);
     }
 
     /**
@@ -236,6 +252,7 @@ public final class YouTubeIntents {
      * @see #canResolvePlayPlaylistIntent(Context)
      */
     public static Intent createPlayPlaylistIntent(Context context, String playlistId) {
+        Log.d(TAG, "createPlayPlaylistIntent: called.");
         Uri uri = createPlaylistUri(playlistId).buildUpon()
                 .appendQueryParameter("playnext", "1")
                 .build();
@@ -253,6 +270,7 @@ public final class YouTubeIntents {
      * @see #createUserIntent(Context, String)
      */
     public static boolean canResolveUserIntent(Context context) {
+        Log.d(TAG, "canResolveUserIntent: called.");
         Uri uri = Uri.parse("https://www.youtube.com/user/");
         return canResolveUriIntent(context, uri);
     }
@@ -267,6 +285,7 @@ public final class YouTubeIntents {
      * @see #canResolveUserIntent(Context)
      */
     public static Intent createUserIntent(Context context, String username) {
+        Log.d(TAG, "createUserIntent: called.");
         String userUrl = "https://www.youtube.com/user/";
         if (username != null) {
             userUrl = userUrl.concat(username);
@@ -286,6 +305,7 @@ public final class YouTubeIntents {
      * @see #createChannelIntent(Context, String)
      */
     public static boolean canResolveChannelIntent(Context context) {
+        Log.d(TAG, "canResolveChannelIntent: called.");
         Uri uri = Uri.parse("https://www.youtube.com/channel/");
         return canResolveUriIntent(context, uri);
     }
@@ -301,6 +321,7 @@ public final class YouTubeIntents {
      * @see #canResolveChannelIntent(Context)
      */
     public static Intent createChannelIntent(Context context, String channelId) {
+        Log.d(TAG, "createChannelIntent: called.");
         String channelUrl = "https://www.youtube.com/channel/";
         if (channelId != null) {
             channelUrl = channelUrl.concat(channelId);
@@ -320,6 +341,7 @@ public final class YouTubeIntents {
      * @see #createUploadIntent(Context, Uri)
      */
     public static boolean canResolveUploadIntent(Context context) {
+        Log.d(TAG, "canResolveUploadIntent: called.");
         Intent intent = (new Intent("com.google.android.youtube.intent.action.UPLOAD")).setPackage(getPackage(context)).setType("video/*");
         return canResolveIntent(context, intent);
     }
@@ -338,6 +360,7 @@ public final class YouTubeIntents {
      * @see #canResolveUploadIntent(Context)
      */
     public static Intent createUploadIntent(Context context, Uri videoUri) throws IllegalArgumentException {
+        Log.d(TAG, "createUploadIntent: called.");
         if (videoUri == null) {
             throw new IllegalArgumentException("videoUri parameter cannot be null.");
         } else if (!videoUri.toString().startsWith("content://media/")) {
@@ -351,11 +374,13 @@ public final class YouTubeIntents {
     }
 
     private static boolean canResolveUriIntent(Context context, Uri uri) {
+        Log.d(TAG, "canResolveUriIntent: called.");
         Intent intent = (new Intent(Intent.ACTION_VIEW, uri)).setPackage(getPackage(context));
         return canResolveIntent(context, intent);
     }
 
     private static Intent createUriIntent(Context context, Uri uri) {
+        Log.d(TAG, "createUriIntent: called.");
         return addIntentExtras((new Intent(Intent.ACTION_VIEW, uri)).setPackage(getPackage(context)), context);
     }
 
@@ -368,9 +393,10 @@ public final class YouTubeIntents {
      * @return the {@param intent} with the data added as extras.
      */
     static Intent addIntentExtras(Intent intent, Context context) {
+        Log.d(TAG, "addIntentExtras: called.");
         intent.putExtra("app_package", context.getPackageName())
-                .putExtra("app_version", z.getPackageVersionName(context))
-                .putExtra("client_library_version", z.a());
+                .putExtra("app_version", ApplicationUtils.getPackageVersionName(context))
+                .putExtra("client_library_version", ApplicationUtils.a());
         return intent;
     }
 
@@ -383,6 +409,7 @@ public final class YouTubeIntents {
      * intent, {@code false} otherwise.
      */
     private static boolean canResolveIntent(Context context, Intent intent) {
+        Log.d(TAG, "canResolveIntent: called.");
         List<ResolveInfo> list = context.getPackageManager()
                 .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         return !list.isEmpty();
@@ -394,20 +421,23 @@ public final class YouTubeIntents {
      * @return TODO Add return value documentation
      */
     private static String getPackage(Context context) {
+        Log.d(TAG, "getPackage: called.");
         PackageManager packageManager;
-        if (z.supportsLeanBackUI(packageManager = context.getPackageManager())) {
+        if (ApplicationUtils.supportsLeanBackUI(packageManager = context.getPackageManager())) {
             return "com.google.android.youtube.tv";
         } else {
-            return z.isGoogleTV(packageManager) ? "com.google.android.youtube.googletv" : "com.google.android.youtube";
+            return ApplicationUtils.isGoogleTV(packageManager) ? "com.google.android.youtube.googletv" : "com.google.android.youtube";
         }
     }
 
     private static Uri createPlaylistUri(String playlistId) {
+        Log.d(TAG, "createPlaylistUri: called.");
         String playlistUrl = "https://www.youtube.com/playlist?list=";
         if (playlistId != null) {
             playlistUrl = playlistUrl.concat(playlistId);
         }
 
+        Log.d(TAG, "createPlaylistUri: return " + playlistUrl);
         return Uri.parse(playlistUrl);
     }
 }

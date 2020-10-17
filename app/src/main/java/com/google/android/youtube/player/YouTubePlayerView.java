@@ -33,17 +33,17 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     private static final String TAG = "YouTubePlayerView";
     private final OnGlobalFocusChangeListener globalFocusChangeListener;
-    private Set<View> focusedViews;
+    private Set<View> focusedViews = new HashSet<>();
     private final B listener;
     private ConnectionClient client;
     private YouTubePlayerImpl youTubePlayer;
-    private View f;
+    private View currentView;
     private YouTubePlayerFrameLayout frameLayout;
     private Provider provider;
     private Bundle bundle;
     private OnInitializedListener onInitializedListener;
     private boolean k;
-    private boolean l;
+    private boolean isReleased;
 
     /**
      * Create a {@link YouTubePlayerView}.
@@ -97,11 +97,13 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
      */
     YouTubePlayerView(final Context context, final AttributeSet attrs, final int defStyleAttr, B listener) {
         super(Validators.notNull(context, "context cannot be null"), attrs, defStyleAttr);
+        Log.d(TAG, "YouTubePlayerView: Constructor called.");
 
         if (!(context instanceof YouTubeBaseActivity)) {
             throw new IllegalStateException("A YouTubePlayerView can only be created with an Activity which extends YouTubeBaseActivity as its context.");
         }
 
+        Log.d(TAG, "YouTubePlayerView: listener=" + listener);
         if (listener == null) listener = ((YouTubeBaseActivity) context).getB();
         this.listener = Validators.notNull(listener, "listener cannot be null");
         if (this.getBackground() == null) {
@@ -112,7 +114,6 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         this.frameLayout = new YouTubePlayerFrameLayout(context);
         this.requestTransparentRegion(this.frameLayout);
         this.addView(this.frameLayout);
-        this.focusedViews = new HashSet<>();
         this.globalFocusChangeListener = new OnGlobalFocusChangeListener() {
             @Override
             public void onGlobalFocusChanged(View oldFocus, View newFocus) {
@@ -129,23 +130,23 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         IEmbeddedPlayer player;
         try {
             player = LinkedFactory.getInstance().getPlayer(activity, youTubePlayerView.client, youTubePlayerView.k);
+            youTubePlayerView.youTubePlayer = new YouTubePlayerImpl(youTubePlayerView.client, player);
+            youTubePlayerView.currentView = youTubePlayerView.youTubePlayer.a();
+            youTubePlayerView.addView(youTubePlayerView.currentView);
+            youTubePlayerView.removeView(youTubePlayerView.frameLayout);
+            youTubePlayerView.listener.onFocusChanged(youTubePlayerView);
+            if (youTubePlayerView.onInitializedListener != null) {
+                boolean isBundleSet = false;
+                if (youTubePlayerView.bundle != null) {
+                    isBundleSet = youTubePlayerView.youTubePlayer.setBundle(youTubePlayerView.bundle);
+                    youTubePlayerView.bundle = null;
+                }
+                youTubePlayerView.onInitializedListener.onInitializationSuccess(youTubePlayerView.provider, youTubePlayerView.youTubePlayer, isBundleSet);
+                youTubePlayerView.onInitializedListener = null;
+            }
         } catch (RemoteEmbeddedPlayer.RemotePlayerException e) {
             Log.w("YouTubePlayerAPI", "Error creating YouTubePlayerView", e);
             youTubePlayerView.onInitializationCompleted(YouTubeInitializationResult.INTERNAL_ERROR);
-            return;
-        }
-        youTubePlayerView.youTubePlayer = new YouTubePlayerImpl(youTubePlayerView.client, player);
-        youTubePlayerView.addView(youTubePlayerView.f = youTubePlayerView.youTubePlayer.a());
-        youTubePlayerView.removeView(youTubePlayerView.frameLayout);
-        youTubePlayerView.listener.a(youTubePlayerView);
-        if (youTubePlayerView.onInitializedListener != null) {
-            boolean a3 = false;
-            if (youTubePlayerView.bundle != null) {
-                a3 = youTubePlayerView.youTubePlayer.a(youTubePlayerView.bundle);
-                youTubePlayerView.bundle = null;
-            }
-            youTubePlayerView.onInitializedListener.onInitializationSuccess(youTubePlayerView.provider, youTubePlayerView.youTubePlayer, a3);
-            youTubePlayerView.onInitializedListener = null;
         }
     }
 
@@ -162,7 +163,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     @Override
     public final void initialize(String developerKey, OnInitializedListener listener) {
-        Log.d(TAG, "initialization of YouTubePlayerView started.");
+        Log.d(TAG, "initialize: initialization of YouTubePlayerView started.");
         Validators.notEmpty(developerKey, "Developer key cannot be null or empty");
         this.listener.initialize(this, developerKey, listener);
     }
@@ -185,19 +186,19 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
                 }
 
                 public final void release() {
-                    if (!l && youTubePlayer != null) {
-                        youTubePlayer.f();
+                    if (!isReleased && youTubePlayer != null) {
+                        youTubePlayer.stop();
                     }
 
-                    frameLayout.a();
+                    frameLayout.stopLoading();
                     if (indexOfChild(frameLayout) < 0) {
                         addView(frameLayout);
-                        removeView(f);
+                        removeView(currentView);
                     }
 
                     client = null;
                     youTubePlayer = null;
-                    f = null;
+                    currentView = null;
                 }
             }, new Client.OnInitializationResult() {
                 public final void onResult(YouTubeInitializationResult result) {
@@ -211,7 +212,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     private void onInitializationCompleted(YouTubeInitializationResult result) {
         this.youTubePlayer = null;
-        this.frameLayout.stopLoading();
+        this.frameLayout.showError();
         if (this.onInitializedListener != null) {
             this.onInitializedListener.onInitializationFailure(this.provider, result);
             this.onInitializedListener = null;
@@ -230,9 +231,9 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     // TODO Called from onResume()
     // TODO requestFocus?
-    final void b() {
+    final void bind() {
         if (this.youTubePlayer != null) {
-            this.youTubePlayer.c();
+            this.youTubePlayer.bind();
         }
 
     }
@@ -246,7 +247,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     }
 
     // TODO Called from onStop()
-    // Rename to / unbind() / unbindService()
+    // Rename to / unbind() / unbindService() / disconnect() / detach()
     final void d() {
         if (this.youTubePlayer != null) {
             this.youTubePlayer.e();
@@ -254,27 +255,24 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
 
     }
 
-    final void b(boolean isFinishing) {
+    // TODO Called from onDestroy()
+    final void release(boolean isFinishing) {
         if (this.youTubePlayer != null) {
-            this.youTubePlayer.destroy(isFinishing);
-            this.c(isFinishing);
+            this.youTubePlayer.stop(isFinishing);
+            this.stopSelf(isFinishing);
         }
-
     }
 
-    // TODO Called from onDestroy() and onDestroyView()
-    // TODO focusChanged
-    final void c(boolean var1) {
-        this.l = true;
+    final void stopSelf(boolean isFinishing) {
+        this.isReleased = true;
         if (this.youTubePlayer != null) {
-            this.youTubePlayer.a(var1);
+            this.youTubePlayer.release(isFinishing);
         }
-
     }
 
     // TODO Called from within addView / checkIfSelf?
     private void a(View view) {
-        if (view != this.frameLayout && (this.youTubePlayer == null || view != this.f)) {
+        if (view != this.frameLayout && (this.youTubePlayer == null || view != this.currentView)) {
             throw new UnsupportedOperationException("No views can be added on top of the player");
         }
     }
@@ -337,10 +335,10 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     }
 
     @Override
-    public final void onConfigurationChanged(Configuration var1) {
-        super.onConfigurationChanged(var1);
+    public final void onConfigurationChanged(Configuration config) {
+        super.onConfigurationChanged(config);
         if (this.youTubePlayer != null) {
-            this.youTubePlayer.a(var1);
+            this.youTubePlayer.onConfigurationChanged(config);
         }
     }
 
@@ -405,11 +403,11 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     public final boolean dispatchKeyEvent(KeyEvent event) {
         if (this.youTubePlayer != null) {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                return this.youTubePlayer.a(event.getKeyCode(), event) || super.dispatchKeyEvent(event);
+                return this.youTubePlayer.dispatchKeyEventDown(event.getKeyCode(), event) || super.dispatchKeyEvent(event);
             }
 
             if (event.getAction() == KeyEvent.ACTION_UP) {
-                return this.youTubePlayer.b(event.getKeyCode(), event) || super.dispatchKeyEvent(event);
+                return this.youTubePlayer.dispatchKeyEventUp(event.getKeyCode(), event) || super.dispatchKeyEvent(event);
             }
         }
 
@@ -417,7 +415,7 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
     }
 
     final Bundle getBundle() {
-        return this.youTubePlayer == null ? this.bundle : this.youTubePlayer.h();
+        return this.youTubePlayer == null ? this.bundle : this.youTubePlayer.getBundle();
     }
 
     // TODO b = instantiation listener?
@@ -426,6 +424,6 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
         void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener);
 
         // TODO onFocusChanged?
-        void a(YouTubePlayerView view);
+        void onFocusChanged(YouTubePlayerView view);
     }
 }

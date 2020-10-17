@@ -14,98 +14,55 @@ import android.util.Log;
 
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
 
 import java.util.ArrayList;
 
 public abstract class YouTubeClient<T extends IInterface> implements Client {
+
     private final Context context;
     final Handler handler;
-    private T connection;
-    private final ArrayList<Connection> connections = new ArrayList<>();
-    private final ArrayList<Connection> activeConnections = new ArrayList<>();
-    // TODO Instantiate here, make final and clear only in constructor for thread safety
-    private final ArrayList<OnInitializationResult> initResultListeners = new ArrayList<>();
-    private boolean isProcessingConnections = false;
+    public final ArrayList<B<?>> f102i = new ArrayList<>();
+    private final ArrayList<Client.Connection> connections = new ArrayList<>();
+    public T connection;
+    public ArrayList<Client.Connection> f97d;
+    public boolean isConnected = false;
     private boolean h = false;
-    private final ArrayList<B<?>> i = new ArrayList<>();
+    private boolean isProcessing = false;
     private ServiceConnection serviceConnection;
-    private boolean isConnected = false;
+    private ArrayList<Client.OnInitializationResult> initResultListeners;
 
-    protected YouTubeClient(Context context, Connection connection, OnInitializationResult onInitResult) {
+    protected YouTubeClient(Context context, Client.Connection aVar, Client.OnInitializationResult bVar) {
         if (Looper.getMainLooper().getThread() != Thread.currentThread()) {
             throw new IllegalStateException("Clients must be created on the UI thread.");
-        } else {
-            this.context = Validators.notNull(context);
-            this.connections.add(Validators.notNull(connection));
-            this.initResultListeners.add(Validators.notNull(onInitResult));
-            this.handler = new InternalHandler();
+        }
+        this.context = (Context) Validators.notNull(context);
+        this.f97d = new ArrayList<>();
+        this.f97d.add(Validators.notNull(aVar));
+        this.initResultListeners = new ArrayList<>();
+        this.initResultListeners.add(Validators.notNull(bVar));
+        this.handler = new InternalHandler();
+    }
+
+    public static YouTubeInitializationResult getYouTubeInitializationResult(String str) {
+        try {
+            return YouTubeInitializationResult.valueOf(str);
+        } catch (IllegalArgumentException e) {
+            return YouTubeInitializationResult.UNKNOWN_ERROR;
+        } catch (NullPointerException e2) {
+            return YouTubeInitializationResult.UNKNOWN_ERROR;
         }
     }
 
-    protected abstract String c();
+    public abstract T a(IBinder iBinder);
+
+    protected abstract void a(IServiceBroker iVar, OnConnectionCompletedListener dVar) throws RemoteException;
 
     protected abstract String getConnectionDescriptor();
 
-    protected abstract T a(IBinder var1);
+    protected abstract String getIntentService();
 
-    private static YouTubeInitializationResult getYouTubeInitializationResult(String initResult) {
-        try {
-            return YouTubeInitializationResult.valueOf(initResult);
-        } catch (IllegalArgumentException var1) {
-            return YouTubeInitializationResult.UNKNOWN_ERROR;
-        } catch (NullPointerException var2) {
-            return YouTubeInitializationResult.UNKNOWN_ERROR;
-        }
-    }
-
-    @Override
-    public final void connect() {
-        this.isConnected = true;
-        YouTubeInitializationResult result = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this.context);
-        if (result != YouTubeInitializationResult.SUCCESS) {
-            this.handler.sendMessage(this.handler.obtainMessage(3, result));
-        } else {
-            Intent intent = (new Intent(this.c())).setPackage(z.getPackageName(this.context));
-            if (this.serviceConnection != null) {
-                Log.e("YouTubeClient", "Calling connect() while still connected, missing disconnect().");
-                this.unbindService();
-            }
-
-            this.serviceConnection = new YouTubeServiceConnection();
-            if (!this.context.bindService(intent, this.serviceConnection, Context.BIND_AUTO_CREATE | Context.BIND_ADJUST_WITH_ACTIVITY)) {
-                this.handler.sendMessage(this.handler.obtainMessage(3, YouTubeInitializationResult.ERROR_CONNECTING_TO_SERVICE));
-            }
-        }
-    }
-
-    public final boolean isConnected() {
-        return this.connection != null;
-    }
-
-
-    @Override
-    public void disconnect() {
-        this.releaseAll();
-        this.isConnected = false;
-        synchronized (this.i) {
-            int length = this.i.size();
-            int i = 0;
-
-            while (true) {
-                if (i >= length) {
-                    this.i.clear();
-                    break;
-                }
-
-                this.i.get(i).b();
-                ++i;
-            }
-        }
-
-        this.unbindService();
-    }
-
-    private void unbindService() {
+    public void unbindService() {
         if (this.serviceConnection != null) {
             try {
                 this.context.unbindService(this.serviceConnection);
@@ -113,127 +70,179 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
                 Log.w("YouTubeClient", "Unexpected error from unbindService()", e);
             }
         }
-
         this.connection = null;
         this.serviceConnection = null;
     }
 
-    // TODO bind?
-    protected final void getConnectionDescriptor(IBinder var1) {
-        try {
-            IServiceBroker broker = IServiceBroker.Stub.asInterface(var1);
-            this.a(broker, new OnConnectionCompletedListener());
-        } catch (RemoteException var2) {
-            Log.w("YouTubeClient", "service died");
-        }
-    }
-
-    protected abstract void a(IServiceBroker broker, OnConnectionCompletedListener onCompletedListener) throws RemoteException;
-
-    protected final void bindAll() {
-        synchronized (this.connections) {
-            Validators.validateState(!this.isProcessingConnections);
-            this.handler.removeMessages(4);
-            this.isProcessingConnections = true;
-
-            // TODO See if this is thread safe
-            for (Connection connection : connections) {
-                if (this.isConnected && this.isConnected()) break;
-                connection.bind();
-            }
-
-            this.isProcessingConnections = false;
-        }
-    }
-
-    protected final void releaseAll() {
-        this.handler.removeMessages(4);
-        synchronized (this.connections) {
-            this.isProcessingConnections = true;
-            ArrayList<Connection> list = this.connections;
-
-            for (int i = 0; i < list.size() && this.isConnected; ++i) {
-                if (this.connections.contains(list.get(i))) {
-                    list.get(i).release();
-                }
-            }
-
-            this.isProcessingConnections = false;
-        }
-    }
-
-    protected final void a(YouTubeInitializationResult result) {
+    public final void a(YouTubeInitializationResult youTubeInitializationResult) {
         this.handler.removeMessages(4);
         synchronized (this.initResultListeners) {
             this.h = true;
-
-            // TODO Check if this loop is thread safe
-            for (OnInitializationResult listener : this.initResultListeners) {
-                if (!this.isConnected) {
+            ArrayList<Client.OnInitializationResult> arrayList = this.initResultListeners;
+            int size = arrayList.size();
+            int i = 0;
+            while (i < size) {
+                if (this.isConnected) {
+                    if (this.initResultListeners.contains(arrayList.get(i))) {
+                        arrayList.get(i).onResult(youTubeInitializationResult);
+                    }
+                    i++;
+                } else {
                     return;
                 }
-                listener.onResult(result);
             }
-
             this.h = false;
         }
     }
 
-    protected final void checkConnection() {
-        if (!this.isConnected()) {
+    public final void b(IBinder iBinder) {
+        try {
+            a(IServiceBroker.Stub.asInterface(iBinder), new OnConnectionCompletedListener());
+        } catch (RemoteException e) {
+            Log.w("YouTubeClient", "service died");
+        }
+    }
+
+    @Override
+    public final void connect() {
+        this.isConnected = true;
+        YouTubeInitializationResult isYouTubeApiServiceAvailable = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this.context);
+        if (isYouTubeApiServiceAvailable != YouTubeInitializationResult.SUCCESS) {
+            this.handler.sendMessage(this.handler.obtainMessage(3, isYouTubeApiServiceAvailable));
+            return;
+        }
+        Intent intent = new Intent(getIntentService()).setPackage(ApplicationUtils.getPackageName(this.context));
+        if (this.serviceConnection != null) {
+            Log.e("YouTubeClient", "Calling connect() while still connected, missing disconnect().");
+            unbindService();
+        }
+        this.serviceConnection = new YouTubeServiceConnection();
+        if (!this.context.bindService(intent, this.serviceConnection, Context.BIND_AUTO_CREATE | Context.BIND_ADJUST_WITH_ACTIVITY)) {
+            this.handler.sendMessage(this.handler.obtainMessage(3, YouTubeInitializationResult.ERROR_CONNECTING_TO_SERVICE));
+        }
+    }
+
+    @Override
+    public void disconnect() {
+        releaseAll();
+        this.isConnected = false;
+        synchronized (this.f102i) {
+            int size = this.f102i.size();
+            for (int i = 0; i < size; i++) {
+                this.f102i.get(i).b();
+            }
+            this.f102i.clear();
+        }
+        unbindService();
+    }
+
+    public final boolean connectionExists() {
+        return this.connection != null;
+    }
+
+    public final void bindAll() {
+        boolean z = true;
+        synchronized (this.f97d) {
+            Validators.validateState(!this.isProcessing);
+            this.handler.removeMessages(4);
+            this.isProcessing = true;
+            if (this.connections.size() != 0) {
+                z = false;
+            }
+            Validators.validateState(z);
+            ArrayList<Client.Connection> arrayList = this.f97d;
+            int size = arrayList.size();
+            for (int i = 0; i < size && this.isConnected && connectionExists(); i++) {
+                if (!this.connections.contains(arrayList.get(i))) {
+                    arrayList.get(i).bind();
+                }
+            }
+            this.connections.clear();
+            this.isProcessing = false;
+        }
+    }
+
+    public final void releaseAll() {
+        this.handler.removeMessages(4);
+        synchronized (this.f97d) {
+            this.isProcessing = true;
+            ArrayList<Client.Connection> arrayList = this.f97d;
+            int size = arrayList.size();
+            for (int i = 0; i < size && this.isConnected; i++) {
+                if (this.f97d.contains(arrayList.get(i))) {
+                    arrayList.get(i).release();
+                }
+            }
+            this.isProcessing = false;
+        }
+    }
+
+    public final void checkConnection() {
+        if (!connectionExists()) {
             throw new IllegalStateException("Not connected. Call connect() and wait for onConnected() to be called.");
         }
     }
 
-    protected final T j() {
-        this.checkConnection();
+    public final T getService() {
+        checkConnection();
         return this.connection;
     }
 
-    protected final class OnConnectionCompletedListener extends IConnectionCallbacks.Stub {
+    static /* synthetic */ class C00541 {
 
-        public final void onConnectionCompleted(String initResult, IBinder binder) {
-            handler.sendMessage(handler.obtainMessage(1, new D(initResult, binder)));
+        static final /* synthetic */ int[] f105a = new int[YouTubeInitializationResult.values().length];
+
+        static {
+            try {
+                f105a[YouTubeInitializationResult.SUCCESS.ordinal()] = 1;
+            } catch (NoSuchFieldError e) {
+            }
         }
     }
 
-    protected final class D extends B<Boolean> {
-        public final YouTubeInitializationResult result;
-        public final IBinder binder;
-
-        public D(String initResult, IBinder binder) {
-            super(true);
-            this.result = YouTubeClient.getYouTubeInitializationResult(initResult);
-            this.binder = binder;
+    final class InternalHandler extends Handler {
+        InternalHandler() {
         }
 
-        // TODO was not implemented before
         @Override
-        protected void a(Boolean var1) {
-
+        public final void handleMessage(Message message) {
+            if (message.what == 3) {
+                YouTubeClient.this.a((YouTubeInitializationResult) message.obj);
+            } else if (message.what == 4) {
+                synchronized (YouTubeClient.this.f97d) {
+                    if (isConnected && connectionExists() && f97d.contains(message.obj)) {
+                        ((Client.Connection) message.obj).bind();
+                    }
+                }
+            } else if (message.what == 2 && !YouTubeClient.this.connectionExists()) {
+            } else {
+                if (message.what == 2 || message.what == 1) {
+                    ((B) message.obj).a();
+                }
+            }
         }
     }
 
     protected abstract class B<TListener> {
+
         private TListener tListener;
 
-        public B(final TListener tListener) {
-            this.tListener = tListener;
-            synchronized (i) {
-                i.add(this);
+        public B(TListener tlistener) {
+            this.tListener = tlistener;
+            synchronized (f102i) {
+                f102i.add(this);
             }
         }
-
-        protected abstract void a(final TListener tListener);
 
         public final void a() {
-            TListener tListener;
+            TListener tlistener;
             synchronized (this) {
-                tListener = this.tListener;
+                tlistener = this.tListener;
             }
-
-            this.a(tListener);
+            a(tlistener);
         }
+
+        public abstract void a(TListener tlistener);
 
         public final void b() {
             synchronized (this) {
@@ -242,34 +251,63 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
         }
     }
 
-    private final class InternalHandler extends Handler {
+    protected final class D extends B<Boolean> {
+
+        public final YouTubeInitializationResult f109b;
+        public final IBinder f110c;
+
+        public D(String str, IBinder iBinder) {
+            super(true);
+            this.f109b = YouTubeClient.getYouTubeInitializationResult(str);
+            this.f110c = iBinder;
+        }
 
         @Override
-        public final void handleMessage(final Message message) {
-            if (message.what == 3) {
-                a((YouTubeInitializationResult) message.obj);
-            } else if (message.what == 4) {
-                synchronized (connections) {
-                    if (isConnected && isConnected() && connections.contains(message.obj)) {
-                        ((Connection) message.obj).bind();
-                    }
-
-                }
-            } else if (message.what != 2 || isConnected()) {
-                if (message.what == 2 || message.what == 1) {
-                    ((B) message.obj).a();
+        public final /* synthetic */ void a(Boolean obj) {
+            if (obj != null) {
+                switch (C00541.f105a[this.f109b.ordinal()]) {
+                    case YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION:
+                        try {
+                            if (getConnectionDescriptor().equals(this.f110c.getInterfaceDescriptor())) {
+                                connection = YouTubeClient.this.a(this.f110c);
+                                if (connection != null) {
+                                    bindAll();
+                                    return;
+                                }
+                            }
+                        } catch (RemoteException e) {
+                        }
+                        YouTubeClient.this.unbindService();
+                        YouTubeClient.this.a(YouTubeInitializationResult.INTERNAL_ERROR);
+                        return;
+                    default:
+                        YouTubeClient.this.a(this.f109b);
                 }
             }
         }
     }
 
-    final class YouTubeServiceConnection implements ServiceConnection {
-
-        public final void onServiceConnected(ComponentName component, IBinder binder) {
-            getConnectionDescriptor(binder);
+    protected final class OnConnectionCompletedListener extends IConnectionCallbacks.Stub {
+        protected OnConnectionCompletedListener() {
         }
 
-        public final void onServiceDisconnected(ComponentName component) {
+        @Override
+        public final void onConnectionCompleted(String str, IBinder iBinder) {
+            YouTubeClient.this.handler.sendMessage(YouTubeClient.this.handler.obtainMessage(1, new D(str, iBinder)));
+        }
+    }
+
+    final class YouTubeServiceConnection implements ServiceConnection {
+        YouTubeServiceConnection() {
+        }
+
+        @Override
+        public final void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            b(iBinder);
+        }
+
+        @Override
+        public final void onServiceDisconnected(ComponentName componentName) {
             connection = null;
             releaseAll();
         }

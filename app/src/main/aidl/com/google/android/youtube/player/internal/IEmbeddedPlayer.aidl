@@ -4,20 +4,20 @@ import com.google.android.youtube.player.internal.IOnFullscreenListener;
 import com.google.android.youtube.player.internal.IPlaylistEventListener;
 import com.google.android.youtube.player.internal.IPlayerStateChangeListener;
 import com.google.android.youtube.player.internal.IPlaybackEventListener;
-import com.google.android.youtube.player.internal.dynamic.IObjectWrapper;
+import com.google.android.youtube.player.internal.IObjectWrapper;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
 interface IEmbeddedPlayer {
 
-    void ii(boolean var1) = 1; // TODO Find out
+    void release(boolean isFinishing) = 1;
     void cueVideo(String videoId, int timeMillis) = 2;
     void loadVideo(String videoId, int timeMillis) = 3;
     void cuePlaylist(String playlistId, int startIndex, int timeMillis) = 4;
     void loadPlaylist(String playlistId, int startIndex, int timeMillis) = 5;
-    void cueVideos(in List<String> videoIds, int startIndex, int timeMillis) = 6;
-    void loadVideos(in List<String> videoIds, int startIndex, int timeMillis) = 7;
+    void cueVideos(inout List<String> videoIds, int startIndex, int timeMillis) = 6;
+    void loadVideos(inout List<String> videoIds, int startIndex, int timeMillis) = 7;
     void play() = 8;
     void pause() = 9;
     boolean isPlaying() = 10;
@@ -43,17 +43,16 @@ interface IEmbeddedPlayer {
 
     void jj() = 30; // TODO Find out
     void kk() = 31; // TODO Find out
-    void onConfigurationChanged(in Configuration config) = 32;
-    void ll() = 33; // TODO Find out
-    void mm() = 34; // TODO Find out
-    void nn() = 35; // TODO Find out
-    void oo() = 36; // TODO Find out
-    // TODO See if destroy is correct
-    void destroy(boolean var1) = 37;
-    void pp() = 38; // TODO Find out
-    Bundle getBundle() = 39; // TODO Find out
-    boolean setBundle(in Bundle bundle) = 40;
+    void onConfigurationChanged(inout Configuration config) = 32;
+    void ll() = 33; // TODO onStart -> maybe calls PlaybackEventListener.onPlaying or .onBuffering
+    void bind() = 34;
+    void nn() = 35; // TODO onPause -> maybe calls PlaybackEventListener.onPaused after completion
+    void oo() = 36; // TODO onStop -> maybe calls PlaybackEventListener.onStopped after completion
+    void stopSelf(boolean isFinishing) = 37;
+    void stop() = 38;
+    Bundle getBundle() = 39;
+    boolean setBundle(inout Bundle bundle) = 40;
     boolean dispatchKeyEventDown(int keyCode, in KeyEvent keyEvent) = 41;
-    boolean dispatchKeyEventUp(int var1, in KeyEvent keyEvent) = 42;
+    boolean dispatchKeyEventUp(int keyCode, in KeyEvent keyEvent) = 42;
     IObjectWrapper qq() = 43; // TODO Find out
 }

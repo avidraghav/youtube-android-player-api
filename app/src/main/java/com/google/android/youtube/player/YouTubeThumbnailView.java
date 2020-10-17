@@ -2,6 +2,7 @@ package com.google.android.youtube.player;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
@@ -12,11 +13,14 @@ import com.google.android.youtube.player.internal.LinkedFactory;
 import com.google.android.youtube.player.internal.Validators;
 
 public final class YouTubeThumbnailView extends AppCompatImageView {
+
+    private static final String TAG = "YouTubeThumbnailView";
+
     private ConnectionClient client;
-    private AbstractYouTubeThumbnailLoader b;
+    private AbstractYouTubeThumbnailLoader thumbnailLoader;
 
     public YouTubeThumbnailView(Context var1) {
-        this(var1, (AttributeSet)null);
+        this(var1, (AttributeSet) null);
     }
 
     public YouTubeThumbnailView(Context var1, AttributeSet var2) {
@@ -27,61 +31,77 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
         super(var1, var2, var3);
     }
 
-    public final void initialize(String var1, YouTubeThumbnailView.OnInitializedListener var2) {
-        YouTubeThumbnailView.a var3 = new YouTubeThumbnailView.a(this, var2);
-        this.client = LinkedFactory.getInstance().getClient(this.getContext(), var1, var3, var3);
+    public final void initialize(String developerKey, YouTubeThumbnailView.OnInitializedListener listener) {
+        Log.d(TAG, "initialize: called.");
+        YouTubeThumbnailView.a var3 = new YouTubeThumbnailView.a(this, listener);
+        Log.d(TAG, "initialize: Get client from linked factory...");
+        this.client = LinkedFactory.getInstance().getClient(this.getContext(), developerKey, var3, var3);
+        Log.d(TAG, "initialize: Connect client...");
         this.client.connect();
     }
 
     @Override
     protected final void finalize() throws Throwable {
-        if (this.b != null) {
-            this.b.b();
-            this.b = null;
+        Log.d(TAG, "finalize: called.");
+        if (this.thumbnailLoader != null) {
+            Log.d(TAG, "finalize: Finalize thumbnailLoader...");
+            this.thumbnailLoader.finalize();
+            Log.d(TAG, "finalize: Set thumbnailLoader null...");
+            this.thumbnailLoader = null;
         }
 
         super.finalize();
     }
 
-    private static final class a implements Client.Connection, Client.OnInitializationResult {
-        private YouTubeThumbnailView a;
-        private YouTubeThumbnailView.OnInitializedListener b;
+    public interface OnInitializedListener {
+        void onInitializationSuccess(YouTubeThumbnailView var1, YouTubeThumbnailLoader loader);
 
-        public a(YouTubeThumbnailView var1, YouTubeThumbnailView.OnInitializedListener var2) {
-            this.a = (YouTubeThumbnailView) Validators.notNull(var1, "thumbnailView cannot be null");
-            this.b = (YouTubeThumbnailView.OnInitializedListener) Validators.notNull(var2, "onInitializedlistener cannot be null");
-        }
-
-        public final void bind() {
-            if (this.a != null && this.a.client != null) {
-                this.a.b = LinkedFactory.getInstance().getThumbnailLoader(this.a.client, this.a);
-                this.b.onInitializationSuccess(this.a, this.a.b);
-                this.c();
-            }
-
-        }
-
-        public final void release() {
-            this.c();
-        }
-
-        public final void onResult(YouTubeInitializationResult result) {
-            this.b.onInitializationFailure(this.a, result);
-            this.c();
-        }
-
-        private void c() {
-            if (this.a != null) {
-                this.a.client = null;
-                this.a = null;
-                this.b = null;
-            }
-        }
+        void onInitializationFailure(YouTubeThumbnailView var1, YouTubeInitializationResult result);
     }
 
-    public interface OnInitializedListener {
-        void onInitializationSuccess(YouTubeThumbnailView var1, YouTubeThumbnailLoader var2);
+    private static final class a implements Client.Connection, Client.OnInitializationResult {
 
-        void onInitializationFailure(YouTubeThumbnailView var1, YouTubeInitializationResult var2);
+        private static final String TAG = "a[Cl.Conn,Cl.OnInitRes]";
+
+        private YouTubeThumbnailView thumbnailView;
+        private YouTubeThumbnailView.OnInitializedListener onInitializedListener;
+
+        public a(YouTubeThumbnailView thumbnailView, YouTubeThumbnailView.OnInitializedListener onInitListener) {
+            Log.d(TAG, "a: Constructor called.");
+            this.thumbnailView = Validators.notNull(thumbnailView, "thumbnailView cannot be null");
+            this.onInitializedListener = Validators.notNull(onInitListener, "onInitializedlistener cannot be null");
+        }
+
+        @Override
+        public final void bind() {
+            Log.d(TAG, "bind: called.");
+            if (this.thumbnailView != null && this.thumbnailView.client != null) {
+                this.thumbnailView.thumbnailLoader = LinkedFactory.getInstance().getThumbnailLoader(this.thumbnailView.client, this.thumbnailView);
+                this.onInitializedListener.onInitializationSuccess(this.thumbnailView, this.thumbnailView.thumbnailLoader);
+                this.reset();
+            }
+        }
+
+        @Override
+        public final void release() {
+            Log.d(TAG, "release: called.");
+            this.reset();
+        }
+
+        @Override
+        public final void onResult(YouTubeInitializationResult result) {
+            Log.d(TAG, "onResult: called.");
+            this.onInitializedListener.onInitializationFailure(this.thumbnailView, result);
+            this.reset();
+        }
+
+        private void reset() {
+            Log.d(TAG, "reset: called.");
+            if (this.thumbnailView != null) {
+                this.thumbnailView.client = null;
+                this.thumbnailView = null;
+                this.onInitializedListener = null;
+            }
+        }
     }
 }

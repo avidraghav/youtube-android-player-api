@@ -9,7 +9,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build.VERSION;
 
-public final class z {
+public final class ApplicationUtils {
     private static final Uri a = Uri.parse("http://play.google.com/store/apps/details");
     private static final String[] packageList = new String[]{"com.google.android.youtube", "com.google.android.youtube.tv", "com.google.android.youtube.googletv", "com.google.android.gms", null};
 

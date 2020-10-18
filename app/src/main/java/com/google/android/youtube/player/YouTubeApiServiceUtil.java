@@ -7,7 +7,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Base64;
 import android.util.Log;
 
-import com.google.android.youtube.player.internal.ApplicationUtils;
+import com.google.android.youtube.player.utils.ApplicationUtils;
 
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateException;

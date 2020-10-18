@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView.YouTubePlayerViewInitializer;
-import com.google.android.youtube.player.internal.Validators;
+import com.google.android.youtube.player.utils.Validators;
 
 public class YouTubePlayerFragment extends Fragment implements Provider {
 

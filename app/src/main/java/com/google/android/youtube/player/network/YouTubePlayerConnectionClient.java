@@ -1,9 +1,15 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.network;
 
 import android.content.Context;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+
+import com.google.android.youtube.player.internal.IServiceBroker;
+import com.google.android.youtube.player.internal.IThumbnailLoaderClient;
+import com.google.android.youtube.player.internal.IThumbnailLoaderService;
+import com.google.android.youtube.player.internal.IYouTubeService;
+import com.google.android.youtube.player.utils.Validators;
 
 public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeService> implements ConnectionClient {
 

@@ -1,4 +1,4 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.impl;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -7,6 +7,14 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerException;
+import com.google.android.youtube.player.internal.IEmbeddedPlayer;
+import com.google.android.youtube.player.internal.IOnFullscreenListener;
+import com.google.android.youtube.player.internal.IPlaybackEventListener;
+import com.google.android.youtube.player.internal.IPlayerStateChangeListener;
+import com.google.android.youtube.player.internal.IPlaylistEventListener;
+import com.google.android.youtube.player.network.ConnectionClient;
+import com.google.android.youtube.player.utils.Validators;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.impl;
 
 import android.os.IBinder;
+
+import com.google.android.youtube.player.internal.IObjectWrapper;
 
 import java.lang.reflect.Field;
 

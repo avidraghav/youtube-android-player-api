@@ -1,4 +1,4 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.impl;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -6,6 +6,10 @@ import android.os.Looper;
 import android.os.RemoteException;
 
 import com.google.android.youtube.player.YouTubeThumbnailView;
+import com.google.android.youtube.player.internal.IThumbnailLoaderClient;
+import com.google.android.youtube.player.internal.IThumbnailLoaderService;
+import com.google.android.youtube.player.network.ConnectionClient;
+import com.google.android.youtube.player.utils.Validators;
 
 public final class YoutubeThumbnailLoaderImpl extends AbstractYouTubeThumbnailLoader {
     private final Handler handler;

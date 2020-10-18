@@ -16,14 +16,12 @@ import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
 
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
-import com.google.android.youtube.player.internal.Client;
-import com.google.android.youtube.player.internal.ConnectionClient;
+import com.google.android.youtube.player.impl.RemoteEmbeddedPlayer;
+import com.google.android.youtube.player.impl.YouTubePlayerImpl;
 import com.google.android.youtube.player.internal.IEmbeddedPlayer;
-import com.google.android.youtube.player.internal.LinkedFactory;
-import com.google.android.youtube.player.internal.RemoteEmbeddedPlayer;
-import com.google.android.youtube.player.internal.Validators;
-import com.google.android.youtube.player.internal.YouTubePlayerFrameLayout;
-import com.google.android.youtube.player.internal.YouTubePlayerImpl;
+import com.google.android.youtube.player.network.Client;
+import com.google.android.youtube.player.network.ConnectionClient;
+import com.google.android.youtube.player.utils.Validators;
 
 import java.util.ArrayList;
 import java.util.HashSet;

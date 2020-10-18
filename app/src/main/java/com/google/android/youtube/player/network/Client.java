@@ -1,4 +1,4 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.network;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 

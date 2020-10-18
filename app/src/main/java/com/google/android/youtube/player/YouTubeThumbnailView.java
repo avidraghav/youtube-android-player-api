@@ -6,11 +6,10 @@ import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
-import com.google.android.youtube.player.internal.AbstractYouTubeThumbnailLoader;
-import com.google.android.youtube.player.internal.Client;
-import com.google.android.youtube.player.internal.ConnectionClient;
-import com.google.android.youtube.player.internal.LinkedFactory;
-import com.google.android.youtube.player.internal.Validators;
+import com.google.android.youtube.player.impl.AbstractYouTubeThumbnailLoader;
+import com.google.android.youtube.player.network.Client;
+import com.google.android.youtube.player.network.ConnectionClient;
+import com.google.android.youtube.player.utils.Validators;
 
 public final class YouTubeThumbnailView extends AppCompatImageView {
 

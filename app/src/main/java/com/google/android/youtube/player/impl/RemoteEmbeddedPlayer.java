@@ -1,8 +1,12 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.impl;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.IBinder;
+
+import com.google.android.youtube.player.internal.IEmbeddedPlayer;
+import com.google.android.youtube.player.utils.ApplicationUtils;
+import com.google.android.youtube.player.utils.Validators;
 
 import java.lang.reflect.InvocationTargetException;
 

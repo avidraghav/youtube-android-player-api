@@ -1,4 +1,4 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,6 +7,9 @@ import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.android.youtube.player.impl.LocalizedYouTubePlayerTexts;
+import com.google.android.youtube.player.utils.ApplicationUtils;
 
 public final class YouTubePlayerFrameLayout extends FrameLayout {
 

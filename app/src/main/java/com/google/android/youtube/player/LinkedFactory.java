@@ -1,10 +1,15 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player;
 
 import android.app.Activity;
 import android.content.Context;
 
-import com.google.android.youtube.player.YouTubeThumbnailView;
-import com.google.android.youtube.player.internal.Client.Connection;
+import com.google.android.youtube.player.impl.AbstractYouTubeThumbnailLoader;
+import com.google.android.youtube.player.impl.LocallyLinkedFactory;
+import com.google.android.youtube.player.impl.RemoteEmbeddedPlayer;
+import com.google.android.youtube.player.internal.IEmbeddedPlayer;
+import com.google.android.youtube.player.network.Client;
+import com.google.android.youtube.player.network.Client.Connection;
+import com.google.android.youtube.player.network.ConnectionClient;
 
 public abstract class LinkedFactory {
 

@@ -15,9 +15,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.android.youtube.player.internal.ApplicationUtils;
-import com.google.android.youtube.player.internal.LocalizedYouTubePlayerTexts;
-import com.google.android.youtube.player.internal.Validators;
+import com.google.android.youtube.player.impl.LocalizedYouTubePlayerTexts;
+import com.google.android.youtube.player.utils.ApplicationUtils;
+import com.google.android.youtube.player.utils.Validators;
 
 /**
  * Provides the result of initializing the YouTube API Service. If initialization fails, the reason

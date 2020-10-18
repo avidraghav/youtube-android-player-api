@@ -1,4 +1,4 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.network;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,6 +15,10 @@ import android.util.Log;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.internal.IConnectionCallbacks;
+import com.google.android.youtube.player.internal.IServiceBroker;
+import com.google.android.youtube.player.utils.ApplicationUtils;
+import com.google.android.youtube.player.utils.Validators;
 
 import java.util.ArrayList;
 

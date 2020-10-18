@@ -8,7 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 
-import com.google.android.youtube.player.internal.ApplicationUtils;
+import com.google.android.youtube.player.utils.ApplicationUtils;
 
 import java.util.List;
 

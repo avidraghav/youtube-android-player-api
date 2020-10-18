@@ -1,4 +1,4 @@
-package com.google.android.youtube.player.internal;
+package com.google.android.youtube.player.utils;
 
 import android.text.TextUtils;
 

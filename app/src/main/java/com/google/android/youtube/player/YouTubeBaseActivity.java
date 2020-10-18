@@ -3,10 +3,11 @@ package com.google.android.youtube.player;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
-import com.google.android.youtube.player.YouTubePlayerView.B;
+import com.google.android.youtube.player.YouTubePlayerView.YouTubePlayerViewInitializer;
 
 /**
  * Any activity that wants to directly incorporate {@link YouTubePlayerView} views in its UI must
@@ -15,30 +16,30 @@ import com.google.android.youtube.player.YouTubePlayerView.B;
 public class YouTubeBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "YouTubeBaseActivity";
+    public static final String KEY_PLAYER_VIEW_STATE = "YouTubeBaseActivity.KEY_PLAYER_VIEW_STATE";
 
     private static final int IS_STOPPING = 0;
     private static final int IS_STARTING = 1;
     private static final int IS_RESUMING = 2;
     private static final int IS_PAUSING = 1;
 
-    private B b;
+    private YouTubePlayerViewInitializer playerViewInitializer;
     private YouTubePlayerView playerView;
     private int lifecycleState;
     private Bundle bundle;
 
-    final B getB() {
-        Log.d(TAG, "getB: B interface requested.");
-        return this.b;
+    final YouTubePlayerViewInitializer getViewInitializer() {
+        return this.playerViewInitializer;
     }
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         Log.d(TAG, "onCreate: Create BBB()...");
-        this.b = new BBB();
+        this.playerViewInitializer = new ActivityPlayerViewInitializer();
 
         Log.d(TAG, "onCreate: Set bundle...");
-        this.bundle = bundle != null ? bundle.getBundle("YouTubeBaseActivity.KEY_PLAYER_VIEW_STATE") : null;
+        this.bundle = bundle != null ? bundle.getBundle(KEY_PLAYER_VIEW_STATE) : null;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class YouTubeBaseActivity extends AppCompatActivity {
         this.lifecycleState = IS_STARTING;
         if (this.playerView != null) {
             Log.d(TAG, "onStart: [a] playerView...");
-            this.playerView.a();
+            this.playerView.onStart();
         }
     }
 
@@ -59,7 +60,7 @@ public class YouTubeBaseActivity extends AppCompatActivity {
         this.lifecycleState = IS_RESUMING;
         if (this.playerView != null) {
             Log.d(TAG, "onResume: bind playerView...");
-            this.playerView.bind();
+            this.playerView.onResume();
         }
     }
 
@@ -69,18 +70,18 @@ public class YouTubeBaseActivity extends AppCompatActivity {
         this.lifecycleState = IS_PAUSING;
         if (this.playerView != null) {
             Log.d(TAG, "onPause: [c] playerView...");
-            this.playerView.c();
+            this.playerView.onPause();
         }
         super.onPause();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle bundle) {
-        super.onSaveInstanceState(bundle);
-        Log.d(TAG, "onSaveInstanceState: bundle=" + bundle);
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState: bundle=" + outState);
         Log.d(TAG, "onSaveInstanceState: Merge bundles...");
         Bundle actualBundle = this.playerView != null ? this.playerView.getBundle() : this.bundle;
-        bundle.putBundle("YouTubeBaseActivity.KEY_PLAYER_VIEW_STATE", actualBundle);
+        outState.putBundle(KEY_PLAYER_VIEW_STATE, actualBundle);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class YouTubeBaseActivity extends AppCompatActivity {
         Log.d(TAG, "onStop: playerView=" + this.playerView);
         this.lifecycleState = IS_STOPPING;
         if (this.playerView != null) {
-            this.playerView.d();
+            this.playerView.onStop();
         }
         super.onStop();
     }
@@ -103,26 +104,27 @@ public class YouTubeBaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private class BBB implements B {
+    private class ActivityPlayerViewInitializer implements YouTubePlayerViewInitializer {
+
         @Override
-        public final void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
+        public final void initializeView(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
             view.initialize(YouTubeBaseActivity.this, view, developerKey, listener, bundle);
             playerView = null;
         }
 
         @Override
-        public final void a(YouTubePlayerView view) {
+        public final void onViewInitialized(YouTubePlayerView view) {
             if (playerView != null && playerView != view) {
                 playerView.stopSelf(true);
             }
 
             playerView = view;
             if (lifecycleState > IS_STOPPING) {
-                view.a();
+                view.onStart();
             }
 
             if (lifecycleState >= IS_RESUMING) {
-                view.bind();
+                view.onResume();
             }
         }
     }

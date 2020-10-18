@@ -41,18 +41,21 @@ interface IEmbeddedPlayer {
     void setPlayerStateChangeListener(IPlayerStateChangeListener playerStateChangeListener);
     void setPlaybackEventListener(IPlaybackEventListener playbackEventListener);
 
-    void jj(); // TODO Find out
-    void kk(); // TODO Find out
+    // Unknown action
+    void jj();
+    // Unknown action
+    void kk();
+
     void onConfigurationChanged(inout Configuration config);
-    void ll(); // TODO onStart -> maybe calls PlaybackEventListener.onPlaying or .onBuffering
-    void bind();
-    void nn() ; // TODO onPause -> maybe calls PlaybackEventListener.onPaused after completion
-    void oo(); // TODO onStop -> maybe calls PlaybackEventListener.onStopped after completion
+    void onStart();
+    void onResume();
+    void onPause();
+    void onStop();
     void stopSelf(boolean isFinishing);
     void stop();
     Bundle getBundle();
     boolean setBundle(inout Bundle bundle);
     boolean dispatchKeyEventDown(int keyCode, in KeyEvent keyEvent);
     boolean dispatchKeyEventUp(int keyCode, in KeyEvent keyEvent);
-    IObjectWrapper qq(); // TODO Find out
+    IObjectWrapper getPlayerView();
 }

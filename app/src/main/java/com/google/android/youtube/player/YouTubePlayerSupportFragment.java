@@ -12,26 +12,27 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
-import com.google.android.youtube.player.YouTubePlayerView.B;
+import com.google.android.youtube.player.YouTubePlayerView.YouTubePlayerViewInitializer;
 import com.google.android.youtube.player.internal.Validators;
 
+/**
+ * @deprecated Use {@link YouTubePlayerFragment} instead
+ */
+@Deprecated
 public class YouTubePlayerSupportFragment extends Fragment implements Provider {
+
+    public static final String KEY_PLAYER_VIEW_STATE = "YouTubePlayerSupportFragment.KEY_PLAYER_VIEW_STATE";
+
     private final YouTubePlayerSupportFragment.a a = new YouTubePlayerSupportFragment.a();
     private Bundle bundle;
     private YouTubePlayerView youTubePlayerView;
-    private String d;
+    private String developerKey;
     private OnInitializedListener onInitializedListener;
     private boolean f;
 
-    public static YouTubePlayerSupportFragment newInstance() {
-        return new YouTubePlayerSupportFragment();
-    }
-
-    public YouTubePlayerSupportFragment() {
-    }
-
+    @Override
     public void initialize(String developerKey, OnInitializedListener listener) {
-        this.d = Validators.notEmpty(developerKey, "Developer key cannot be null or empty");
+        this.developerKey = Validators.notEmpty(developerKey, "Developer key cannot be null or empty");
         this.onInitializedListener = listener;
         this.a();
     }
@@ -39,17 +40,16 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
     private void a() {
         if (this.youTubePlayerView != null && this.onInitializedListener != null) {
             this.youTubePlayerView.a(this.f);
-            this.youTubePlayerView.initialize(this.getActivity(), this, this.d, this.onInitializedListener, this.bundle);
+            this.youTubePlayerView.initialize(this.getActivity(), this, this.developerKey, this.onInitializedListener, this.bundle);
             this.bundle = null;
             this.onInitializedListener = null;
         }
-
     }
 
     @Override
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
-        this.bundle = var1 != null ? var1.getBundle("YouTubePlayerSupportFragment.KEY_PLAYER_VIEW_STATE") : null;
+        this.bundle = var1 != null ? var1.getBundle(KEY_PLAYER_VIEW_STATE) : null;
     }
 
     @Override
@@ -62,31 +62,31 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
     @Override
     public void onStart() {
         super.onStart();
-        this.youTubePlayerView.a();
+        this.youTubePlayerView.onStart();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.youTubePlayerView.bind();
+        this.youTubePlayerView.onResume();
     }
 
     @Override
     public void onPause() {
-        this.youTubePlayerView.c();
+        this.youTubePlayerView.onPause();
         super.onPause();
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle b) {
-        super.onSaveInstanceState(b);
-        Bundle var2 = this.youTubePlayerView != null ? this.youTubePlayerView.getBundle() : this.bundle;
-        b.putBundle("YouTubePlayerSupportFragment.KEY_PLAYER_VIEW_STATE", var2);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Bundle currentState = this.youTubePlayerView != null ? this.youTubePlayerView.getBundle() : this.bundle;
+        outState.putBundle(KEY_PLAYER_VIEW_STATE, currentState);
     }
 
     @Override
     public void onStop() {
-        this.youTubePlayerView.d();
+        this.youTubePlayerView.onStop();
         super.onStop();
     }
 
@@ -107,15 +107,15 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
         super.onDestroy();
     }
 
-    private final class a implements B {
+    private final class a implements YouTubePlayerViewInitializer {
         private a() {
         }
 
-        public final void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
+        public final void initializeView(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
             YouTubePlayerSupportFragment.this.initialize(developerKey, YouTubePlayerSupportFragment.this.onInitializedListener);
         }
 
-        public final void a(YouTubePlayerView view) {
+        public final void onViewInitialized(YouTubePlayerView view) {
         }
     }
 }

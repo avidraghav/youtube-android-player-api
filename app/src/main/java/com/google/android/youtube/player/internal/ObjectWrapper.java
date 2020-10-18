@@ -6,10 +6,10 @@ import java.lang.reflect.Field;
 
 public final class ObjectWrapper<T> extends IObjectWrapper.Stub {
 
-    private final T a;
+    private final T obj;
 
-    private ObjectWrapper(T t) {
-        this.a = t;
+    private ObjectWrapper(T obj) {
+        this.obj = obj;
     }
 
     public static <T> IObjectWrapper a(T t) {
@@ -18,7 +18,7 @@ public final class ObjectWrapper<T> extends IObjectWrapper.Stub {
 
     public static Object a(IObjectWrapper uVar) {
         if (uVar instanceof ObjectWrapper) {
-            return ((ObjectWrapper) uVar).a;
+            return ((ObjectWrapper) uVar).obj;
         }
         IBinder asBinder = uVar.asBinder();
         Field[] declaredFields = asBinder.getClass().getDeclaredFields();

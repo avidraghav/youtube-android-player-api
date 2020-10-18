@@ -16,9 +16,9 @@ public final class ObjectWrapper<T> extends IObjectWrapper.Stub {
         return new ObjectWrapper<>(t);
     }
 
-    public static <T> T a(IObjectWrapper uVar) {
+    public static Object a(IObjectWrapper uVar) {
         if (uVar instanceof ObjectWrapper) {
-            return ((ObjectWrapper<T>) uVar).a;
+            return ((ObjectWrapper) uVar).a;
         }
         IBinder asBinder = uVar.asBinder();
         Field[] declaredFields = asBinder.getClass().getDeclaredFields();
@@ -27,7 +27,7 @@ public final class ObjectWrapper<T> extends IObjectWrapper.Stub {
             if (!field.isAccessible()) {
                 field.setAccessible(true);
                 try {
-                    return (T) field.get(asBinder);
+                    return field.get(asBinder);
                 } catch (NullPointerException e) {
                     throw new IllegalArgumentException("Binder object is null.", e);
                 } catch (IllegalArgumentException e2) {

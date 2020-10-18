@@ -5,6 +5,6 @@ import com.google.android.youtube.player.internal.IThumbnailLoaderClient;
 
 interface IYouTubeService {
      IBinder toBinder();
-     IThumbnailLoaderService getThumbnailLoaderService(in IThumbnailLoaderClient var1);
+     IThumbnailLoaderService getThumbnailLoaderService(IThumbnailLoaderClient var1);
      void release(boolean isFinishing);
 }

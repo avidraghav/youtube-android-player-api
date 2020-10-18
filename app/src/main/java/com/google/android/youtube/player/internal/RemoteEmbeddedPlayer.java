@@ -4,41 +4,46 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.IBinder;
 
-import androidx.annotation.NonNull;
-
 import java.lang.reflect.InvocationTargetException;
 
 public final class RemoteEmbeddedPlayer {
-    public static IEmbeddedPlayer a(Activity activity, IBinder client, boolean var2) throws RemotePlayerException {
+
+    public static IEmbeddedPlayer a(Activity activity, IBinder iBinder, boolean z) throws RemotePlayerException {
         Validators.notNull(activity);
-        Validators.notNull(client);
-        Context remoteContext = ApplicationUtils.createContext(activity);
-        if (remoteContext == null) {
-            throw new RemotePlayerException("Could not create remote context");
-        } else {
-            return IEmbeddedPlayer.Stub.asInterface(a(remoteContext.getClassLoader(), "com.google.android.youtube.api.jar.client.RemoteEmbeddedPlayer", ObjectWrapper.a(remoteContext).asBinder(), ObjectWrapper.a(activity).asBinder(), client, var2));
+        Validators.notNull(iBinder);
+        Context b = ApplicationUtils.createContext((Context) activity);
+        if (b != null) {
+            return IEmbeddedPlayer.Stub.asInterface(a(b.getClassLoader(), "com.google.android.youtube.api.jar.client.RemoteEmbeddedPlayer", ObjectWrapper.a(b).asBinder(), ObjectWrapper.a(activity).asBinder(), iBinder, z));
         }
+        throw new RemotePlayerException("Could not create remote context");
     }
 
-    private static IBinder a(ClassLoader loader, String className, IBinder var2, IBinder var3, IBinder var4, boolean var5) throws RemotePlayerException {
+    private static IBinder a(ClassLoader loader, String className, IBinder iBinder, IBinder iBinder2, IBinder iBinder3, boolean z) throws RemotePlayerException {
         try {
-            return a(loader.loadClass(className), var2, var3, var4, var5);
+            IBinder b = a(loader.loadClass(className), iBinder, iBinder2, iBinder3, z);
+            return b;
+            //return a(loader.loadClass(className), iBinder, iBinder2, iBinder3, z);
         } catch (ClassNotFoundException e) {
-            throw new RemotePlayerException("Unable to find dynamic class \"" + className + "\".", e);
+            String valueOf = String.valueOf(className);
+            throw new RemotePlayerException(valueOf.length() != 0 ? "Unable to find dynamic class ".concat(valueOf) : "Unable to find dynamic class ", e);
         }
     }
 
-    private static IBinder a(@NonNull Class<?> clazz, IBinder var1, IBinder var2, IBinder var3, boolean var4) throws RemotePlayerException {
+    private static IBinder a(Class<?> cls, IBinder iBinder, IBinder iBinder2, IBinder iBinder3, boolean z) throws RemotePlayerException {
         try {
-            return (IBinder)clazz.getConstructor(IBinder.class, IBinder.class, IBinder.class, Boolean.TYPE).newInstance(var1, var2, var3, var4);
-        } catch (NoSuchMethodException nsme) {
-            throw new RemotePlayerException("Could not find the right constructor for \"" + clazz.getName() + "\".", nsme);
-        } catch (InvocationTargetException ite) {
-            throw new RemotePlayerException("Exception thrown by invoked constructor in \"" + clazz.getName() + "\".", ite);
-        } catch (InstantiationException ie) {
-            throw new RemotePlayerException("Unable to instantiate the dynamic class \"" + clazz.getName() + "\".", ie);
-        } catch (IllegalAccessException iae) {
-            throw new RemotePlayerException("Unable to call the default constructor of \"" + clazz.getName() + "\".", iae);
+            return (IBinder) cls.getConstructor(IBinder.class, IBinder.class, IBinder.class, Boolean.TYPE).newInstance(new Object[]{iBinder, iBinder2, iBinder3, z});
+        } catch (NoSuchMethodException e) {
+            String valueOf = cls.getName();
+            throw new RemotePlayerException(valueOf.length() != 0 ? "Could not find the right constructor for ".concat(valueOf) : "Could not find the right constructor for ", e);
+        } catch (InvocationTargetException e2) {
+            String valueOf2 = cls.getName();
+            throw new RemotePlayerException(valueOf2.length() != 0 ? "Exception thrown by invoked constructor in ".concat(valueOf2) : "Exception thrown by invoked constructor in ", e2);
+        } catch (InstantiationException e3) {
+            String valueOf3 = cls.getName();
+            throw new RemotePlayerException(valueOf3.length() != 0 ? "Unable to instantiate the dynamic class ".concat(valueOf3) : "Unable to instantiate the dynamic class ", e3);
+        } catch (IllegalAccessException e4) {
+            String valueOf4 = cls.getName();
+            throw new RemotePlayerException(valueOf4.length() != 0 ? "Unable to call the default constructor of ".concat(valueOf4) : "Unable to call the default constructor of ", e4);
         }
     }
 

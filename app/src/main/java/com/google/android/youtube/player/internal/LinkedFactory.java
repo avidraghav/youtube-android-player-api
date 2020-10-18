@@ -13,15 +13,12 @@ public abstract class LinkedFactory {
     private static LinkedFactory instantiate() {
         if (INSTANCE != null) return INSTANCE;
         try {
-            final Class<? extends LinkedFactory> clazz = Class.forName("com.google.android.youtube.player.internal.LocallyLinkedFactory").asSubclass(LinkedFactory.class);
-
-            try {
-                return clazz.newInstance();
-            } catch (InstantiationException e) {
-                throw new IllegalStateException(e);
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException(e);
-            }
+            return (LinkedFactory) Class.forName("com.google.android.youtube.api.locallylinked.LocallyLinkedFactory")
+                    .asSubclass(LinkedFactory.class).newInstance();
+        } catch (InstantiationException e) {
+            throw new IllegalStateException(e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
         } catch (ClassNotFoundException e) {
             return new LocallyLinkedFactory();
         }

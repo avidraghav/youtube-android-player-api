@@ -34,8 +34,7 @@ public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeS
     }
 
     @Override
-    protected final String getIntentService() {
-        Log.d(TAG, "c: called.");
+    protected final String getAction() {
         return "com.google.android.youtube.api.service.START";
     }
 
@@ -65,7 +64,7 @@ public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeS
     }
 
     @Override
-    public final IBinder getBinder() {
+    public final IBinder getSomeBinder() {
         Log.d(TAG, "getBinder: called.");
         this.isNotReleased();
 

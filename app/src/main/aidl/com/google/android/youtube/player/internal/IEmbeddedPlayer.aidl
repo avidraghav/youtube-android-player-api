@@ -11,48 +11,48 @@ import android.view.KeyEvent;
 
 interface IEmbeddedPlayer {
 
-    void release(boolean isFinishing) = 1;
-    void cueVideo(String videoId, int timeMillis) = 2;
-    void loadVideo(String videoId, int timeMillis) = 3;
-    void cuePlaylist(String playlistId, int startIndex, int timeMillis) = 4;
-    void loadPlaylist(String playlistId, int startIndex, int timeMillis) = 5;
-    void cueVideos(inout List<String> videoIds, int startIndex, int timeMillis) = 6;
-    void loadVideos(inout List<String> videoIds, int startIndex, int timeMillis) = 7;
-    void play() = 8;
-    void pause() = 9;
-    boolean isPlaying() = 10;
-    boolean hasNext() = 11;
-    boolean hasPrevious() = 12;
-    void next() = 13;
-    void previous() = 14;
-    int getCurrentTimeMillis() = 15;
-    int getDurationMillis() = 16;
-    void seekToMillis(int milliSeconds) = 17;
-    void seekRelativeMillis(int milliSeconds) = 18;
-    void setFullscreen(boolean fullscreen) = 19;
-    void setFullscreenControlFlags(int flags) = 20;
-    int getFullscreenControlFlags() = 21;
-    void addFullscreenControlFlag(int controlFlag) = 22;
-    void setPlayerStyle(String style) = 23;
-    void setShowFullscreenButton(boolean show) = 24;
-    void setManageAudioFocus(boolean manageAudioFocus) = 25;
-    void setOnFullscreenListener(IOnFullscreenListener onFullscreenListener) = 26;
-    void setPlaylistEventListener(IPlaylistEventListener playlistEventListener) = 27;
-    void setPlayerStateChangeListener(IPlayerStateChangeListener playerStateChangeListener) = 28;
-    void setPlaybackEventListener(IPlaybackEventListener playbackEventListener) = 29;
+    void release(boolean isFinishing);
+    void cueVideo(String videoId, int timeMillis);
+    void loadVideo(String videoId, int timeMillis);
+    void cuePlaylist(String playlistId, int startIndex, int timeMillis);
+    void loadPlaylist(String playlistId, int startIndex, int timeMillis);
+    void cueVideos(inout List<String> videoIds, int startIndex, int timeMillis);
+    void loadVideos(inout List<String> videoIds, int startIndex, int timeMillis);
+    void play();
+    void pause();
+    boolean isPlaying();
+    boolean hasNext();
+    boolean hasPrevious();
+    void next();
+    void previous();
+    int getCurrentTimeMillis();
+    int getDurationMillis();
+    void seekToMillis(int milliSeconds);
+    void seekRelativeMillis(int milliSeconds);
+    void setFullscreen(boolean fullscreen);
+    void setFullscreenControlFlags(int flags);
+    int getFullscreenControlFlags();
+    void addFullscreenControlFlag(int controlFlag);
+    void setPlayerStyle(String style);
+    void setShowFullscreenButton(boolean show);
+    void setManageAudioFocus(boolean manageAudioFocus);
+    void setOnFullscreenListener(IOnFullscreenListener onFullscreenListener);
+    void setPlaylistEventListener(IPlaylistEventListener playlistEventListener);
+    void setPlayerStateChangeListener(IPlayerStateChangeListener playerStateChangeListener);
+    void setPlaybackEventListener(IPlaybackEventListener playbackEventListener);
 
-    void jj() = 30; // TODO Find out
-    void kk() = 31; // TODO Find out
-    void onConfigurationChanged(inout Configuration config) = 32;
-    void ll() = 33; // TODO onStart -> maybe calls PlaybackEventListener.onPlaying or .onBuffering
-    void bind() = 34;
-    void nn() = 35; // TODO onPause -> maybe calls PlaybackEventListener.onPaused after completion
-    void oo() = 36; // TODO onStop -> maybe calls PlaybackEventListener.onStopped after completion
-    void stopSelf(boolean isFinishing) = 37;
-    void stop() = 38;
-    Bundle getBundle() = 39;
-    boolean setBundle(inout Bundle bundle) = 40;
-    boolean dispatchKeyEventDown(int keyCode, in KeyEvent keyEvent) = 41;
-    boolean dispatchKeyEventUp(int keyCode, in KeyEvent keyEvent) = 42;
-    IObjectWrapper qq() = 43; // TODO Find out
+    void jj(); // TODO Find out
+    void kk(); // TODO Find out
+    void onConfigurationChanged(inout Configuration config);
+    void ll(); // TODO onStart -> maybe calls PlaybackEventListener.onPlaying or .onBuffering
+    void bind();
+    void nn() ; // TODO onPause -> maybe calls PlaybackEventListener.onPaused after completion
+    void oo(); // TODO onStop -> maybe calls PlaybackEventListener.onStopped after completion
+    void stopSelf(boolean isFinishing);
+    void stop();
+    Bundle getBundle();
+    boolean setBundle(inout Bundle bundle);
+    boolean dispatchKeyEventDown(int keyCode, in KeyEvent keyEvent);
+    boolean dispatchKeyEventUp(int keyCode, in KeyEvent keyEvent);
+    IObjectWrapper qq(); // TODO Find out
 }

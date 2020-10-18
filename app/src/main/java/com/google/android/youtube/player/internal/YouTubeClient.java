@@ -24,7 +24,7 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
     final Handler handler;
     public final ArrayList<B<?>> f102i = new ArrayList<>();
     private final ArrayList<Client.Connection> connections = new ArrayList<>();
-    public T connection;
+    public T service;
     public ArrayList<Client.Connection> f97d;
     public boolean isConnected = false;
     private boolean h = false;
@@ -60,9 +60,9 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
 
     protected abstract String getConnectionDescriptor();
 
-    protected abstract String getIntentService();
+    protected abstract String getAction();
 
-    public void unbindService() {
+    private void unbindService() {
         if (this.serviceConnection != null) {
             try {
                 this.context.unbindService(this.serviceConnection);
@@ -70,7 +70,7 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
                 Log.w("YouTubeClient", "Unexpected error from unbindService()", e);
             }
         }
-        this.connection = null;
+        this.service = null;
         this.serviceConnection = null;
     }
 
@@ -111,7 +111,7 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
             this.handler.sendMessage(this.handler.obtainMessage(3, isYouTubeApiServiceAvailable));
             return;
         }
-        Intent intent = new Intent(getIntentService()).setPackage(ApplicationUtils.getPackageName(this.context));
+        Intent intent = new Intent(getAction()).setPackage(ApplicationUtils.getPackageName(this.context));
         if (this.serviceConnection != null) {
             Log.e("YouTubeClient", "Calling connect() while still connected, missing disconnect().");
             unbindService();
@@ -137,7 +137,7 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
     }
 
     public final boolean connectionExists() {
-        return this.connection != null;
+        return this.service != null;
     }
 
     public final void bindAll() {
@@ -185,7 +185,7 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
 
     public final T getService() {
         checkConnection();
-        return this.connection;
+        return this.service;
     }
 
     static /* synthetic */ class C00541 {
@@ -269,8 +269,8 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
                     case YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION:
                         try {
                             if (getConnectionDescriptor().equals(this.f110c.getInterfaceDescriptor())) {
-                                connection = YouTubeClient.this.a(this.f110c);
-                                if (connection != null) {
+                                service = YouTubeClient.this.a(this.f110c);
+                                if (service != null) {
                                     bindAll();
                                     return;
                                 }
@@ -308,7 +308,7 @@ public abstract class YouTubeClient<T extends IInterface> implements Client {
 
         @Override
         public final void onServiceDisconnected(ComponentName componentName) {
-            connection = null;
+            service = null;
             releaseAll();
         }
     }

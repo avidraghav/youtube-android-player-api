@@ -106,31 +106,22 @@ public class YouTubeBaseActivity extends AppCompatActivity {
     private class BBB implements B {
         @Override
         public final void initialize(YouTubePlayerView view, String developerKey, OnInitializedListener listener) {
-            Log.d(TAG, "(B) initialize: [a with params] playerView...");
-            view.a(YouTubeBaseActivity.this, view, developerKey, listener, YouTubeBaseActivity.this.bundle);
-            Log.d(TAG, "initialize: Set playerView of activity to null...");
+            view.initialize(YouTubeBaseActivity.this, view, developerKey, listener, bundle);
             playerView = null;
         }
 
         @Override
-        public final void onFocusChanged(YouTubePlayerView view) {
-            Log.d(TAG, "onFocusChanged: view=" + view);
-            Log.d(TAG, "onFocusChanged: playerView(activity)=" + playerView);
+        public final void a(YouTubePlayerView view) {
             if (playerView != null && playerView != view) {
-                Log.d(TAG, "onFocusChanged: Stop (self) playerView (activity) with true...");
                 playerView.stopSelf(true);
             }
 
-            Log.d(TAG, "onFocusChanged: playerView (activity) = view");
             playerView = view;
-            Log.d(TAG, "onFocusChanged: lifecycleState=" + lifecycleState);
             if (lifecycleState > IS_STOPPING) {
-                Log.d(TAG, "onFocusChanged: [a without params] view...");
                 view.a();
             }
 
             if (lifecycleState >= IS_RESUMING) {
-                Log.d(TAG, "onFocusChanged: Bind view...");
                 view.bind();
             }
         }

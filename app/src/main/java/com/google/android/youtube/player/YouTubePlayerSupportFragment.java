@@ -39,7 +39,7 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
     private void a() {
         if (this.youTubePlayerView != null && this.onInitializedListener != null) {
             this.youTubePlayerView.a(this.f);
-            this.youTubePlayerView.a(this.getActivity(), this, this.d, this.onInitializedListener, this.bundle);
+            this.youTubePlayerView.initialize(this.getActivity(), this, this.d, this.onInitializedListener, this.bundle);
             this.bundle = null;
             this.onInitializedListener = null;
         }
@@ -115,7 +115,7 @@ public class YouTubePlayerSupportFragment extends Fragment implements Provider {
             YouTubePlayerSupportFragment.this.initialize(developerKey, YouTubePlayerSupportFragment.this.onInitializedListener);
         }
 
-        public final void onFocusChanged(YouTubePlayerView view) {
+        public final void a(YouTubePlayerView view) {
         }
     }
 }

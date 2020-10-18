@@ -94,7 +94,6 @@ public final class YouTubePlayerImpl implements YouTubePlayer {
 
     // TODO resume
     public final void bind() {
-        Log.d(TAG, "bind: called.");
         try {
             this.embeddedPlayer.bind();
         } catch (RemoteException e) {

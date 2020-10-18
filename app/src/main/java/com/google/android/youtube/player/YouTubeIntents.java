@@ -341,7 +341,6 @@ public final class YouTubeIntents {
      * @see #createUploadIntent(Context, Uri)
      */
     public static boolean canResolveUploadIntent(Context context) {
-        Log.d(TAG, "canResolveUploadIntent: called.");
         Intent intent = (new Intent("com.google.android.youtube.intent.action.UPLOAD")).setPackage(getPackage(context)).setType("video/*");
         return canResolveIntent(context, intent);
     }

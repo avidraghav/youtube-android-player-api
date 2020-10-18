@@ -3,7 +3,7 @@ package com.google.android.youtube.player.internal;
 import android.os.IBinder;
 
 public interface ConnectionClient extends Client {
-    IBinder getBinder();
+    IBinder getSomeBinder();
 
     IThumbnailLoaderService getThumbnailLoaderService(IThumbnailLoaderClient client);
 

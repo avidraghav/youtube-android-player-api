@@ -34,7 +34,7 @@ public final class YoutubeThumbnailLoaderImpl extends AbstractYouTubeThumbnailLo
             }
 
             @Override
-            public void onLoadingError(final String reason, final boolean hasPrevious, final boolean hasNext) throws RemoteException {
+            public void onError(final String reason, final boolean hasPrevious, final boolean hasNext) throws RemoteException {
                 handler.post(new Runnable() {
                     public final void run() {
                         YoutubeThumbnailLoaderImpl.this.hasPrevious = hasPrevious;

@@ -112,6 +112,7 @@ public final class YoutubeThumbnailLoaderImpl extends AbstractYouTubeThumbnailLo
         try {
             this.thumbnailLoaderService.release();
         } catch (RemoteException e) {
+            // TODO Handle remote exception
         }
 
         this.connectionClient.disconnect();

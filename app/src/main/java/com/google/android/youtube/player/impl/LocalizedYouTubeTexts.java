@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-// TODO This class returns localized youtube texts
 public final class LocalizedYouTubeTexts {
 
     private static final String ERROR_INITIALIZING_PLAYER = "error_initializing_player";

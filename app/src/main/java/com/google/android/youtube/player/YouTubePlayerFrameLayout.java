@@ -2,7 +2,6 @@ package com.google.android.youtube.player;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -13,14 +12,11 @@ import com.google.android.youtube.player.utils.ApplicationUtils;
 
 public final class YouTubePlayerFrameLayout extends FrameLayout {
 
-    private static final String TAG = "YouTubePlayerFrameLayou";
-
     private final ProgressBar progressBar;
     private final TextView textView;
 
     public YouTubePlayerFrameLayout(Context context) {
         super(context, null, ApplicationUtils.getDefaultStyleAttribute(context));
-        Log.d(TAG, "YouTubePlayerFrameLayout: Constructor called.");
         LocalizedYouTubePlayerTexts var2 = new LocalizedYouTubePlayerTexts(context);
         this.setBackgroundColor(Color.BLACK);
         this.progressBar = new ProgressBar(context);
@@ -38,26 +34,22 @@ public final class YouTubePlayerFrameLayout extends FrameLayout {
     }
 
     public final void stopLoading() {
-        Log.d(TAG, "a: called.");
         this.progressBar.setVisibility(GONE);
         this.textView.setVisibility(GONE);
     }
 
     public final void startLoading() {
-        Log.d(TAG, "startLoading: called.");
         this.progressBar.setVisibility(VISIBLE);
         this.textView.setVisibility(GONE);
     }
 
     public final void showError() {
-        Log.d(TAG, "stopLoading: called.");
         this.progressBar.setVisibility(GONE);
         this.textView.setVisibility(VISIBLE);
     }
 
     @Override
     protected final void onMeasure(int width, int height) {
-        Log.d(TAG, "onMeasure: called.");
         int widthMode = MeasureSpec.getMode(width);
         int heightMode = MeasureSpec.getMode(height);
         int widthSize = MeasureSpec.getSize(width);

@@ -3,7 +3,6 @@ package com.google.android.youtube.player.network;
 import android.content.Context;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 
 import com.google.android.youtube.player.internal.IServiceBroker;
 import com.google.android.youtube.player.internal.IThumbnailLoaderClient;
@@ -13,8 +12,6 @@ import com.google.android.youtube.player.utils.Validators;
 
 public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeService> implements ConnectionClient {
 
-    private static final String TAG = "YouTubePlayerConnection";
-
     private final String developerKey;
     private final String callingPackage;
     private final String callingAppVersion;
@@ -22,7 +19,6 @@ public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeS
 
     public YouTubePlayerConnectionClient(Context context, String developerKey, String callingPackage, String callingAppVersion, Connection var5, OnInitializationResult onInitializationResult) {
         super(context, var5, onInitializationResult);
-        Log.d(TAG, "YouTubePlayerConnectionClient: Constructor called.");
         this.developerKey = Validators.notNull(developerKey);
         this.callingPackage = Validators.notEmpty(callingPackage, "callingPackage cannot be null or empty");
         this.callingAppVersion = Validators.notEmpty(callingAppVersion, "callingAppVersion cannot be null or empty");
@@ -30,7 +26,6 @@ public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeS
 
     @Override
     protected final String getConnectionDescriptor() {
-        Log.d(TAG, "getConnectionDescriptor: called.");
         return "com.google.android.youtube.player.internal.IYouTubeService";
     }
 
@@ -45,7 +40,6 @@ public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeS
     }
 
     private void isNotReleased() {
-        Log.d(TAG, "isNotReleased: called.");
         this.checkConnection();
         if (this.released) {
             throw new IllegalStateException("Connection client has been released");
@@ -59,7 +53,6 @@ public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeS
 
     @Override
     public final IThumbnailLoaderService getThumbnailLoaderService(IThumbnailLoaderClient client) {
-        Log.d(TAG, "getThumbnailLoaderService: called with client=" + client);
         this.isNotReleased();
 
         try {
@@ -71,7 +64,6 @@ public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeS
 
     @Override
     public final IBinder getSomeBinder() {
-        Log.d(TAG, "getBinder: called.");
         this.isNotReleased();
 
         try {
@@ -83,21 +75,18 @@ public final class YouTubePlayerConnectionClient extends YouTubeClient<IYouTubeS
 
     @Override
     public final void release(boolean isFinishing) {
-        Log.d(TAG, "release: called with isFinishing=" + isFinishing);
         if (this.connectionExists()) {
             try {
                 this.getService().release(isFinishing);
             } catch (RemoteException e) {
                 // TODO Should error be ignored on stop / disconnect?
             }
-
             this.released = true;
         }
     }
 
     @Override
     public final void disconnect() {
-        Log.d(TAG, "disconnect: called.");
         if (!this.released) {
             this.release(true);
         }

@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import java.util.Locale;
 import java.util.Map;
 
-// TODO Replace this with localized resource files
 public final class LocalizedYouTubePlayerTexts {
     public final String errorInitializingPlayer;
     public final String getYouTubeAppTitle;

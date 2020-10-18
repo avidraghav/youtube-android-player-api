@@ -14,14 +14,12 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
     private final WeakReference<YouTubeThumbnailView> thumbnailViewWeakReference;
     private OnThumbnailLoadedListener onThumbnailLoadedListener;
     private boolean hasPlaylist;
-    // TODO isDisconnected
     private boolean isReleased;
 
     public AbstractYouTubeThumbnailLoader(YouTubeThumbnailView thumbnailView) {
         this.thumbnailViewWeakReference = new WeakReference<>(Validators.notNull(thumbnailView));
     }
 
-    // TODO hasResources / holdsResources / isConnected
     protected boolean isConnected() {
         return !this.isReleased;
     }
@@ -120,31 +118,22 @@ public abstract class AbstractYouTubeThumbnailLoader implements YouTubeThumbnail
         }
     }
 
-    // TODO setVideo / loadThumbnail
     public abstract void loadThumbnail(String videoId);
 
-    // TODO setPlaylist / loadThumbnail
     public abstract void loadThumbnail(String playlistId, int skipTo);
 
-    // TODO next
     public abstract void loadNext();
 
-    // TODO previous
     public abstract void loadPrevious();
 
-    // TODO first
     public abstract void loadFirst();
 
-    // TODO hasNext
     public abstract boolean hasNextThumbnail();
 
-    // TODO hasPrevious
     public abstract boolean hasPreviousThumbnail();
 
-    // TODO disconnect / release
     public abstract void h();
 
-    // TODO loadThumbnail might also be setThumbnail
     public final void loadThumbnail(Bitmap thumbnailBitmap, String videoId) {
         YouTubeThumbnailView thumbnail = this.thumbnailViewWeakReference.get();
         if (this.isConnected() && thumbnail != null) {

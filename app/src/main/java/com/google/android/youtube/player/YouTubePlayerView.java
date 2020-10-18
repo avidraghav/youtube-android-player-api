@@ -29,12 +29,12 @@ import java.util.Set;
 
 public final class YouTubePlayerView extends ViewGroup implements Provider {
 
-    private static final String TAG = "YouTubePlayerView";
     private final OnGlobalFocusChangeListener globalFocusChangeListener;
     private final YouTubePlayerViewInitializer listener;
     private Set<View> focusedViews = new HashSet<>();
     private ConnectionClient client;
     private YouTubePlayerImpl youTubePlayer;
+
     /**
      * The playerView is the actual frame layout where the video is played.
      */
@@ -98,7 +98,6 @@ public final class YouTubePlayerView extends ViewGroup implements Provider {
      */
     YouTubePlayerView(final Context context, final AttributeSet attrs, final int defStyleAttr, YouTubePlayerViewInitializer listener) {
         super(Validators.notNull(context, "context cannot be null"), attrs, defStyleAttr);
-        Log.d(TAG, "YouTubePlayerView: Constructor called.");
 
         if (!(context instanceof YouTubeBaseActivity)) {
             throw new IllegalStateException("A YouTubePlayerView can only be created with an Activity which extends YouTubeBaseActivity as its context.");

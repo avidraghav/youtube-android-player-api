@@ -13,8 +13,6 @@ import com.google.android.youtube.player.utils.Validators;
 
 public final class YouTubeThumbnailView extends AppCompatImageView {
 
-    private static final String TAG = "YouTubeThumbnailView";
-
     private ConnectionClient client;
     private AbstractYouTubeThumbnailLoader thumbnailLoader;
 
@@ -31,24 +29,17 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
     }
 
     public final void initialize(String developerKey, YouTubeThumbnailView.OnInitializedListener listener) {
-        Log.d(TAG, "initialize: called.");
         YouTubeThumbnailView.a var3 = new YouTubeThumbnailView.a(this, listener);
-        Log.d(TAG, "initialize: Get client from linked factory...");
         this.client = LinkedFactory.getInstance().getClient(this.getContext(), developerKey, var3, var3);
-        Log.d(TAG, "initialize: Connect client...");
         this.client.connect();
     }
 
     @Override
     protected final void finalize() throws Throwable {
-        Log.d(TAG, "finalize: called.");
         if (this.thumbnailLoader != null) {
-            Log.d(TAG, "finalize: Finalize thumbnailLoader...");
             this.thumbnailLoader.finalize();
-            Log.d(TAG, "finalize: Set thumbnailLoader null...");
             this.thumbnailLoader = null;
         }
-
         super.finalize();
     }
 
@@ -66,7 +57,6 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
         private YouTubeThumbnailView.OnInitializedListener onInitializedListener;
 
         public a(YouTubeThumbnailView thumbnailView, YouTubeThumbnailView.OnInitializedListener onInitListener) {
-            Log.d(TAG, "a: Constructor called.");
             this.thumbnailView = Validators.notNull(thumbnailView, "thumbnailView cannot be null");
             this.onInitializedListener = Validators.notNull(onInitListener, "onInitializedlistener cannot be null");
         }
@@ -83,19 +73,16 @@ public final class YouTubeThumbnailView extends AppCompatImageView {
 
         @Override
         public final void release() {
-            Log.d(TAG, "release: called.");
             this.reset();
         }
 
         @Override
         public final void onResult(YouTubeInitializationResult result) {
-            Log.d(TAG, "onResult: called.");
             this.onInitializedListener.onInitializationFailure(this.thumbnailView, result);
             this.reset();
         }
 
         private void reset() {
-            Log.d(TAG, "reset: called.");
             if (this.thumbnailView != null) {
                 this.thumbnailView.client = null;
                 this.thumbnailView = null;

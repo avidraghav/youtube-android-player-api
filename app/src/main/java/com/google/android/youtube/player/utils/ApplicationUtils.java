@@ -10,8 +10,14 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 
 public final class ApplicationUtils {
-    private static final Uri a = Uri.parse("http://play.google.com/store/apps/details");
-    private static final String[] packageList = new String[]{"com.google.android.youtube", "com.google.android.youtube.tv", "com.google.android.youtube.googletv", "com.google.android.gms", null};
+    private static final Uri PLAY_STORE_APP_DETAILS_URI = Uri.parse("http://play.google.com/store/apps/details");
+    private static final String[] packageList = new String[]{
+            "com.google.android.youtube",
+            "com.google.android.youtube.tv",
+            "com.google.android.youtube.googletv",
+            "com.google.android.gms",
+            null
+    };
 
     public static String getPackageName(Context context) {
         PackageManager packageManager = context.getPackageManager();
@@ -91,8 +97,8 @@ public final class ApplicationUtils {
     }
 
     // TODO Document: returns client library version
-    public static String a() {
-        return (new StringBuilder(35)).append(1).append(".2.2").toString();
+    public static String getClientLibraryVersion() {
+        return "1.2.2";
     }
 
     /**
@@ -116,8 +122,8 @@ public final class ApplicationUtils {
      * @return An intent that opens the specified application in Google Play Store
      */
     public static Intent getPlayStoreIntent(String packageName) {
-        Intent intent = new Intent("android.intent.action.VIEW");
-        Uri uri = a.buildUpon().appendQueryParameter("id", packageName).build();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = PLAY_STORE_APP_DETAILS_URI.buildUpon().appendQueryParameter("id", packageName).build();
         intent.setData(uri);
         intent.setPackage("com.android.vending");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);

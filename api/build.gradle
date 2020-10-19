@@ -1,0 +1,24 @@
+apply from: '../dependencies.gradle'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion       versions.compileSdk
+    buildToolsVersion       versions.buildTools
+
+    defaultConfig {
+        minSdkVersion       versions.minSdk
+        targetSdkVersion    versions.targetSdk
+        versionCode         versions.versionCode
+        versionName         versions.versionName
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    testImplementation "junit:junit:$versions.junit"
+    androidTestImplementation "androidx.test.ext:junit:1.1.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+}
+
+apply from: 'publish.bintray.gradle'
+// apply from: 'publish.novoda.gradle'

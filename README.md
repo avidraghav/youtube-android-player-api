@@ -1,6 +1,6 @@
 # YouTube Android Player API
 
-_(Tags will be added after the first version will be released)_
+[![api](https://api.bintray.com/packages/malliaridis/android/youtube-android-player-api/images/download.svg)](https://bintray.com/malliaridis/android/youtube-android-player-api/_latestVersion)
 
 This project is an **unofficial** implementation of the [YouTube Android Player API](https://developers.google.com/youtube/android/player).
 It was inspired by the [android-youtube-player](https://github.com/PierfrancescoSoffritti/android-youtube-player)

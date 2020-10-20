@@ -1,0 +1,90 @@
+apply from: '../dependencies.gradle'
+apply from: '../credentials.gradle'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+version versions.apiVersion
+group versions.apiGroup
+
+task androidSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    from android.sourceSets.main.aidl.srcDirs
+    archiveClassifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    options.encoding("UTF-8")
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+}
+
+task androidJavadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocJar
+}
+
+publishing {
+    publications {
+        Production(MavenPublication) {
+            artifact("$buildDir/outputs/aar/api-release.aar")
+            artifact androidSourcesJar {
+                classifier "sources"
+            }
+            artifact androidJavadocJar {
+                classifier "javadoc"
+            }
+            groupId versions.apiGroup
+            artifactId versions.apiName
+            version versions.apiVersion
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                configurations.implementation.allDependencies.each {
+                    if (it.name != 'unspecified') {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+def (bintrayUser, bintrayKey) = credentials
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    publications = ['Production']
+    configurations = ['archives']
+    override = true
+    pkg {
+        userOrg = bintrayUser
+        repo = versions.apiRepoName
+        name = versions.apiName
+        description = versions.libDescription
+        publish = true
+        publicDownloadNumbers = true
+        licenses = ['MIT']
+        websiteUrl = 'https://github.com/malliaridis/youtube-android-player-api'
+        issueTrackerUrl = 'https://github.com/malliaridis/youtube-android-player-api/issues'
+        vcsUrl = 'https://github.com/malliaridis/youtube-android-player-api.git'
+        labels = ['android', 'youtube', 'youtube-android-player-api']
+        dryRun = false
+        version {
+            name = versions.apiVersion
+            desc = versions.libDescription
+            released = new Date()
+            vcsTag = versions.apiVersion
+        }
+    }
+}

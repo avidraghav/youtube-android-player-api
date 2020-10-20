@@ -1,0 +1,38 @@
+ext.versions = [
+
+        // Build
+        compileSdk    : 29,
+        buildTools    : '29.0.3',
+
+        minSdk        : 16,
+        targetSdk     : 29,
+        versionCode   : 1,
+        versionName   : '1.0-Final',
+        vcsTag        : '1.0.0',
+
+
+        // Classpaths
+        gradleVersion : '4.0.2',
+        // IMPORTANT: Novoda plugin v.0.9.2 works only with older gradle (e.g. 3.5.2) and gradle-plugin (e.g. 4.x)
+        novodaVersion : '0.9.2',
+        bintrayPlugin : '1.8.5',
+
+
+        // Modules
+        apiName       : 'api',
+        apiRepoName   : 'youtube-android-player-api',
+        apiVersion    : '1.0.0',
+        apiGroup      : 'com.malliaridis.android',
+        apiDescription: 'Android YouTube Player API with AndroidX support.',
+
+
+        // App Compatibility
+        appCompat     : '1.2.0',
+
+
+        // Testing
+        junit         : '4.12',
+        extJunit      : '1.1.2',
+        runner        : '1.1.1',
+        espressoCore  : '3.3.0',
+]

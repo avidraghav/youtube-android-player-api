@@ -1,0 +1,17 @@
+apply from: '../dependencies.gradle'
+apply plugin: 'com.novoda.bintray-release'
+apply from: '../credentials.gradle'
+
+def (user, key) = credentials
+publish {
+    bintrayUser = user
+    bintrayKey = key
+    userOrg = user
+    repoName = versions.apiRepoName
+    groupId = versions.apiGroup
+    artifactId = versions.apiName
+    publishVersion = versions.apiVersion
+    desc = versions.apiDescription
+    dryRun = false
+    website = 'https://github.com/malliaridis/youtube-android-player-api'
+}

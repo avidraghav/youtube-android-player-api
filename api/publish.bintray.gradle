@@ -84,7 +84,7 @@ bintray {
             name = versions.apiVersion
             desc = versions.libDescription
             released = new Date()
-            vcsTag = versions.apiVersion
+            vcsTag = versions.vcsTag
         }
     }
 }

@@ -17,6 +17,7 @@ ext.versions = [
         novodaVersion : '0.9.2',
         bintrayPlugin : '1.8.5',
 
+
         // Modules
         apiName       : 'api',
         apiRepoName   : 'youtube-android-player-api',
@@ -26,11 +27,12 @@ ext.versions = [
 
 
         // App Compatibility
-        appcompat     : '1.2.0',
+        appCompat     : '1.2.0',
 
 
         // Testing
         junit         : '4.12',
+        extJunit      : '1.1.2',
         runner        : '1.1.1',
-        espressoCore  : '3.1.1',
+        espressoCore  : '3.3.0',
 ]

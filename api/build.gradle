@@ -23,10 +23,10 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.appcompat:appcompat:$versions.appCompat"
     testImplementation "junit:junit:$versions.junit"
-    androidTestImplementation "androidx.test.ext:junit:1.1.2"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+    androidTestImplementation "androidx.test.ext:junit:$versions.extJunit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espressoCore"
 }
 
 apply from: 'publish.bintray.gradle'
